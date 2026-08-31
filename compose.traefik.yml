@@ -1,0 +1,23 @@
+# Traefik override — for a host that already runs a Traefik reverse proxy
+# (the galaxy-catalog stack on this box). Traefik reaches the app over the
+# shared external network and terminates TLS; no host port is needed.
+#
+# Usage (with a .env providing DRV_HOST):
+#   docker compose -f docker-compose.yml -f compose.traefik.yml up -d --build
+services:
+  web:
+    networks:
+      - default
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=galaxy-catalog_default"
+      - "traefik.http.routers.drv.rule=Host(`${DRV_HOST}`)"
+      - "traefik.http.routers.drv.entrypoints=websecure"
+      - "traefik.http.routers.drv.tls.certresolver=myresolver"
+      - "traefik.http.services.drv.loadbalancer.server.port=80"
+
+networks:
+  traefik:
+    name: galaxy-catalog_default
+    external: true

@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>防災士培訓報名網 | 示意版型</title>
+<style>
+  :root {
+    --primary: #d9480f;
+    --primary-dark: #a83800;
+    --accent: #1c7ed6;
+    --bg: #f7f5f2;
+    --card-bg: #ffffff;
+    --text: #2b2b2b;
+    --muted: #6b6b6b;
+    --border: #e5e0da;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { max-width: 100%; display: block; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+
+  /* Header */
+  header {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.15rem; color: var(--primary-dark); }
+  .logo-badge {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  nav ul { list-style: none; display: flex; gap: 28px; }
+  nav a { font-size: 0.95rem; font-weight: 500; color: var(--text); }
+  nav a:hover { color: var(--primary); }
+  .btn-cta {
+    background: var(--primary);
+    color: #fff !important;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  .btn-cta:hover { background: var(--primary-dark); }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #fff4e6 0%, #ffe8d6 100%);
+    padding: 64px 20px;
+    text-align: center;
+  }
+  .hero h1 { font-size: 2.1rem; margin-bottom: 14px; color: var(--primary-dark); }
+  .hero p { font-size: 1.05rem; color: var(--muted); max-width: 620px; margin: 0 auto 28px; }
+  .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--primary); color: #fff; padding: 12px 28px;
+    border-radius: 8px; font-weight: 700; font-size: 1rem;
+  }
+  .btn-secondary {
+    background: #fff; color: var(--primary-dark); padding: 12px 28px;
+    border-radius: 8px; font-weight: 700; font-size: 1rem; border: 1px solid var(--primary);
+  }
+
+  /* Section generic */
+  section { padding: 56px 0; }
+  .section-title { font-size: 1.5rem; margin-bottom: 8px; color: var(--primary-dark); }
+  .section-sub { color: var(--muted); margin-bottom: 32px; font-size: 0.95rem; }
+  .alt-bg { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+  /* 最新消息 */
+  .notice-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+  .notice-item {
+    display: flex; gap: 18px; align-items: baseline;
+    padding: 14px 18px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px;
+  }
+  .notice-tag {
+    font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+    background: #e7f5ff; color: var(--accent); white-space: nowrap;
+  }
+  .notice-tag.warn { background: #fff3bf; color: #997404; }
+  .notice-date { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+  .notice-title { flex: 1; font-weight: 500; }
+
+  /* 各梯次卡片 */
+  .session-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;
+  }
+  .session-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
+    padding: 22px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .session-card h3 { font-size: 1.1rem; color: var(--primary-dark); }
+  .session-meta { font-size: 0.9rem; color: var(--muted); display: flex; flex-direction: column; gap: 4px; }
+  .session-status {
+    align-self: flex-start; font-size: 0.75rem; font-weight: 700;
+    padding: 3px 10px; border-radius: 999px;
+  }
+  .status-open { background: #ebfbee; color: #2b8a3e; }
+  .status-full { background: #ffe3e3; color: #c92a2a; }
+  .status-soon { background: #fff9db; color: #997404; }
+  .session-card .btn-register {
+    margin-top: 8px; text-align: center; padding: 9px; border-radius: 6px;
+    background: var(--primary); color: #fff; font-weight: 600; font-size: 0.9rem;
+  }
+  .session-card .btn-register.disabled { background: #ced4da; pointer-events: none; }
+
+  /* 報名系統說明 */
+  .apply-steps {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 18px;
+  }
+  .step-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+  }
+  .step-num {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--primary);
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; margin-bottom: 12px; font-size: 0.9rem;
+  }
+  .step-card h4 { font-size: 1rem; margin-bottom: 6px; }
+  .step-card p { font-size: 0.85rem; color: var(--muted); }
+
+  /* FAQ */
+  .faq-item {
+    border-bottom: 1px solid var(--border); padding: 16px 0;
+  }
+  .faq-q { font-weight: 600; margin-bottom: 6px; display: flex; gap: 8px; }
+  .faq-q::before { content: "Q"; color: var(--primary); font-weight: 800; }
+  .faq-a { color: var(--muted); font-size: 0.92rem; padding-left: 18px; }
+
+  /* 下載專區 */
+  .download-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;
+  }
+  .download-card {
+    background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px 18px; display: flex; align-items: center; gap: 12px; font-size: 0.92rem; font-weight: 500;
+  }
+  .download-icon {
+    width: 36px; height: 36px; border-radius: 8px; background: #e7f5ff; color: var(--accent);
+    display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0;
+  }
+
+  /* Footer */
+  footer {
+    background: #232323; color: #d9d9d9; padding: 40px 20px 24px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin-bottom: 24px;
+  }
+  footer h5 { color: #fff; font-size: 0.95rem; margin-bottom: 12px; }
+  footer ul { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  footer a { color: #b7b7b7; font-size: 0.88rem; }
+  footer a:hover { color: #fff; }
+  .footer-bottom {
+    border-top: 1px solid #3a3a3a; padding-top: 18px; font-size: 0.8rem; color: #8a8a8a; text-align: center;
+  }
+
+  @media (max-width: 640px) {
+    nav { display: none; }
+    .hero h1 { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-badge">災</span>
+      防災士培訓報名網
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#notice">最新消息</a></li>
+        <li><a href="#sessions">培訓梯次</a></li>
+        <li><a href="#apply">線上報名</a></li>
+        <li><a href="#faq">常見問題</a></li>
+        <li><a href="#downloads">文件下載</a></li>
+        <li><a href="admin.html">管理後台</a></li>
+      </ul>
+    </nav>
+    <a href="#apply" class="btn-cta">立即報名</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <h1>防災士培訓講習線上報名系統</h1>
+    <p>掌握最新梯次資訊、完成線上報名、下載相關文件，一站完成防災士培訓報名流程。</p>
+    <div class="hero-actions">
+      <a href="#sessions" class="btn-primary">查看培訓梯次</a>
+      <a href="#faq" class="btn-secondary">常見問題</a>
+    </div>
+  </div>
+</section>
+
+<!-- 一、活動公告專區 -->
+<section id="notice">
+  <div class="container">
+    <h2 class="section-title">最新消息公告</h2>
+    <p class="section-sub">開課通知、報名時間、異動公告（延期／停課）即時更新</p>
+    <ul class="notice-list">
+      <li class="notice-item">
+        <span class="notice-tag warn">異動</span>
+        <span class="notice-date">2026-08-25</span>
+        <span class="notice-title">第 3 梯次因場地因素順延一週，詳情請點閱說明</span>
+      </li>
+      <li class="notice-item">
+        <span class="notice-tag">公告</span>
+        <span class="notice-date">2026-08-18</span>
+        <span class="notice-title">115 年度第 2 梯次防災士培訓開放報名</span>
+      </li>
+      <li class="notice-item">
+        <span class="notice-tag">公告</span>
+        <span class="notice-date">2026-08-05</span>
+        <span class="notice-title">防災士相關法規及申請表單更新，請至下載專區查閱</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 各梯次培訓資訊 -->
+<section id="sessions" class="alt-bg">
+  <div class="container">
+    <h2 class="section-title">各梯次培訓資訊</h2>
+    <p class="section-sub">日期、地點、課程表一覽，點選報名前往線上報名表單</p>
+    <div class="session-grid">
+      <div class="session-card">
+        <span class="session-status status-open">報名中</span>
+        <h3>115 年度第 2 梯次</h3>
+        <div class="session-meta">
+          <span>📅 2026/09/20（六）～ 09/21（日）</span>
+          <span>📍 基隆市消防局訓練中心</span>
+          <span>👥 名額 60 人（尚餘 18 位）</span>
+        </div>
+        <a href="#apply" class="btn-register">立即報名</a>
+      </div>
+      <div class="session-card">
+        <span class="session-status status-soon">即將開放</span>
+        <h3>115 年度第 3 梯次</h3>
+        <div class="session-meta">
+          <span>📅 2026/10/18（六）～ 10/19（日）</span>
+          <span>📍 基隆市消防局訓練中心</span>
+          <span>👥 名額 60 人</span>
+        </div>
+        <a href="#" class="btn-register disabled">尚未開放</a>
+      </div>
+      <div class="session-card">
+        <span class="session-status status-full">名額已滿</span>
+        <h3>115 年度第 1 梯次</h3>
+        <div class="session-meta">
+          <span>📅 2026/07/12（六）～ 07/13（日）</span>
+          <span>📍 基隆市消防局訓練中心</span>
+          <span>👥 名額 60 人（候補開放中）</span>
+        </div>
+        <a href="#" class="btn-register disabled">候補登記</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 二、報名系統 -->
+<section id="apply">
+  <div class="container">
+    <h2 class="section-title">線上報名流程</h2>
+    <p class="section-sub">填寫身分資料、上傳證件照、確認飲食需求，系統將自動檢核必填欄位</p>
+    <div class="apply-steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <h4>填寫身分資料</h4>
+        <p>姓名、身分證字號、聯絡方式等基本資料</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h4>上傳證件照</h4>
+        <p>供製發證照及學員名冊使用</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <h4>飲食與證照調查</h4>
+        <p>飲食需求、是否已具防災士／EMT1 證照</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <h4>送出並候補</h4>
+        <p>系統自動檢核欄位，額滿將自動列入候補名單</p>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:32px;">
+      <a href="#" class="btn-primary">前往報名表單</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="alt-bg">
+  <div class="container">
+    <h2 class="section-title">常見問題</h2>
+    <div class="faq-item">
+      <div class="faq-q">已取得防災士證照，還可以再報名嗎？</div>
+      <div class="faq-a">報名表單會詢問是否曾取得防災相關證照（如防災士或 EMT1），將依規定安排課程。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">報名後多久會收到錄取通知？</div>
+      <div class="faq-a">承辦人員完成人工篩選後，將以 Email 或簡訊通知報名結果。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">名額已滿可以候補嗎？</div>
+      <div class="faq-a">可以，額滿梯次開放候補登記，遞補時將主動通知。</div>
+    </div>
+  </div>
+</section>
+
+<!-- 相關法規及文件下載 -->
+<section id="downloads">
+  <div class="container">
+    <h2 class="section-title">相關法規及文件下載</h2>
+    <p class="section-sub">課程表、參訓證明、講義及各式表單下載</p>
+    <div class="download-grid">
+      <div class="download-card"><span class="download-icon">PDF</span>防災士培訓相關法規</div>
+      <div class="download-card"><span class="download-icon">PDF</span>課程表</div>
+      <div class="download-card"><span class="download-icon">PDF</span>參訓證明申請表</div>
+      <div class="download-card"><span class="download-icon">PDF</span>個人資料同意書</div>
+      <div class="download-card"><span class="download-icon">PDF</span>證照遺失補發申請表</div>
+      <div class="download-card"><span class="download-icon">PDF</span>課程講義下載</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h5>防災士培訓報名網</h5>
+        <ul>
+          <li>主辦單位：基隆市政府消防局</li>
+          <li>服務時間：週一至週五 09:00–17:00</li>
+        </ul>
+      </div>
+      <div>
+        <h5>快速連結</h5>
+        <ul>
+          <li><a href="#notice">最新消息</a></li>
+          <li><a href="#sessions">培訓梯次</a></li>
+          <li><a href="#apply">線上報名</a></li>
+          <li><a href="#downloads">文件下載</a></li>
+          <li><a href="admin.html">工作人員登入 / 管理後台</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>聯絡我們</h5>
+        <ul>
+          <li>電話：(02) 0000-0000</li>
+          <li>Email：drv-training@example.gov.tw</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 防災士培訓報名網．示意版型，正式內容以主辦單位公告為準
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

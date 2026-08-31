@@ -1,0 +1,10 @@
+# Production run config. Build + run with:  docker compose up -d --build
+services:
+  web:
+    build: .
+    image: we-are-drv
+    container_name: we-are-drv
+    restart: unless-stopped
+    # Bind to localhost; front it with your own reverse proxy (see compose.traefik.yml).
+    ports:
+      - "127.0.0.1:8020:80"
