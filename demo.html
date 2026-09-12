@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>基隆市防災士培訓報名系統 | 全站功能展示</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Sans+Mono:wght@400;700&display=swap">
+<style>
+  :root {
+    --color-neutral-white: rgb(255,255,255);
+    --color-neutral-black: rgb(0,0,0);
+    --color-neutral-solidgray-50: rgb(242,242,242);
+    --color-neutral-solidgray-100: rgb(230,230,230);
+    --color-neutral-solidgray-200: rgb(204,204,204);
+    --color-neutral-solidgray-300: rgb(179,179,179);
+    --color-neutral-solidgray-420: rgb(148,148,148);
+    --color-neutral-solidgray-536: rgb(118,118,118);
+    --color-neutral-solidgray-600: rgb(102,102,102);
+    --color-neutral-solidgray-700: rgb(77,77,77);
+    --color-neutral-solidgray-800: rgb(51,51,51);
+    --color-neutral-solidgray-900: rgb(26,26,26);
+
+    --color-primitive-blue-50: rgb(232,241,254);
+    --color-primitive-blue-100: rgb(217,230,255);
+    --color-primitive-blue-200: rgb(197,215,251);
+    --color-primitive-blue-300: rgb(157,183,249);
+    --color-primitive-blue-900: rgb(0,23,193);
+    --color-primitive-blue-1000: rgb(0,17,143);
+    --color-primitive-blue-1200: rgb(0,0,96);
+
+    --color-primitive-lightblue-50: rgb(240,249,255);
+    --color-primitive-lightblue-600: rgb(0,139,242);
+    --color-primitive-lightblue-700: rgb(8,119,215);
+    --color-primitive-lightblue-800: rgb(0,102,190);
+    --color-primitive-lightblue-900: rgb(0,85,173);
+
+    --color-primitive-orange-100: rgb(255,223,202);
+    --color-primitive-orange-800: rgb(199,71,0);
+
+    --color-primitive-green-50: rgb(230,245,236);
+    --color-primitive-green-100: rgb(194,229,209);
+    --color-primitive-green-800: rgb(25,122,75);
+
+    --color-primitive-red-100: rgb(255,218,218);
+    --color-primitive-red-800: rgb(236,0,0);
+
+    --color-primitive-yellow-300: rgb(255,212,61);
+
+    --color-key-50: var(--color-primitive-blue-50);
+    --color-key-100: var(--color-primitive-blue-100);
+    --color-key-200: var(--color-primitive-blue-200);
+    --color-key-300: var(--color-primitive-blue-300);
+    --color-key-900: var(--color-primitive-blue-900);
+    --color-key-1000: var(--color-primitive-blue-1000);
+    --color-key-1200: var(--color-primitive-blue-1200);
+
+    --color-semantic-warning-orange-2: var(--color-primitive-orange-800);
+    --color-semantic-success-2: var(--color-primitive-green-800);
+    --color-semantic-error-1: var(--color-primitive-red-800);
+
+    --text-body: var(--color-neutral-solidgray-800);
+    --text-heading: var(--color-neutral-solidgray-900);
+    --text-muted: var(--color-neutral-solidgray-600);
+    --text-placeholder: var(--color-neutral-solidgray-536);
+    --text-link: var(--color-key-900);
+    --text-link-hover: var(--color-key-1000);
+    --text-link-active: var(--color-key-1200);
+
+    --border-default: var(--color-neutral-solidgray-420);
+    --border-subtle: var(--color-neutral-solidgray-200);
+    --border-divider: var(--color-neutral-solidgray-100);
+
+    --error: var(--color-semantic-error-1);
+
+    --focus-ring: var(--color-primitive-yellow-300);
+    --focus-ring-outline: var(--color-neutral-black);
+    --focus-ring-width: 2px;
+    --focus-ring-outline-width: 4px;
+
+    --font-sans: "Noto Sans TC", "Noto Sans JP", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    --font-mono: "Noto Sans Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    color: var(--text-body);
+    background: var(--color-neutral-white);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--text-link); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; }
+  a:hover { color: var(--text-link-hover); }
+  a:active { color: var(--text-link-active); }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: var(--focus-ring-outline-width) solid var(--focus-ring-outline);
+    outline-offset: var(--focus-ring-width);
+    background-color: var(--focus-ring);
+    color: var(--color-neutral-black);
+    text-decoration: none;
+    border-radius: 2px;
+  }
+  h1, h2, h3 { font-family: var(--font-sans); }
+  [hidden] { display: none !important; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+    font-family: var(--font-sans); font-weight: 700; font-size: 16px; line-height: 1;
+    letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 0;
+    border-radius: 8px; padding: 12px 16px; min-height: 48px; min-width: 96px;
+  }
+  .btn-solid { background: var(--color-key-900); color: var(--color-neutral-white); }
+  .btn-solid:hover { background: var(--color-key-1000); color: var(--color-neutral-white); }
+  .btn-outlined { background: var(--color-neutral-white); color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .btn-outlined:hover { background: var(--color-key-200); color: var(--color-key-1000); box-shadow: inset 0 0 0 1px var(--color-key-1000); }
+  .btn-text { background: transparent; color: var(--color-key-900); }
+  .btn-text:hover { background: var(--color-key-50); color: var(--color-key-1000); }
+  .btn-lg { min-height: 56px; min-width: 136px; padding: 16px; }
+  .btn-sm { min-height: 36px; min-width: 80px; padding: 6px 12px; border-radius: 6px; }
+  .btn-full { width: 100%; }
+
+  /* Switch bar (demo navigation, not part of the real product) */
+  .switchbar {
+    background: var(--color-neutral-solidgray-900); color: #fff; padding: 10px 24px;
+    display: flex; gap: 8px; align-items: center; flex-wrap: wrap; position: sticky; top: 0; z-index: 50;
+  }
+  .switchbar .label { font-size: 13px; color: var(--color-neutral-solidgray-300); margin-right: 8px; }
+  .switchbar button {
+    appearance: none; border: 0; cursor: pointer; font-family: inherit; font-size: 14px;
+    padding: 6px 12px; border-radius: 6px; letter-spacing: 0.02em; background: transparent;
+    color: var(--color-neutral-solidgray-200); box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-700);
+  }
+  .switchbar button.active { background: #fff; color: var(--color-neutral-solidgray-900); box-shadow: none; font-weight: 700; }
+
+  /* Public chrome (utility bar / header / nav / footer) */
+  .util-bar { background: var(--color-neutral-solidgray-50); border-bottom: 1px solid var(--border-subtle); }
+  .util-bar .wrap { padding-block: 8px; display: flex; justify-content: flex-end; gap: 24px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+  .util-bar a { text-decoration: none; }
+
+  header.site { border-bottom: 1px solid var(--border-default); background: var(--color-neutral-white); }
+  .header-row { padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 2px; }
+  .brand .org { font-size: 14px; line-height: 1.4; color: var(--text-muted); }
+  .brand .site-name { font-size: 24px; font-weight: 700; line-height: 1.4; color: var(--text-heading); }
+  .header-actions { display: flex; gap: 12px; align-items: center; }
+
+  nav.main { border-top: 1px solid var(--border-divider); }
+  nav.main .wrap { display: flex; flex-wrap: wrap; }
+  nav.main button {
+    appearance: none; border: 0; background: none; cursor: pointer;
+    padding: 14px 20px; font-size: 16px; text-decoration: none; color: var(--text-body); font-family: inherit;
+  }
+  nav.main button.active { font-weight: 700; color: var(--text-heading); box-shadow: inset 0 -4px 0 var(--color-key-900); }
+
+  .banner { background: var(--color-primitive-lightblue-50); border-bottom: 1px solid var(--color-primitive-lightblue-800); }
+  .banner .wrap { padding-block: 16px; display: flex; gap: 12px; align-items: flex-start; }
+  .banner svg { flex-shrink: 0; margin-top: 2px; color: var(--color-primitive-lightblue-900); }
+  .banner p { margin: 0; font-size: 16px; line-height: 1.7; }
+
+  footer.site { background: var(--color-neutral-solidgray-50); border-top: 1px solid var(--border-default); }
+  footer.site .wrap { padding-block: 40px; display: flex; flex-direction: column; gap: 16px; }
+  footer.site .org-name { font-size: 20px; font-weight: 700; color: var(--text-heading); }
+  footer.site .addr { margin: 0; font-size: 16px; line-height: 1.7; color: var(--text-body); }
+  footer.site .links { display: flex; gap: 24px; flex-wrap: wrap; font-size: 16px; }
+
+  main.page { max-width: 1120px; margin: 0 auto; padding: 48px 24px 80px; display: flex; flex-direction: column; gap: 64px; }
+  main.subpage { max-width: 1120px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+  .crumb { font-size: 16px; color: var(--text-muted); }
+  .crumb button { appearance: none; border: 0; background: none; padding: 0; font: inherit; cursor: pointer; }
+  .page-title { margin: 0; font-size: 36px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
+  .page-intro { margin: 0; font-size: 17px; line-height: 1.7; }
+
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    padding-bottom: 12px; border-bottom: 2px solid var(--text-heading); margin-bottom: 24px;
+  }
+  .section-head h2 { margin: 0; font-size: 28px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
+  .section-head a, .section-head button { font-size: 16px; }
+
+  /* Home: notice list + sidebar */
+  .notice-layout { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start; }
+  .notice-items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .notice-items li { display: grid; grid-template-columns: 112px 88px 1fr; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-divider); }
+  .notice-items .date { font-size: 16px; color: var(--text-muted); }
+  .notice-items .tag { justify-self: start; font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; white-space: nowrap; }
+  .tag-notice { background: var(--color-primitive-blue-100); color: var(--color-primitive-blue-900); }
+  .tag-change { background: var(--color-primitive-orange-100); color: var(--color-semantic-warning-orange-2); }
+  .tag-cert   { background: var(--color-primitive-green-100); color: var(--color-semantic-success-2); }
+  .tag-general{ background: var(--color-neutral-solidgray-100); color: var(--color-neutral-solidgray-800); }
+  .notice-items .title-link { font-size: 17px; line-height: 1.7; }
+
+  aside.side { display: flex; flex-direction: column; gap: 16px; }
+  .side-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .side-card.muted { background: var(--color-neutral-solidgray-50); }
+  .side-card .card-title { font-size: 17px; font-weight: 700; color: var(--text-heading); }
+  .status-rows { display: flex; flex-direction: column; gap: 8px; }
+  .status-rows .row { display: flex; justify-content: space-between; font-size: 16px; }
+  .status-rows .row .k { color: var(--text-muted); }
+  .status-rows .row .v { font-weight: 700; }
+  .status-rows .row .v.warn { color: var(--color-semantic-warning-orange-2); }
+  .side-link { font-size: 16px; text-align: center; background: none; border: 0; font-family: inherit; cursor: pointer; width: 100%; padding: 0; }
+  .side-card p { margin: 0; font-size: 16px; line-height: 1.7; }
+
+  .table-scroll { overflow-x: auto; }
+  table.sessions { border-collapse: collapse; width: 100%; font-size: 16px; }
+  table.sessions th { background: var(--color-neutral-solidgray-100); padding: 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--border-default); white-space: nowrap; }
+  table.sessions td { padding: 20px 16px; border-bottom: 1px solid var(--border-default); }
+  table.sessions tr.alt { background: var(--color-neutral-solidgray-50); }
+  .status-pill { font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; }
+  .status-open  { background: var(--color-primitive-orange-100); color: var(--color-semantic-warning-orange-2); }
+  .status-full  { background: var(--color-neutral-solidgray-100); color: var(--color-neutral-solidgray-800); }
+  .status-done  { background: var(--color-primitive-green-100); color: var(--color-semantic-success-2); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .two-col h2 { margin: 0 0 20px; font-size: 24px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
+  .faq-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .faq-list li { border-radius: 8px; box-shadow: 0 0 0 1px var(--border-default); padding: 16px 20px; display: flex; justify-content: space-between; gap: 16px; align-items: center; font-size: 17px; }
+  .faq-list .plus { color: var(--color-key-900); font-size: 20px; }
+  .dl-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .dl-list li { padding: 14px 0; border-bottom: 1px solid var(--border-divider); display: flex; justify-content: space-between; gap: 16px; font-size: 17px; }
+  .dl-list .meta { color: var(--text-muted); font-size: 14px; white-space: nowrap; }
+
+  /* Forms */
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field .req { color: var(--error); font-size: 16px; }
+  .field .opt { color: var(--text-muted); font-size: 16px; }
+  .hint-text { font-size: 16px; color: var(--text-muted); line-height: 1.7; }
+  .input, .select {
+    height: 48px; width: 100%; padding: 0 16px; border: 0; border-radius: 8px;
+    box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600);
+    font-size: 16px; font-family: inherit; background: #fff; box-sizing: border-box;
+  }
+  .input:hover, .select:hover { box-shadow: inset 0 0 0 1px var(--color-neutral-black); }
+  .input:focus, .select:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-key-900); }
+  .input.error { box-shadow: inset 0 0 0 1px var(--error); }
+  .error-text { font-size: 16px; color: var(--error); }
+  .dob-row { display: flex; gap: 8px; align-items: center; }
+  .dob-row .input { width: 96px; flex: none; }
+  .dob-row .input.mid { width: 72px; }
+  .form-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .choice-group { display: flex; gap: 24px; flex-wrap: wrap; }
+  .choice-group.stack { flex-direction: column; gap: 0; }
+  .choice-item { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; min-height: 48px; }
+  .choice-item input { width: 20px; height: 20px; accent-color: var(--color-key-900); flex-shrink: 0; }
+
+  .upload-row { display: flex; gap: 24px; align-items: flex-start; }
+  .upload-preview { width: 132px; height: 176px; border-radius: 8px; background: var(--color-neutral-solidgray-50); box-shadow: inset 0 0 0 1px var(--border-default); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text-muted); text-align: center; padding: 8px; flex-shrink: 0; }
+  .upload-box { flex: 1; border-radius: 8px; border: 2px dashed var(--border-default); padding: 32px; display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; text-align: center; }
+  .upload-box .title { font-size: 17px; font-weight: 700; color: var(--text-heading); }
+  .upload-box .meta { font-size: 14px; color: var(--text-muted); }
+
+  .consent-box { border-radius: 12px; background: var(--color-neutral-solidgray-50); box-shadow: 0 0 0 1px var(--border-default); padding: 16px 24px; max-height: 160px; overflow: auto; }
+  .consent-box p { margin: 0; font-size: 16px; line-height: 1.75; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .steps li { padding: 12px 16px; border-top: 4px solid var(--border-default); display: flex; flex-direction: column; gap: 2px; }
+  .steps li.active { border-top-color: var(--color-key-900); }
+  .steps li .num { font-size: 14px; font-weight: 700; color: var(--text-muted); }
+  .steps li.active .num { color: var(--color-key-900); }
+  .steps li .lbl { font-size: 17px; color: var(--text-muted); }
+  .steps li.active .lbl { font-weight: 700; color: var(--text-heading); }
+
+  .apply-layout { display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start; }
+  .apply-form { display: flex; flex-direction: column; gap: 48px; }
+  .form-section { display: flex; flex-direction: column; gap: 24px; }
+  .form-section h2 { margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border-default); font-size: 24px; font-weight: 700; color: var(--text-heading); }
+  .apply-side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; }
+  .notice-box { border-radius: 12px; box-shadow: 0 0 0 1px var(--color-primitive-lightblue-800); background: var(--color-primitive-lightblue-50); padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .notice-box .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .notice-box ul { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 4px; font-size: 16px; line-height: 1.7; }
+  .plain-box { border-radius: 12px; box-shadow: 0 0 0 1px var(--border-default); padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .plain-box .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .plain-box p { margin: 0; font-size: 16px; line-height: 1.7; }
+
+  /* Status page */
+  .status-layout { display: grid; grid-template-columns: 360px 1fr; gap: 48px; align-items: start; }
+  .query-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .query-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .result-success { border-radius: 12px; box-shadow: 0 0 0 1px var(--color-primitive-green-800); background: var(--color-primitive-green-50); padding: 20px 24px; display: flex; gap: 12px; align-items: flex-start; }
+  .result-success svg { flex-shrink: 0; width: 24px; height: 24px; color: var(--color-semantic-success-2); }
+  .result-success .h { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .result-success .d { font-size: 16px; line-height: 1.7; }
+  .summary-card, .timeline-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .summary-card .t, .timeline-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .summary-grid { display: grid; grid-template-columns: 120px 1fr; gap: 12px 24px; font-size: 16px; }
+  .summary-grid .k { color: var(--text-muted); }
+  .timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .timeline li { display: grid; grid-template-columns: 24px 1fr; gap: 16px; padding-bottom: 20px; border-left: 2px solid var(--color-key-900); margin-left: 11px; padding-left: 24px; position: relative; }
+  .timeline li.pending { border-left-style: dashed; border-left-color: var(--border-default); }
+  .timeline li:last-child { padding-bottom: 0; }
+  .timeline li .dot { position: absolute; left: -9px; top: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--color-key-900); }
+  .timeline li.pending .dot { background: #fff; box-shadow: inset 0 0 0 2px var(--border-default); }
+  .timeline li .tt { font-weight: 700; font-size: 16px; }
+  .timeline li.pending .tt { color: var(--text-muted); }
+  .timeline li .ts { font-size: 14px; color: var(--text-muted); }
+
+  /* Downloads */
+  .chip-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .chip { padding: 8px 16px; border-radius: 9999px; box-shadow: inset 0 0 0 1px var(--border-default); font-size: 16px; }
+  .chip.active { background: var(--color-key-900); color: #fff; box-shadow: none; font-weight: 700; }
+  .dl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .dl-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 12px; }
+  .dl-card.muted { background: var(--color-neutral-solidgray-50); }
+  .dl-card h3 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-heading); display: flex; align-items: center; gap: 8px; }
+  .dl-card a { font-size: 17px; }
+  .dl-card .muted-link { font-size: 17px; color: var(--text-muted); }
+  .dl-card .meta { font-size: 14px; color: var(--text-muted); }
+  .badge-lock { font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; background: var(--color-neutral-solidgray-200); color: var(--color-neutral-solidgray-800); }
+
+  /* Admin */
+  .admin-grid { display: grid; grid-template-columns: 240px 1fr; min-height: 900px; }
+  .admin-side { background: var(--color-neutral-solidgray-900); color: #fff; padding: 24px 0; display: flex; flex-direction: column; gap: 24px; }
+  .admin-side .brand { padding: 0 20px; display: flex; flex-direction: column; gap: 2px; }
+  .admin-side .brand .org { font-size: 13px; color: var(--color-neutral-solidgray-300); }
+  .admin-side .brand .title { font-size: 18px; font-weight: 700; }
+  .admin-nav { display: flex; flex-direction: column; }
+  .admin-nav button, .admin-nav .static {
+    appearance: none; border: 0; cursor: pointer; font-family: inherit; font-size: 16px;
+    text-align: left; padding: 12px 20px; letter-spacing: 0.02em; background: transparent; color: #fff;
+  }
+  .admin-nav .static { color: var(--color-neutral-solidgray-300); cursor: default; }
+  .admin-nav button.active { background: var(--color-key-900); font-weight: 700; }
+  .admin-side .who { margin-top: auto; padding: 16px 20px; border-top: 1px solid var(--color-neutral-solidgray-800); font-size: 14px; color: var(--color-neutral-solidgray-300); }
+  .admin-content { background: var(--color-neutral-solidgray-50); padding: 32px 32px 64px; display: flex; flex-direction: column; gap: 24px; }
+  .admin-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+  .admin-head h1 { margin: 0; font-size: 32px; font-weight: 700; color: var(--text-heading); }
+  .admin-head .sub { font-size: 14px; color: var(--text-muted); }
+  .admin-head .actions { display: flex; gap: 12px; align-items: center; }
+
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .stat-card { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 20px; display: flex; flex-direction: column; gap: 6px; }
+  .stat-card .label { font-size: 14px; color: var(--text-muted); }
+  .stat-card .value { font-size: 36px; font-weight: 700; color: var(--text-heading); white-space: nowrap; }
+  .stat-card .value.sm { font-size: 32px; }
+  .stat-card .value .unit { font-size: 16px; font-weight: 400; color: var(--text-muted); }
+  .stat-card .value.warn { color: var(--color-semantic-warning-orange-2); }
+
+  .chart-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; }
+  .chart-card, .panel-card { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .chart-card .t, .panel-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .bars { display: flex; align-items: flex-end; gap: 24px; height: 220px; padding-top: 8px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .bar-pair { display: flex; gap: 4px; align-items: flex-end; height: 180px; }
+  .bar { width: 22px; }
+  .legend { display: flex; gap: 24px; font-size: 14px; }
+  .legend .sw { width: 12px; height: 12px; display: inline-block; }
+  .legend span { display: flex; gap: 8px; align-items: center; }
+  .progress-row { display: flex; justify-content: space-between; font-size: 16px; }
+  .progress-track { height: 12px; border-radius: 9999px; background: var(--color-neutral-solidgray-100); overflow: hidden; }
+  .progress-fill { height: 100%; }
+  .panel-split { border-top: 1px solid var(--border-divider); padding-top: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .hbar-list { display: flex; flex-direction: column; gap: 8px; font-size: 15px; }
+  .hbar-row { display: grid; grid-template-columns: 72px 1fr 48px; gap: 12px; align-items: center; }
+  .hbar-row.wide { grid-template-columns: 96px 1fr 56px; }
+  .hbar-row .num { text-align: right; }
+  .hbar-track { height: 10px; background: var(--color-neutral-solidgray-100); }
+  .hbar-fill { height: 100%; background: var(--color-key-900); }
+  .hbar-fill.alt { background: var(--color-primitive-lightblue-700); }
+  .two-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .data-table { border-collapse: collapse; width: 100%; font-size: 15px; }
+  .data-table th { background: var(--color-neutral-solidgray-100); padding: 12px 16px; white-space: nowrap; text-align: left; border-bottom: 1px solid var(--border-default); }
+  .data-table td { padding: 14px 16px; white-space: nowrap; border-bottom: 1px solid var(--border-divider); }
+  .data-table tbody tr:last-child td { border-bottom: 0; }
+  .pill { font-size: 13px; font-weight: 700; padding: 2px 8px; border-radius: 9999px; }
+  .pill-green { background: var(--color-primitive-green-100); color: var(--color-semantic-success-2); }
+  .pill-orange { background: var(--color-primitive-orange-100); color: var(--color-semantic-warning-orange-2); }
+  .pill-gray { background: var(--color-neutral-solidgray-100); color: var(--color-neutral-solidgray-800); }
+  .pill-red { background: var(--color-primitive-red-100); color: var(--color-semantic-error-1); }
+  .pill-blue { background: var(--color-primitive-blue-100); color: var(--color-primitive-blue-900); }
+  .mono { font-family: var(--font-mono); }
+
+  .filter-bar { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 20px 24px; display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+  .filter-field { display: flex; flex-direction: column; gap: 6px; }
+  .filter-field.grow { flex: 1; min-width: 200px; }
+  .filter-field .flabel { font-size: 14px; color: var(--text-muted); }
+  .select-sm, .input-sm {
+    height: 40px; border: 0; border-radius: 4px; box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600);
+    padding: 0 12px; font-size: 16px; font-family: inherit; background: #fff; min-width: 140px;
+  }
+  .input-sm { width: 100%; }
+
+  .table-card { background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); overflow: hidden; }
+  .table-card .bar-row { padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-default); flex-wrap: wrap; gap: 12px; }
+  .table-card .bar-row .actions { display: flex; gap: 12px; font-size: 16px; }
+  .table-scroll-x { overflow-x: auto; }
+  .pager { padding: 16px 24px; display: flex; justify-content: center; gap: 8px; font-size: 16px; }
+  .pager .cur { padding: 6px 12px; border-radius: 4px; background: var(--color-key-900); color: #fff; }
+  .pager a { padding: 6px 12px; }
+
+  /* Mobile mockups */
+  .mobile-wrap { max-width: 1120px; margin: 0 auto; padding: 40px 24px 80px; display: flex; flex-direction: column; gap: 24px; }
+  .mobile-head { display: flex; flex-direction: column; gap: 4px; }
+  .mobile-head h1 { margin: 0; font-size: 28px; font-weight: 700; color: var(--text-heading); }
+  .mobile-head p { margin: 0; font-size: 16px; }
+  .phones { display: flex; gap: 24px; flex-wrap: wrap; }
+  .phone { width: 390px; background: #fff; border-radius: 24px; box-shadow: 0 0 0 1px var(--border-default); overflow: hidden; }
+  .phone-topbar { padding: 12px 16px; border-bottom: 1px solid var(--border-default); display: flex; justify-content: space-between; align-items: center; }
+  .phone-topbar .t { display: flex; flex-direction: column; }
+  .phone-topbar .t .o { font-size: 11px; color: var(--text-muted); }
+  .phone-topbar .t .n { font-size: 16px; font-weight: 700; color: var(--text-heading); }
+  .phone-topbar .icon { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+  .phone-banner { padding: 12px 16px; background: var(--color-primitive-lightblue-50); border-bottom: 1px solid var(--color-primitive-lightblue-800); font-size: 14px; line-height: 1.6; }
+  .phone-title { padding: 12px 16px; border-bottom: 1px solid var(--border-default); font-size: 16px; font-weight: 700; color: var(--text-heading); }
+  .phone-body { padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+  .phone-card { border-radius: 12px; box-shadow: 0 0 0 1px var(--border-default); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+  .phone-card.ok { box-shadow: 0 0 0 1px var(--color-primitive-green-800); background: var(--color-primitive-green-50); }
+  .phone-card.warn { box-shadow: 0 0 0 1px var(--error); }
+  .phone-row { display: flex; justify-content: space-between; font-size: 14px; }
+  .phone-cta { height: 48px; border-radius: 8px; background: var(--color-key-900); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; }
+  .phone-cta.outline { background: transparent; box-shadow: inset 0 0 0 1px var(--color-key-900); color: var(--color-key-900); }
+  .phone-notice-list { display: flex; flex-direction: column; gap: 8px; }
+  .phone-notice-list .h { font-size: 18px; font-weight: 700; color: var(--text-heading); padding-bottom: 8px; border-bottom: 2px solid var(--text-heading); }
+  .phone-notice { padding: 12px 0; border-bottom: 1px solid var(--border-divider); display: flex; flex-direction: column; gap: 4px; }
+  .phone-notice .m { font-size: 13px; color: var(--text-muted); }
+  .phone-notice a { font-size: 15px; line-height: 1.6; }
+  .phone-progress { display: flex; gap: 4px; }
+  .phone-progress .seg { flex: 1; height: 4px; background: var(--border-default); }
+  .phone-progress .seg.on { background: var(--color-key-900); }
+  .phone-field { display: flex; flex-direction: column; gap: 6px; }
+  .phone-field .l { font-size: 14px; }
+  .phone-field .box { height: 48px; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600); padding: 0 16px; display: flex; align-items: center; justify-content: space-between; font-size: 15px; }
+  .phone-field .box.ph { color: var(--text-placeholder); }
+  .phone-field .box.err { box-shadow: inset 0 0 0 1px var(--error); }
+  .phone-field .e { font-size: 13px; color: var(--error); }
+  .phone-timeline { display: flex; flex-direction: column; gap: 12px; }
+  .phone-timeline .item { display: flex; gap: 12px; align-items: flex-start; }
+  .phone-timeline .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--color-key-900); margin-top: 5px; flex-shrink: 0; }
+  .phone-timeline .dot.pending { background: #fff; box-shadow: inset 0 0 0 2px var(--border-default); }
+  .phone-timeline .tt { font-size: 15px; font-weight: 700; }
+  .phone-timeline .tt.muted { font-weight: 400; color: var(--text-muted); }
+  .phone-timeline .ts { font-size: 13px; color: var(--text-muted); }
+
+  @media (max-width: 960px) {
+    .notice-layout, .apply-layout, .status-layout, .admin-grid { grid-template-columns: 1fr; }
+    .two-col, .chart-grid, .two-panel, .dl-grid, .form-cols-2, .stat-grid { grid-template-columns: 1fr; }
+    .admin-side { flex-direction: row; flex-wrap: wrap; padding: 12px; }
+    .admin-side .who { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="switchbar">
+  <span class="label">畫面切換（僅供展示，非正式站台導覽）</span>
+  <button type="button" data-goto="home">首頁</button>
+  <button type="button" data-goto="apply">線上報名</button>
+  <button type="button" data-goto="status">進度查詢</button>
+  <button type="button" data-goto="downloads">下載專區</button>
+  <button type="button" data-goto="dashboard">後台・儀表板</button>
+  <button type="button" data-goto="students">後台・學員管理</button>
+  <button type="button" data-goto="certs">後台・證照管理</button>
+  <button type="button" data-goto="mobile">手機版</button>
+</div>
+
+<div id="view-public">
+  <div class="util-bar">
+    <div class="wrap">
+      <a href="#">字級調整</a>
+      <a href="#">網站導覽</a>
+      <a href="admin.html">承辦人員登入</a>
+    </div>
+  </div>
+  <header class="site">
+    <div class="wrap header-row">
+      <div class="brand">
+        <span class="org">基隆市政府消防局</span>
+        <span class="site-name">基隆市防災士培訓報名系統</span>
+      </div>
+      <div class="header-actions">
+        <button type="button" class="btn btn-outlined" data-goto="status">查詢報名進度</button>
+        <button type="button" class="btn btn-solid" data-goto="apply">我要報名</button>
+      </div>
+    </div>
+    <nav class="main">
+      <div class="wrap">
+        <button type="button" class="active" data-goto="home">活動公告</button>
+        <button type="button" data-goto="home">梯次資訊</button>
+        <button type="button" data-goto="apply">線上報名</button>
+        <button type="button" data-goto="status">進度查詢</button>
+        <button type="button" data-goto="home">常見問題</button>
+        <button type="button" data-goto="downloads">法規與下載</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 首頁 -->
+  <div id="screen-home">
+    <div class="banner">
+      <div class="wrap">
+        <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M11 7h2v6h-2zm0 8h2v2h-2zm1-13a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"></path></svg>
+        <p><strong>第 5 梯次報名將於 2026 年 9 月 15 日上午 10:00 開放</strong>，名額 60 人，額滿後開放候補登記。</p>
+      </div>
+    </div>
+
+    <main class="page wrap">
+      <section style="display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start;" class="notice-layout">
+        <div>
+          <div class="section-head">
+            <h2>最新消息</h2>
+            <a href="#">更多消息</a>
+          </div>
+          <ul class="notice-items">
+            <li><span class="date">2026-09-01</span><span class="tag tag-notice">報名公告</span><a href="#" class="title-link">115 年度基隆市防災士培訓第 5 梯次招生簡章公告</a></li>
+            <li><span class="date">2026-08-26</span><span class="tag tag-change">課程異動</span><a href="#" class="title-link">第 4 梯次 CPR／AED 術科測驗場地改至中正區行政中心 3 樓</a></li>
+            <li><span class="date">2026-08-18</span><span class="tag tag-cert">證照發放</span><a href="#" class="title-link">第 3 梯次防災士證照已核發，請於 9 月 30 日前完成領取</a></li>
+            <li><span class="date">2026-08-05</span><span class="tag tag-general">一般公告</span><a href="#" class="title-link">颱風期間課程延期原則與補課方式說明</a></li>
+            <li><span class="date">2026-07-22</span><span class="tag tag-general">一般公告</span><a href="#" class="title-link">防災士回訓制度說明會報名開始</a></li>
+          </ul>
+        </div>
+        <aside class="side">
+          <div class="side-card">
+            <span class="card-title">本期報名狀態</span>
+            <div class="status-rows">
+              <div class="row"><span class="k">梯次</span><span class="v">第 5 梯次</span></div>
+              <div class="row"><span class="k">報名期間</span><span class="v">09/15－09/30</span></div>
+              <div class="row"><span class="k">名額</span><span class="v">60 人</span></div>
+              <div class="row"><span class="k">狀態</span><span class="v warn">尚未開放</span></div>
+            </div>
+            <button type="button" class="btn btn-solid btn-lg btn-full" data-goto="apply">前往線上報名</button>
+            <button type="button" class="side-link" data-goto="status">查詢報名進度／候補序號</button>
+          </div>
+          <div class="side-card muted">
+            <span class="card-title">洽詢窗口</span>
+            <p>基隆市政府消防局 災害管理科<br>(02) 2431-0119 分機 302<br>服務時間：週一至週五 08:30－17:30</p>
+          </div>
+        </aside>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>各梯次培訓資訊</h2>
+          <a href="#">查看全部梯次</a>
+        </div>
+        <div class="table-scroll">
+          <table class="sessions">
+            <thead><tr><th>梯次</th><th>上課日期</th><th>地點</th><th>名額</th><th>報名狀態</th><th>課程表</th></tr></thead>
+            <tbody>
+              <tr>
+                <td style="font-weight:700;">第 5 梯次</td><td>2026-10-17 ～ 10-18</td><td>基隆市消防局訓練中心</td><td>60 人</td>
+                <td><span class="status-pill status-open">9/15 開放</span></td><td><a href="#">下載 PDF</a></td>
+              </tr>
+              <tr class="alt">
+                <td style="font-weight:700;">第 4 梯次</td><td>2026-09-05 ～ 09-06</td><td>中正區行政中心 3 樓</td><td>60 人</td>
+                <td><span class="status-pill status-full">已額滿・候補中</span></td><td><a href="#">下載 PDF</a></td>
+              </tr>
+              <tr>
+                <td style="font-weight:700;">第 3 梯次</td><td>2026-06-20 ～ 06-21</td><td>七堵區公所禮堂</td><td>60 人</td>
+                <td><span class="status-pill status-done">已結訓</span></td><td><a href="#">成果報告</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="wrap two-col" style="padding: 0;">
+        <div>
+          <h2>常見問題</h2>
+          <ul class="faq-list">
+            <li>報名資格有年齡限制嗎？<span class="plus">＋</span></li>
+            <li>已持有 EMT1 證照可以折抵課程嗎？<span class="plus">＋</span></li>
+            <li>證件照的規格與檔案大小限制？<span class="plus">＋</span></li>
+            <li>候補名單如何遞補？會如何通知？<span class="plus">＋</span></li>
+          </ul>
+        </div>
+        <div>
+          <h2>法規與文件下載</h2>
+          <ul class="dl-list">
+            <li><a href="#">防災士培訓及認證管理要點</a><span class="meta">PDF・240KB</span></li>
+            <li><a href="#">第 5 梯次課程表</a><span class="meta">PDF・180KB</span></li>
+            <li><a href="#">個人資料蒐集告知暨同意書</a><span class="meta">PDF・120KB</span></li>
+            <li><a href="#">參訓證明申請書</a><span class="meta">ODT・64KB</span></li>
+            <li><a href="#">證照遺失補發申請書</a><span class="meta">ODT・58KB</span></li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 線上報名 -->
+  <div id="screen-apply" hidden>
+    <main class="subpage wrap">
+      <nav class="crumb"><button type="button" data-goto="home">首頁</button>　/　線上報名</nav>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <h1 class="page-title">第 5 梯次 防災士培訓報名</h1>
+        <p class="page-intro">報名期間 2026-09-15 10:00 至 09-30 17:00。標示<span style="color:var(--error);"> 必填 </span>的欄位皆須填寫，送出後由承辦人員人工審核，審核結果以 Email 與簡訊通知。</p>
+      </div>
+
+      <ol class="steps">
+        <li class="active"><span class="num">步驟 1</span><span class="lbl">填寫報名資料</span></li>
+        <li><span class="num">步驟 2</span><span class="lbl">確認內容</span></li>
+        <li><span class="num">步驟 3</span><span class="lbl">送出報名</span></li>
+        <li><span class="num">步驟 4</span><span class="lbl">等待審核通知</span></li>
+      </ol>
+
+      <div class="apply-layout">
+        <form class="apply-form" onsubmit="return false;">
+          <section class="form-section">
+            <h2>一、身分資料</h2>
+            <div class="form-cols-2">
+              <div class="field"><span>姓名 <span class="req">必填</span></span><input class="input" type="text" placeholder="與身分證件相同"></div>
+              <div class="field"><span>身分證字號 <span class="req">必填</span></span><input class="input" type="text" placeholder="A123456789"></div>
+            </div>
+            <div class="form-cols-2">
+              <div class="field">
+                <span>出生年月日 <span class="req">必填</span></span>
+                <div class="dob-row">
+                  <input class="input" type="text" placeholder="1990"><span>年</span>
+                  <input class="input mid" type="text" placeholder="05"><span>月</span>
+                  <input class="input mid" type="text" placeholder="12"><span>日</span>
+                </div>
+              </div>
+              <div class="field">
+                <span>性別 <span class="req">必填</span></span>
+                <div class="choice-group">
+                  <label class="choice-item"><input type="radio" name="sex">男</label>
+                  <label class="choice-item"><input type="radio" name="sex">女</label>
+                  <label class="choice-item"><input type="radio" name="sex">不揭露</label>
+                </div>
+              </div>
+            </div>
+            <div class="form-cols-2">
+              <div class="field"><span>行動電話 <span class="req">必填</span></span><span class="hint-text">用於錄取與開課提醒簡訊</span><input class="input" type="text" placeholder="09xx-xxx-xxx"></div>
+              <div class="field"><span>電子郵件 <span class="req">必填</span></span><span class="hint-text">用於發送報名結果通知</span><input class="input" type="text" placeholder="name@example.com"></div>
+            </div>
+            <div style="display:grid; grid-template-columns:200px 1fr; gap:24px; align-items:end;">
+              <div class="field">
+                <span>戶籍行政區 <span class="req">必填</span></span>
+                <select class="select">
+                  <option>請選擇</option><option>仁愛區</option><option>信義區</option><option>中正區</option>
+                  <option>中山區</option><option>安樂區</option><option>暖暖區</option><option>七堵區</option>
+                </select>
+              </div>
+              <div class="field"><span>通訊地址 <span class="req">必填</span></span><span class="hint-text">證照郵寄使用</span><input class="input" type="text" placeholder="基隆市信義區信一路 190 號"></div>
+            </div>
+            <div class="form-cols-2">
+              <div class="field">
+                <span>職業別 <span class="opt">選填</span></span>
+                <select class="select">
+                  <option>請選擇</option><option>軍公教</option><option>醫療照護</option><option>服務業</option>
+                  <option>製造業</option><option>學生</option><option>退休／待業</option><option>其他</option>
+                </select>
+              </div>
+              <div class="field"><span>所屬單位／里別 <span class="opt">選填</span></span><span class="hint-text">如社區發展協會、里辦公處</span><input class="input" type="text" placeholder="例：安樂區樂利里"></div>
+            </div>
+            <div class="field">
+              <span>災時是否可支援災害應變 <span class="req">必填</span></span>
+              <div class="choice-group">
+                <label class="choice-item"><input type="radio" name="support">可支援</label>
+                <label class="choice-item"><input type="radio" name="support">視情況</label>
+                <label class="choice-item"><input type="radio" name="support">無法支援</label>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h2>二、證件照上傳</h2>
+            <p style="margin:0;">請上傳最近六個月內、脫帽正面之二吋證件照，供製作防災士證照使用。檔案格式 JPG 或 PNG，大小 5MB 以內。</p>
+            <div class="upload-row">
+              <div class="upload-preview">尚未上傳<br>2 吋照片</div>
+              <div class="upload-box">
+                <span class="title">將檔案拖曳至此，或選擇檔案</span>
+                <span class="meta">JPG／PNG，5MB 以內</span>
+                <button type="button" class="btn btn-outlined btn-sm">選擇檔案</button>
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h2>三、飲食與課程需求</h2>
+            <div class="field">
+              <span>午餐需求 <span class="req">必填</span></span>
+              <div class="choice-group">
+                <label class="choice-item"><input type="radio" name="meal">葷食</label>
+                <label class="choice-item"><input type="radio" name="meal">素食</label>
+                <label class="choice-item"><input type="radio" name="meal">不需訂餐</label>
+              </div>
+            </div>
+            <div class="field"><span>其他需求 <span class="opt">選填</span></span><span class="hint-text">如無障礙座位、手語翻譯、食物過敏</span><input class="input" type="text" placeholder="請簡述"></div>
+          </section>
+
+          <section class="form-section">
+            <h2>四、既有防災相關證照</h2>
+            <div class="field">
+              <span>是否曾取得下列證照 <span class="opt">可複選</span></span>
+              <div class="choice-group stack">
+                <label class="choice-item"><input type="checkbox">防災士</label>
+                <label class="choice-item"><input type="checkbox">EMT1 初級救護技術員</label>
+                <label class="choice-item"><input type="checkbox">CPR／AED 訓練合格證明</label>
+                <label class="choice-item"><input type="checkbox">以上皆無</label>
+              </div>
+            </div>
+            <div class="field"><span>證照字號 <span class="opt">選填</span></span><span class="hint-text">若已勾選證照，請填寫字號以利查驗</span><input class="input" type="text" placeholder="例：防災士字第 1120000 號"></div>
+          </section>
+
+          <section class="form-section" style="gap:16px;">
+            <h2>五、個人資料同意</h2>
+            <div class="consent-box">
+              <p>基隆市政府消防局為辦理防災士培訓、證照核發、災時人力盤點及成果統計，依個人資料保護法第 8 條規定告知：本表所蒐集之個人資料，僅於前述特定目的及法令規定範圍內使用，保存期限依檔案管理規定辦理。您得依法請求查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除；未提供必要欄位者，將無法完成報名。</p>
+            </div>
+            <label class="choice-item"><input type="checkbox">我已閱讀並同意上述個人資料蒐集告知事項</label>
+          </section>
+
+          <div style="display:flex; gap:16px; padding-top:8px;">
+            <button type="submit" class="btn btn-solid btn-lg">確認報名內容</button>
+            <button type="button" class="btn btn-text btn-lg">暫存草稿</button>
+          </div>
+        </form>
+
+        <aside class="apply-side">
+          <div class="notice-box">
+            <span class="t">報名前請確認</span>
+            <ul>
+              <li>年滿 18 歲、設籍或就業於基隆市。</li>
+              <li>須全程參與兩日課程，缺課逾 2 小時不予結訓。</li>
+              <li>報名成功不代表錄取，請等待審核通知。</li>
+              <li>名額額滿後轉為候補，依序遞補。</li>
+            </ul>
+          </div>
+          <div class="plain-box">
+            <span class="t">承辦窗口</span>
+            <p>災害管理科<br>(02) 2431-0119 分機 302</p>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- 進度查詢 -->
+  <div id="screen-status" hidden>
+    <main class="subpage wrap">
+      <nav class="crumb"><button type="button" data-goto="home">首頁</button>　/　報名進度查詢</nav>
+      <h1 class="page-title">報名進度查詢</h1>
+      <div class="status-layout">
+        <div class="query-card">
+          <span class="t">查詢條件</span>
+          <div class="field"><span>身分證字號 <span class="req">必填</span></span><input class="input" type="text" placeholder="A123456789"></div>
+          <div class="field"><span>出生年月日 <span class="req">必填</span></span><input class="input" type="text" placeholder="19900512"></div>
+          <button type="button" class="btn btn-solid btn-full">查詢</button>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:24px;">
+          <div class="result-success">
+            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="m10 15.4-3.7-3.7 1.4-1.4 2.3 2.3 5.9-5.9 1.4 1.4zM12 2a10 10 0 100 20 10 10 0 000-20z"></path></svg>
+            <div>
+              <div class="h">您已錄取第 5 梯次</div>
+              <div class="d">錄取通知已於 2026-09-18 寄送至 e****@example.com，並發送簡訊至 09xx-xxx-123。</div>
+            </div>
+          </div>
+          <div class="summary-card">
+            <span class="t">報名資料摘要</span>
+            <div class="summary-grid">
+              <span class="k">報名序號</span><span style="font-weight:700;">B115-05-0042</span>
+              <span class="k">姓名</span><span>王〇〇</span>
+              <span class="k">梯次</span><span>第 5 梯次（2026-10-17 ～ 10-18）</span>
+              <span class="k">上課地點</span><span>基隆市消防局訓練中心</span>
+              <span class="k">午餐</span><span>素食</span>
+              <span class="k">補件事項</span><span style="color:var(--error);">證件照畫質不足，請於 09-25 前重新上傳</span>
+            </div>
+          </div>
+          <div class="timeline-card">
+            <span class="t">處理進度</span>
+            <ol class="timeline">
+              <li><span class="dot"></span><div><div class="tt">報名送出</div><div class="ts">2026-09-15 10:24</div></div></li>
+              <li><span class="dot"></span><div><div class="tt">資格審核完成</div><div class="ts">2026-09-18 14:02</div></div></li>
+              <li class="pending"><span class="dot"></span><div><div class="tt muted">開課前三日提醒</div><div class="ts">預計 2026-10-14</div></div></li>
+              <li class="pending"><span class="dot"></span><div><div class="tt muted">證照核發與領取通知</div><div class="ts">結訓後約 30 個工作天</div></div></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 下載專區 -->
+  <div id="screen-downloads" hidden>
+    <main class="subpage wrap">
+      <nav class="crumb"><button type="button" data-goto="home">首頁</button>　/　文件下載專區</nav>
+      <div style="display:flex; flex-direction:column; gap:8px;">
+        <h1 class="page-title">文件下載專區</h1>
+        <p class="page-intro">標示「需登入」之文件僅開放承辦人員與講師下載。</p>
+      </div>
+      <div class="chip-row">
+        <span class="chip active">全部</span>
+        <span class="chip">課程表</span>
+        <span class="chip">講義</span>
+        <span class="chip">表單</span>
+        <span class="chip">法規</span>
+        <span class="chip">名冊（需登入）</span>
+      </div>
+      <div class="dl-grid">
+        <div class="dl-card">
+          <h3>課程表</h3>
+          <a href="#">第 5 梯次課程表（10/17－10/18）</a>
+          <a href="#">第 4 梯次課程表</a>
+          <span class="meta">PDF 檔，含各節次時間、講師與教室。</span>
+        </div>
+        <div class="dl-card">
+          <h3>講義下載</h3>
+          <a href="#">災害潛勢與防災地圖判讀</a>
+          <a href="#">避難收容與物資管理</a>
+          <a href="#">CPR／AED 操作手冊</a>
+        </div>
+        <div class="dl-card">
+          <h3>各式表單</h3>
+          <a href="#">參訓證明申請書（供請假使用）</a>
+          <a href="#">證照遺失補發申請書</a>
+          <a href="#">個人資料蒐集告知暨同意書</a>
+        </div>
+        <div class="dl-card muted">
+          <h3>學員名冊 <span class="badge-lock">需登入</span></h3>
+          <span class="muted-link">第 5 梯次學員名冊（Excel）</span>
+          <span class="muted-link">中央函報格式名冊（PDF）</span>
+          <span class="meta">含個人資料，僅承辦人員可下載並留存操作紀錄。</span>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="site">
+    <div class="wrap">
+      <span class="org-name">基隆市政府消防局</span>
+      <p class="addr">20144 基隆市信義區信一路 190 號　電話：(02) 2431-0119　傳真：(02) 2422-1119</p>
+      <div class="links">
+        <a href="#">隱私權政策</a>
+        <a href="#">個人資料保護</a>
+        <a href="#">網站無障礙聲明</a>
+        <a href="#">資訊安全政策</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div id="view-admin" hidden>
+  <div class="admin-grid">
+    <aside class="admin-side">
+      <div class="brand">
+        <span class="org">基隆市防災士培訓</span>
+        <span class="title">管理者後台</span>
+      </div>
+      <nav class="admin-nav">
+        <button type="button" data-goto="dashboard">統計分析儀表板</button>
+        <button type="button" data-goto="students">學員管理</button>
+        <button type="button" data-goto="certs">證照管理</button>
+        <span class="static">梯次與名額設定</span>
+        <span class="static">報名審核</span>
+        <span class="static">講師與課程管理</span>
+        <span class="static">通知與提醒</span>
+        <span class="static">成果報告產出</span>
+        <span class="static">權限與操作紀錄</span>
+      </nav>
+      <div class="who">登入者：災害管理科 陳〇〇<br>權限：消防局承辦</div>
+    </aside>
+
+    <div class="admin-content">
+      <!-- 儀表板 -->
+      <div id="screen-dashboard">
+        <div class="admin-head">
+          <div>
+            <h1>統計分析儀表板</h1>
+            <div class="sub">資料更新時間：2026-09-01 09:00</div>
+          </div>
+          <div class="actions">
+            <select class="select-sm"><option>全部梯次（第 1－5 梯）</option><option>第 5 梯次</option><option>第 4 梯次</option></select>
+            <button type="button" class="btn btn-outlined btn-sm">匯出 Excel</button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><span class="label">本梯報名人數</span><span class="value">42 <span class="unit">／ 60 人</span></span></div>
+          <div class="stat-card"><span class="label">平均報到率</span><span class="value">91.4%</span></div>
+          <div class="stat-card"><span class="label">結訓合格率</span><span class="value">96.2%</span></div>
+          <div class="stat-card"><span class="label">防災士累計人數</span><span class="value">1,284</span></div>
+        </div>
+
+        <div class="chart-grid">
+          <div class="chart-card">
+            <span class="t">各梯次報名與結訓人數</span>
+            <div class="bars">
+              <div class="bar-col"><div class="bar-pair"><div class="bar" style="height:150px; background:var(--color-key-900);"></div><div class="bar" style="height:138px; background:var(--color-primitive-lightblue-600);"></div></div><span style="font-size:14px;">第 1 梯</span></div>
+              <div class="bar-col"><div class="bar-pair"><div class="bar" style="height:165px; background:var(--color-key-900);"></div><div class="bar" style="height:152px; background:var(--color-primitive-lightblue-600);"></div></div><span style="font-size:14px;">第 2 梯</span></div>
+              <div class="bar-col"><div class="bar-pair"><div class="bar" style="height:172px; background:var(--color-key-900);"></div><div class="bar" style="height:160px; background:var(--color-primitive-lightblue-600);"></div></div><span style="font-size:14px;">第 3 梯</span></div>
+              <div class="bar-col"><div class="bar-pair"><div class="bar" style="height:180px; background:var(--color-key-900);"></div><div class="bar" style="height:166px; background:var(--color-primitive-lightblue-600);"></div></div><span style="font-size:14px;">第 4 梯</span></div>
+              <div class="bar-col"><div class="bar-pair"><div class="bar" style="height:126px; background:var(--color-key-900);"></div><div class="bar" style="height:0px; background:var(--color-primitive-lightblue-600);"></div></div><span style="font-size:14px;">第 5 梯</span></div>
+            </div>
+            <div class="legend">
+              <span><span class="sw" style="background:var(--color-key-900);"></span>報名人數</span>
+              <span><span class="sw" style="background:var(--color-primitive-lightblue-600);"></span>結訓人數</span>
+            </div>
+          </div>
+          <div class="panel-card">
+            <span class="t">性別比例</span>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div class="progress-row"><span>男性</span><span style="font-weight:700;">58%（745 人）</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:58%; background:var(--color-key-900);"></div></div>
+              <div class="progress-row"><span>女性</span><span style="font-weight:700;">42%（539 人）</span></div>
+              <div class="progress-track"><div class="progress-fill" style="width:42%; background:var(--color-primitive-lightblue-600);"></div></div>
+            </div>
+            <div class="panel-split">
+              <span class="t">年齡分布</span>
+              <div class="hbar-list">
+                <div class="hbar-row"><span>20－29</span><div class="hbar-track"><div class="hbar-fill" style="width:18%;"></div></div><span class="num">18%</span></div>
+                <div class="hbar-row"><span>30－39</span><div class="hbar-track"><div class="hbar-fill" style="width:24%;"></div></div><span class="num">24%</span></div>
+                <div class="hbar-row"><span>40－49</span><div class="hbar-track"><div class="hbar-fill" style="width:29%;"></div></div><span class="num">29%</span></div>
+                <div class="hbar-row"><span>50－59</span><div class="hbar-track"><div class="hbar-fill" style="width:21%;"></div></div><span class="num">21%</span></div>
+                <div class="hbar-row"><span>60 以上</span><div class="hbar-track"><div class="hbar-fill" style="width:8%;"></div></div><span class="num">8%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="two-panel">
+          <div class="panel-card">
+            <span class="t">職業別統計</span>
+            <div class="hbar-list">
+              <div class="hbar-row wide"><span>軍公教</span><div class="hbar-track"><div class="hbar-fill alt" style="width:32%;"></div></div><span class="num">411</span></div>
+              <div class="hbar-row wide"><span>服務業</span><div class="hbar-track"><div class="hbar-fill alt" style="width:24%;"></div></div><span class="num">308</span></div>
+              <div class="hbar-row wide"><span>醫療照護</span><div class="hbar-track"><div class="hbar-fill alt" style="width:15%;"></div></div><span class="num">193</span></div>
+              <div class="hbar-row wide"><span>製造業</span><div class="hbar-track"><div class="hbar-fill alt" style="width:12%;"></div></div><span class="num">154</span></div>
+              <div class="hbar-row wide"><span>退休／其他</span><div class="hbar-track"><div class="hbar-fill alt" style="width:17%;"></div></div><span class="num">218</span></div>
+            </div>
+          </div>
+          <div class="panel-card">
+            <span class="t">歷年培訓成果</span>
+            <table class="data-table">
+              <thead><tr><th>年度</th><th style="text-align:right;">梯次</th><th style="text-align:right;">結訓</th><th style="text-align:right;">合格率</th></tr></thead>
+              <tbody>
+                <tr><td>111 年</td><td style="text-align:right;">4</td><td style="text-align:right;">208</td><td style="text-align:right;">94.5%</td></tr>
+                <tr><td>112 年</td><td style="text-align:right;">6</td><td style="text-align:right;">316</td><td style="text-align:right;">95.1%</td></tr>
+                <tr><td>113 年</td><td style="text-align:right;">6</td><td style="text-align:right;">334</td><td style="text-align:right;">96.0%</td></tr>
+                <tr><td>114 年</td><td style="text-align:right;">7</td><td style="text-align:right;">368</td><td style="text-align:right;">96.7%</td></tr>
+                <tr><td>115 年（迄今）</td><td style="text-align:right;">5</td><td style="text-align:right;">58</td><td style="text-align:right;">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 學員管理 -->
+      <div id="screen-students" hidden>
+        <div class="admin-head">
+          <h1>學員管理</h1>
+          <div class="actions">
+            <button type="button" class="btn btn-outlined btn-sm">匯出報名名冊</button>
+            <button type="button" class="btn btn-solid btn-sm">批次發送通知</button>
+          </div>
+        </div>
+
+        <div class="filter-bar">
+          <div class="filter-field"><span class="flabel">梯次</span><select class="select-sm"><option>第 5 梯次</option><option>第 4 梯次</option></select></div>
+          <div class="filter-field"><span class="flabel">報名狀態</span><select class="select-sm"><option>全部</option><option>待審核</option><option>已錄取</option><option>候補</option></select></div>
+          <div class="filter-field"><span class="flabel">報到狀況</span><select class="select-sm"><option>全部</option><option>已報到</option><option>未報到</option></select></div>
+          <div class="filter-field grow"><span class="flabel">關鍵字</span><input class="input-sm" type="text" placeholder="姓名、身分證字號、報名序號"></div>
+          <button type="button" class="btn btn-solid btn-sm">篩選</button>
+        </div>
+
+        <div class="table-card">
+          <div class="bar-row">
+            <span>共 <strong>42</strong> 筆，已選取 <strong>3</strong> 筆</span>
+            <div class="actions"><a href="#">核准錄取</a><a href="#">轉為候補</a><a href="#">發送補件通知</a></div>
+          </div>
+          <div class="table-scroll-x">
+            <table class="data-table" style="min-width:940px;">
+              <thead><tr><th style="width:40px;"></th><th>報名序號</th><th>姓名</th><th>行政區</th><th>審核狀態</th><th>報到</th><th style="text-align:right;">學科</th><th>術科</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" checked style="width:18px;height:18px;"></td>
+                  <td>B115-05-0042</td><td style="font-weight:700;">王〇〇</td><td>安樂區</td>
+                  <td><span class="pill pill-green">已錄取</span></td><td>—</td><td style="text-align:right;">—</td><td>—</td><td><a href="#">檢視</a></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" style="width:18px;height:18px;"></td>
+                  <td>B115-05-0041</td><td style="font-weight:700;">李〇〇</td><td>中正區</td>
+                  <td><span class="pill pill-orange">待補件</span></td><td>—</td><td style="text-align:right;">—</td><td>—</td><td><a href="#">檢視</a></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" style="width:18px;height:18px;"></td>
+                  <td>B115-04-0119</td><td style="font-weight:700;">張〇〇</td><td>七堵區</td>
+                  <td><span class="pill pill-gray">候補 3</span></td><td>—</td><td style="text-align:right;">—</td><td>—</td><td><a href="#">檢視</a></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" style="width:18px;height:18px;"></td>
+                  <td>B115-04-0087</td><td style="font-weight:700;">陳〇〇</td><td>信義區</td>
+                  <td><span class="pill pill-green">已結訓</span></td><td>已報到</td><td style="text-align:right;">92</td><td>合格</td><td><a href="#">檢視</a></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" style="width:18px;height:18px;"></td>
+                  <td>B115-04-0065</td><td style="font-weight:700;">林〇〇</td><td>暖暖區</td>
+                  <td><span class="pill pill-red">未通過</span></td><td>已報到</td><td style="text-align:right;">58</td><td>不合格</td><td><a href="#">檢視</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pager">
+            <span class="cur">1</span><a href="#">2</a><a href="#">3</a><a href="#">下一頁</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 證照管理 -->
+      <div id="screen-certs" hidden>
+        <div class="admin-head">
+          <h1>證照管理</h1>
+          <div class="actions">
+            <button type="button" class="btn btn-outlined btn-sm">未領取提醒簡訊</button>
+            <button type="button" class="btn btn-solid btn-sm">產出證照編號</button>
+          </div>
+        </div>
+
+        <div class="stat-grid">
+          <div class="stat-card"><span class="label">待核發</span><span class="value sm">36</span></div>
+          <div class="stat-card"><span class="label">已核發</span><span class="value sm">1,248</span></div>
+          <div class="stat-card"><span class="label">尚未領取</span><span class="value sm warn">73</span></div>
+          <div class="stat-card"><span class="label">補發申請中</span><span class="value sm">4</span></div>
+        </div>
+
+        <div class="table-card">
+          <div class="bar-row">
+            <span class="t" style="font-size:18px; font-weight:700; color:var(--text-heading);">證照核發與領取狀況</span>
+            <a href="#">匯出清冊</a>
+          </div>
+          <div class="table-scroll-x">
+            <table class="data-table">
+              <thead><tr><th>證照編號</th><th>姓名</th><th>梯次</th><th>核發狀態</th><th>領取方式</th><th>領取紀錄</th><th>操作</th></tr></thead>
+              <tbody>
+                <tr>
+                  <td class="mono">KL-115-0421</td><td style="font-weight:700;">陳〇〇</td><td>第 4 梯次</td>
+                  <td><span class="pill pill-green">已核發</span></td><td>郵寄</td><td>2026-08-20 掛號 1234567</td><td><a href="#">紀錄</a></td>
+                </tr>
+                <tr>
+                  <td class="mono">KL-115-0422</td><td style="font-weight:700;">黃〇〇</td><td>第 4 梯次</td>
+                  <td><span class="pill pill-orange">未領取</span></td><td>親領</td><td>已發送提醒 2 次</td><td><a href="#">發送提醒</a></td>
+                </tr>
+                <tr>
+                  <td class="mono">KL-114-0318</td><td style="font-weight:700;">吳〇〇</td><td>114 年第 6 梯次</td>
+                  <td><span class="pill pill-blue">補發處理中</span></td><td>郵寄</td><td>2026-08-28 受理遺失申請</td><td><a href="#">更新進度</a></td>
+                </tr>
+                <tr>
+                  <td class="mono">—</td><td style="font-weight:700;">王〇〇</td><td>第 5 梯次</td>
+                  <td><span class="pill pill-gray">待核發</span></td><td>未選擇</td><td>—</td><td><a href="#">建立編號</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="view-mobile" hidden>
+  <div class="mobile-wrap">
+    <div class="mobile-head">
+      <h1>手機版畫面</h1>
+      <p>寬度 390px 之呈現：公告首頁、報名表單與進度查詢。所有可點擊元件維持 44px 以上觸控範圍。</p>
+    </div>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-topbar">
+          <div class="t"><span class="o">基隆市政府消防局</span><span class="n">防災士培訓報名</span></div>
+          <span class="icon"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg></span>
+        </div>
+        <div class="phone-banner"><strong>第 5 梯次 9/15 10:00 開放報名</strong>，名額 60 人。</div>
+        <div class="phone-body">
+          <div class="phone-card">
+            <span style="font-size:15px; font-weight:700; color:var(--text-heading);">本期報名狀態</span>
+            <div class="phone-row"><span style="color:var(--text-muted);">報名期間</span><span style="font-weight:700;">09/15－09/30</span></div>
+            <div class="phone-row"><span style="color:var(--text-muted);">上課日期</span><span style="font-weight:700;">10/17－10/18</span></div>
+            <div class="phone-cta">前往線上報名</div>
+            <div class="phone-cta outline">查詢報名進度</div>
+          </div>
+          <div class="phone-notice-list">
+            <span class="h">最新消息</span>
+            <div class="phone-notice"><span class="m">2026-09-01・報名公告</span><a href="#">115 年度第 5 梯次招生簡章公告</a></div>
+            <div class="phone-notice"><span class="m">2026-08-26・課程異動</span><a href="#">第 4 梯次術科測驗場地變更</a></div>
+            <div class="phone-notice" style="border-bottom:0;"><span class="m">2026-08-18・證照發放</span><a href="#">第 3 梯次證照已核發</a></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="phone-title">線上報名（步驟 1／4）</div>
+        <div class="phone-body">
+          <div class="phone-progress"><span class="seg on"></span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+          <span style="font-size:18px; font-weight:700; color:var(--text-heading);">一、身分資料</span>
+          <div class="phone-field"><span class="l">姓名 <span style="color:var(--error);">必填</span></span><div class="box ph">與身分證件相同</div></div>
+          <div class="phone-field"><span class="l">身分證字號 <span style="color:var(--error);">必填</span></span><div class="box err">A12345678</div><span class="e">請輸入 1 個英文字母與 9 位數字</span></div>
+          <div class="phone-field"><span class="l">行動電話 <span style="color:var(--error);">必填</span></span><div class="box ph">09xx-xxx-xxx</div></div>
+          <div class="phone-field"><span class="l">戶籍行政區 <span style="color:var(--error);">必填</span></span><div class="box">安樂區<span>▾</span></div></div>
+          <div class="phone-cta" style="height:56px;">下一步：證件照上傳</div>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="phone-title">報名進度查詢</div>
+        <div class="phone-body">
+          <div class="phone-card ok">
+            <span style="font-size:16px; font-weight:700; color:var(--text-heading);">您已錄取第 5 梯次</span>
+            <span style="font-size:14px;">報名序號 B115-05-0042</span>
+          </div>
+          <div class="phone-card warn">
+            <span style="font-size:15px; font-weight:700; color:var(--error);">尚有補件事項</span>
+            <span style="font-size:14px;">證件照畫質不足，請於 09-25 前重新上傳。</span>
+            <div class="phone-cta outline" style="height:44px; margin-top:8px; font-size:15px;">重新上傳證件照</div>
+          </div>
+          <div class="phone-timeline">
+            <span style="font-size:16px; font-weight:700; color:var(--text-heading);">處理進度</span>
+            <div class="item"><span class="dot"></span><div><div class="tt">報名送出</div><div class="ts">09-15 10:24</div></div></div>
+            <div class="item"><span class="dot"></span><div><div class="tt">資格審核完成</div><div class="ts">09-18 14:02</div></div></div>
+            <div class="item"><span class="dot pending"></span><div><div class="tt muted">開課前三日提醒</div><div class="ts">預計 10-14</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var PUBLIC = ['home', 'apply', 'status', 'downloads'];
+  var ADMIN = ['dashboard', 'students', 'certs'];
+
+  function show(screen) {
+    document.getElementById('view-public').hidden = PUBLIC.indexOf(screen) === -1;
+    document.getElementById('view-admin').hidden = ADMIN.indexOf(screen) === -1;
+    document.getElementById('view-mobile').hidden = screen !== 'mobile';
+
+    PUBLIC.concat(ADMIN).forEach(function (s) {
+      var el = document.getElementById('screen-' + s);
+      if (el) el.hidden = s !== screen;
+    });
+
+    document.querySelectorAll('.switchbar button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-goto') === screen);
+    });
+    document.querySelectorAll('.admin-nav button').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-goto') === screen);
+    });
+
+    window.scrollTo(0, 0);
+  }
+
+  document.querySelectorAll('[data-goto]').forEach(function (el) {
+    el.addEventListener('click', function (e) {
+      e.preventDefault();
+      show(el.getAttribute('data-goto'));
+    });
+  });
+
+  show('home');
+})();
+</script>
+
+</body>
+</html>
