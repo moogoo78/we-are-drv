@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>線上報名 | 基隆市防災士培訓報名系統</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --color-neutral-white: rgb(255,255,255);
+    --color-neutral-black: rgb(0,0,0);
+    --color-neutral-solidgray-50: rgb(242,242,242);
+    --color-neutral-solidgray-100: rgb(230,230,230);
+    --color-neutral-solidgray-200: rgb(204,204,204);
+    --color-neutral-solidgray-420: rgb(148,148,148);
+    --color-neutral-solidgray-536: rgb(118,118,118);
+    --color-neutral-solidgray-600: rgb(102,102,102);
+    --color-neutral-solidgray-800: rgb(51,51,51);
+    --color-neutral-solidgray-900: rgb(26,26,26);
+    --color-primitive-blue-50: rgb(232,241,254);
+    --color-primitive-blue-100: rgb(217,230,255);
+    --color-primitive-blue-200: rgb(197,215,251);
+    --color-primitive-blue-900: rgb(0,23,193);
+    --color-primitive-blue-1000: rgb(0,17,143);
+    --color-primitive-blue-1200: rgb(0,0,96);
+    --color-primitive-red-100: rgb(255,218,218);
+    --color-primitive-red-800: rgb(236,0,0);
+    --color-primitive-green-50: rgb(230,245,236);
+    --color-primitive-green-800: rgb(25,122,75);
+    --color-primitive-yellow-300: rgb(255,212,61);
+    --color-key-50: var(--color-primitive-blue-50);
+    --color-key-900: var(--color-primitive-blue-900);
+    --color-key-1000: var(--color-primitive-blue-1000);
+    --color-key-1200: var(--color-primitive-blue-1200);
+    --text-body: var(--color-neutral-solidgray-800);
+    --text-heading: var(--color-neutral-solidgray-900);
+    --text-muted: var(--color-neutral-solidgray-600);
+    --text-placeholder: var(--color-neutral-solidgray-536);
+    --text-link: var(--color-key-900);
+    --text-link-hover: var(--color-key-1000);
+    --border-default: var(--color-neutral-solidgray-420);
+    --border-subtle: var(--color-neutral-solidgray-200);
+    --border-divider: var(--color-neutral-solidgray-100);
+    --error: var(--color-primitive-red-800);
+    --focus-ring: var(--color-primitive-yellow-300);
+    --focus-ring-outline: var(--color-neutral-black);
+    --font-sans: "Noto Sans TC", "Noto Sans JP", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.7; letter-spacing: 0.02em; color: var(--text-body); background: var(--color-neutral-white); }
+  a { color: var(--text-link); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--text-link-hover); }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+    outline: 4px solid var(--focus-ring-outline); outline-offset: 2px; background-color: var(--focus-ring); color: var(--color-neutral-black); border-radius: 2px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; font-size: 16px; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 0; border-radius: 8px; padding: 12px 16px; min-height: 48px; min-width: 96px; font-family: inherit; }
+  .btn-solid { background: var(--color-key-900); color: #fff; }
+  .btn-solid:hover { background: var(--color-key-1000); }
+  .btn-solid:disabled { background: var(--color-neutral-solidgray-420); cursor: not-allowed; }
+  .btn-outlined { background: #fff; color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .btn-lg { min-height: 56px; padding: 16px; }
+  .btn-text { background: transparent; color: var(--color-key-900); }
+  .util-bar { background: var(--color-neutral-solidgray-50); border-bottom: 1px solid var(--border-subtle); }
+  .util-bar .wrap { padding-block: 8px; display: flex; justify-content: flex-end; gap: 24px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+  .util-bar a { text-decoration: none; }
+  header.site { border-bottom: 1px solid var(--border-default); }
+  .header-row { padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 2px; }
+  .brand .org { font-size: 14px; color: var(--text-muted); }
+  .brand .site-name { font-size: 24px; font-weight: 700; color: var(--text-heading); }
+  main.subpage { max-width: 1120px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+  .crumb { font-size: 16px; color: var(--text-muted); }
+  .page-title { margin: 0; font-size: 36px; font-weight: 700; color: var(--text-heading); }
+  .page-intro { margin: 0; font-size: 17px; }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .steps li { padding: 12px 16px; border-top: 4px solid var(--border-default); display: flex; flex-direction: column; gap: 2px; }
+  .steps li.active { border-top-color: var(--color-key-900); }
+  .steps li .num { font-size: 14px; font-weight: 700; color: var(--text-muted); }
+  .steps li.active .num { color: var(--color-key-900); }
+  .steps li .lbl { font-size: 17px; color: var(--text-muted); }
+  .steps li.active .lbl { font-weight: 700; color: var(--text-heading); }
+  .apply-layout { display: grid; grid-template-columns: 1fr 320px; gap: 48px; align-items: start; }
+  .apply-form { display: flex; flex-direction: column; gap: 48px; }
+  .form-section { display: flex; flex-direction: column; gap: 24px; }
+  .form-section h2 { margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border-default); font-size: 24px; font-weight: 700; color: var(--text-heading); }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field .req { color: var(--error); font-size: 16px; }
+  .field .opt { color: var(--text-muted); font-size: 16px; }
+  .hint-text { font-size: 16px; color: var(--text-muted); }
+  .input, .select { height: 48px; width: 100%; padding: 0 16px; border: 0; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600); font-size: 16px; font-family: inherit; background: #fff; }
+  .input:focus, .select:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-key-900); }
+  .dob-row { display: flex; gap: 8px; align-items: center; }
+  .dob-row .input { width: 96px; flex: none; }
+  .dob-row .input.mid { width: 72px; }
+  .form-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .choice-group { display: flex; gap: 24px; flex-wrap: wrap; }
+  .choice-group.stack { flex-direction: column; gap: 0; }
+  .choice-item { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; min-height: 48px; }
+  .choice-item input { width: 20px; height: 20px; accent-color: var(--color-key-900); flex-shrink: 0; }
+  .upload-row { display: flex; gap: 24px; align-items: flex-start; }
+  .upload-preview { width: 132px; height: 176px; border-radius: 8px; background: var(--color-neutral-solidgray-50); box-shadow: inset 0 0 0 1px var(--border-default); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--text-muted); text-align: center; padding: 8px; flex-shrink: 0; overflow: hidden; }
+  .upload-preview img { width: 100%; height: 100%; object-fit: cover; }
+  .upload-box { flex: 1; border-radius: 8px; border: 2px dashed var(--border-default); padding: 32px; display: flex; flex-direction: column; gap: 12px; align-items: center; justify-content: center; text-align: center; }
+  .upload-box .title { font-size: 17px; font-weight: 700; color: var(--text-heading); }
+  .upload-box .meta { font-size: 14px; color: var(--text-muted); }
+  .consent-box { border-radius: 12px; background: var(--color-neutral-solidgray-50); box-shadow: 0 0 0 1px var(--border-default); padding: 16px 24px; max-height: 160px; overflow: auto; }
+  .consent-box p { margin: 0; font-size: 16px; line-height: 1.75; }
+  .apply-side { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 16px; }
+  .notice-box { border-radius: 12px; box-shadow: 0 0 0 1px rgb(0,102,190); background: rgb(240,249,255); padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .notice-box .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .notice-box ul { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 4px; font-size: 16px; }
+  .plain-box { border-radius: 12px; box-shadow: 0 0 0 1px var(--border-default); padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .plain-box .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .plain-box p { margin: 0; font-size: 16px; }
+  .form-msg { padding: 16px 20px; border-radius: 8px; font-size: 16px; }
+  .form-msg.error { background: var(--color-primitive-red-100); color: var(--error); }
+  .form-msg.success { background: var(--color-primitive-green-50); color: var(--color-primitive-green-800); }
+  .result-box { border-radius: 16px; box-shadow: 0 0 0 1px var(--color-primitive-green-800); background: var(--color-primitive-green-50); padding: 32px; display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center; }
+  .result-box .regno { font-size: 28px; font-weight: 700; color: var(--text-heading); font-family: monospace; }
+  @media (max-width: 960px) {
+    .apply-layout { grid-template-columns: 1fr; }
+    .form-cols-2, .steps { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="util-bar">
+  <div class="wrap">
+    <a href="index.html">回首頁</a>
+    <a href="admin.html">承辦人員登入</a>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap header-row">
+    <div class="brand">
+      <span class="org">基隆市政府消防局</span>
+      <span class="site-name">基隆市防災士培訓報名系統</span>
+    </div>
+    <div class="header-actions">
+      <a href="status.html" class="btn btn-outlined">查詢報名進度</a>
+    </div>
+  </div>
+</header>
+
+<main class="subpage wrap">
+  <nav class="crumb"><a href="index.html">首頁</a>　/　線上報名</nav>
+
+  <div id="form-view">
+    <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 24px;">
+      <h1 class="page-title" id="page-title">防災士培訓報名</h1>
+      <p class="page-intro" id="batch-intro">載入梯次資訊中…</p>
+    </div>
+
+    <ol class="steps">
+      <li class="active"><span class="num">步驟 1</span><span class="lbl">填寫報名資料</span></li>
+      <li><span class="num">步驟 2</span><span class="lbl">上傳證件照</span></li>
+      <li><span class="num">步驟 3</span><span class="lbl">送出報名</span></li>
+      <li><span class="num">步驟 4</span><span class="lbl">等待審核通知</span></li>
+    </ol>
+
+    <div class="apply-layout">
+      <form class="apply-form" id="apply-form">
+        <div id="form-msg"></div>
+
+        <section class="form-section">
+          <h2>一、身分資料</h2>
+          <div class="form-cols-2">
+            <div class="field"><span>姓名 <span class="req">必填</span></span><input class="input" name="name" required placeholder="與身分證件相同"></div>
+            <div class="field"><span>身分證字號 <span class="req">必填</span></span><input class="input" name="id_number" required placeholder="A123456789"></div>
+          </div>
+          <div class="form-cols-2">
+            <div class="field">
+              <span>出生年月日 <span class="req">必填</span></span>
+              <input type="hidden" name="birth_date">
+              <div class="dob-row">
+                <input class="input" name="birth_year" required placeholder="1990" inputmode="numeric"><span>年</span>
+                <input class="input mid" name="birth_month" required placeholder="05" inputmode="numeric"><span>月</span>
+                <input class="input mid" name="birth_day" required placeholder="12" inputmode="numeric"><span>日</span>
+              </div>
+            </div>
+            <div class="field">
+              <span>性別 <span class="req">必填</span></span>
+              <div class="choice-group">
+                <label class="choice-item"><input type="radio" name="sex" value="男" required>男</label>
+                <label class="choice-item"><input type="radio" name="sex" value="女">女</label>
+                <label class="choice-item"><input type="radio" name="sex" value="不揭露">不揭露</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-cols-2">
+            <div class="field"><span>行動電話 <span class="req">必填</span></span><span class="hint-text">用於錄取與開課提醒簡訊</span><input class="input" name="phone" required placeholder="09xx-xxx-xxx"></div>
+            <div class="field"><span>電子郵件 <span class="req">必填</span></span><span class="hint-text">用於發送報名結果通知</span><input class="input" type="email" name="email" required placeholder="name@example.com"></div>
+          </div>
+          <div style="display:grid; grid-template-columns:200px 1fr; gap:24px; align-items:end;">
+            <div class="field">
+              <span>戶籍行政區 <span class="req">必填</span></span>
+              <select class="select" name="district" required>
+                <option value="">請選擇</option>
+                <option>仁愛區</option><option>信義區</option><option>中正區</option>
+                <option>中山區</option><option>安樂區</option><option>暖暖區</option><option>七堵區</option>
+              </select>
+            </div>
+            <div class="field"><span>通訊地址 <span class="req">必填</span></span><span class="hint-text">證照郵寄使用</span><input class="input" name="address" required placeholder="基隆市信義區信一路 190 號"></div>
+          </div>
+          <div class="form-cols-2">
+            <div class="field">
+              <span>職業別 <span class="opt">選填</span></span>
+              <select class="select" name="occupation">
+                <option value="">請選擇</option>
+                <option>軍公教</option><option>醫療照護</option><option>服務業</option>
+                <option>製造業</option><option>學生</option><option>退休／待業</option><option>其他</option>
+              </select>
+            </div>
+            <div class="field"><span>所屬單位／里別 <span class="opt">選填</span></span><span class="hint-text">如社區發展協會、里辦公處</span><input class="input" name="unit_village" placeholder="例：安樂區樂利里"></div>
+          </div>
+          <div class="field">
+            <span>災時是否可支援災害應變 <span class="req">必填</span></span>
+            <div class="choice-group">
+              <label class="choice-item"><input type="radio" name="support_pref" value="可支援" required>可支援</label>
+              <label class="choice-item"><input type="radio" name="support_pref" value="視情況">視情況</label>
+              <label class="choice-item"><input type="radio" name="support_pref" value="無法支援">無法支援</label>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>二、證件照上傳</h2>
+          <p style="margin:0;">請上傳最近六個月內、脫帽正面之二吋證件照，供製作防災士證照使用。檔案格式 JPG 或 PNG，大小 5MB 以內。</p>
+          <div class="upload-row">
+            <div class="upload-preview" id="upload-preview">尚未上傳<br>2 吋照片</div>
+            <div class="upload-box">
+              <span class="title">選擇證件照檔案</span>
+              <span class="meta">JPG／PNG，5MB 以內</span>
+              <input type="file" name="photo" id="photo-input" accept="image/jpeg,image/png" required>
+            </div>
+          </div>
+        </section>
+
+        <section class="form-section">
+          <h2>三、飲食與課程需求</h2>
+          <div class="field">
+            <span>午餐需求 <span class="req">必填</span></span>
+            <div class="choice-group">
+              <label class="choice-item"><input type="radio" name="meal_pref" value="葷食" required>葷食</label>
+              <label class="choice-item"><input type="radio" name="meal_pref" value="素食">素食</label>
+              <label class="choice-item"><input type="radio" name="meal_pref" value="不需訂餐">不需訂餐</label>
+            </div>
+          </div>
+          <div class="field"><span>其他需求 <span class="opt">選填</span></span><span class="hint-text">如無障礙座位、手語翻譯、食物過敏</span><input class="input" name="other_needs" placeholder="請簡述"></div>
+        </section>
+
+        <section class="form-section">
+          <h2>四、既有防災相關證照</h2>
+          <div class="field">
+            <span>是否曾取得下列證照 <span class="opt">可複選</span></span>
+            <div class="choice-group stack">
+              <label class="choice-item"><input type="checkbox" name="existing_certs" value="防災士">防災士</label>
+              <label class="choice-item"><input type="checkbox" name="existing_certs" value="EMT1 初級救護技術員">EMT1 初級救護技術員</label>
+              <label class="choice-item"><input type="checkbox" name="existing_certs" value="CPR／AED 訓練合格證明">CPR／AED 訓練合格證明</label>
+            </div>
+          </div>
+          <div class="field"><span>證照字號 <span class="opt">選填</span></span><span class="hint-text">若已勾選證照，請填寫字號以利查驗</span><input class="input" name="cert_number" placeholder="例：防災士字第 1120000 號"></div>
+        </section>
+
+        <section class="form-section" style="gap:16px;">
+          <h2>五、個人資料同意</h2>
+          <div class="consent-box">
+            <p>基隆市政府消防局為辦理防災士培訓、證照核發、災時人力盤點及成果統計，依個人資料保護法第 8 條規定告知：本表所蒐集之個人資料，僅於前述特定目的及法令規定範圍內使用，保存期限依檔案管理規定辦理。您得依法請求查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除；未提供必要欄位者，將無法完成報名。</p>
+          </div>
+          <label class="choice-item"><input type="checkbox" name="agree_consent" required>我已閱讀並同意上述個人資料蒐集告知事項</label>
+        </section>
+
+        <div style="display:flex; gap:16px; padding-top:8px;">
+          <button type="submit" class="btn btn-solid btn-lg" id="submit-btn">送出報名</button>
+        </div>
+      </form>
+
+      <aside class="apply-side">
+        <div class="notice-box">
+          <span class="t">報名前請確認</span>
+          <ul>
+            <li>年滿 18 歲、設籍或就業於基隆市。</li>
+            <li>須全程參與兩日課程，缺課逾 2 小時不予結訓。</li>
+            <li>報名成功不代表錄取，請等待審核通知。</li>
+            <li>名額額滿後轉為候補，依序遞補。</li>
+          </ul>
+        </div>
+        <div class="plain-box">
+          <span class="t">承辦窗口</span>
+          <p>災害管理科<br>(02) 2431-0119 分機 302</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div id="success-view" hidden>
+    <div class="result-box">
+      <h1 class="page-title">報名已送出</h1>
+      <p>您的報名序號為</p>
+      <div class="regno" id="result-regno"></div>
+      <p>承辦人員將於數個工作天內完成審核，審核結果將以 Email／簡訊通知。您可隨時使用身分證字號與出生年月日至<a href="status.html">報名進度查詢</a>頁面查詢最新狀態。</p>
+      <a href="index.html" class="btn btn-solid">回首頁</a>
+    </div>
+  </div>
+</main>
+
+<script>
+  const form = document.getElementById('apply-form');
+  const msgBox = document.getElementById('form-msg');
+  const submitBtn = document.getElementById('submit-btn');
+  const photoInput = document.getElementById('photo-input');
+  const preview = document.getElementById('upload-preview');
+
+  let openBatch = null;
+
+  async function loadBatch() {
+    try {
+      const res = await fetch('/api/batches');
+      const data = await res.json();
+      openBatch = (data.batches || []).find((b) => b.status === 'open') || null;
+      const intro = document.getElementById('batch-intro');
+      const title = document.getElementById('page-title');
+      if (openBatch) {
+        title.textContent = `${openBatch.name} 防災士培訓報名`;
+        intro.textContent = `上課日期 ${openBatch.start_date} ～ ${openBatch.end_date}，地點：${openBatch.location}。標示 必填 的欄位皆須填寫，送出後由承辦人員人工審核，審核結果以 Email 與簡訊通知。`;
+      } else {
+        intro.textContent = '目前沒有開放中的報名梯次，請稍後再回來查看，或洽災害管理科 (02) 2431-0119 分機 302。';
+        submitBtn.disabled = true;
+      }
+    } catch {
+      document.getElementById('batch-intro').textContent = '梯次資訊載入失敗，請重新整理頁面。';
+      submitBtn.disabled = true;
+    }
+  }
+  loadBatch();
+
+  photoInput.addEventListener('change', () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    preview.innerHTML = `<img src="${url}" alt="證件照預覽">`;
+  });
+
+  function showMsg(text, type) {
+    msgBox.innerHTML = text ? `<div class="form-msg ${type}">${text}</div>` : '';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    showMsg('', '');
+
+    if (!openBatch) {
+      showMsg('目前沒有開放中的報名梯次。', 'error');
+      return;
+    }
+
+    const y = form.birth_year.value.trim();
+    const m = form.birth_month.value.trim().padStart(2, '0');
+    const d = form.birth_day.value.trim().padStart(2, '0');
+    if (!y || !m || !d) {
+      showMsg('請完整填寫出生年月日。', 'error');
+      return;
+    }
+    form.birth_date.value = `${y}-${m}-${d}`;
+
+    const fd = new FormData(form);
+    fd.set('batch_id', openBatch.id);
+    fd.set('agree_consent', form.agree_consent.checked ? 'true' : 'false');
+    const certs = Array.from(form.querySelectorAll('input[name="existing_certs"]:checked')).map((el) => el.value);
+    fd.delete('existing_certs');
+    fd.set('existing_certs', JSON.stringify(certs));
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送出中…';
+
+    try {
+      const res = await fetch('/api/registrations', { method: 'POST', body: fd });
+      const data = await res.json();
+      if (!res.ok) {
+        showMsg(data.error || '送出失敗，請確認欄位後再試一次。', 'error');
+        submitBtn.disabled = false;
+        submitBtn.textContent = '送出報名';
+        return;
+      }
+      document.getElementById('form-view').hidden = true;
+      document.getElementById('success-view').hidden = false;
+      document.getElementById('result-regno').textContent = data.reg_no;
+      window.scrollTo(0, 0);
+    } catch {
+      showMsg('網路發生錯誤，請稍後再試。', 'error');
+      submitBtn.disabled = false;
+      submitBtn.textContent = '送出報名';
+    }
+  });
+</script>
+
+</body>
+</html>

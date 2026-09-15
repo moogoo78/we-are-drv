@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>報名進度查詢 | 基隆市防災士培訓報名系統</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --color-neutral-white: rgb(255,255,255);
+    --color-neutral-black: rgb(0,0,0);
+    --color-neutral-solidgray-50: rgb(242,242,242);
+    --color-neutral-solidgray-100: rgb(230,230,230);
+    --color-neutral-solidgray-420: rgb(148,148,148);
+    --color-neutral-solidgray-600: rgb(102,102,102);
+    --color-neutral-solidgray-800: rgb(51,51,51);
+    --color-neutral-solidgray-900: rgb(26,26,26);
+    --color-primitive-blue-900: rgb(0,23,193);
+    --color-primitive-blue-1000: rgb(0,17,143);
+    --color-primitive-red-100: rgb(255,218,218);
+    --color-primitive-red-800: rgb(236,0,0);
+    --color-primitive-green-50: rgb(230,245,236);
+    --color-primitive-green-800: rgb(25,122,75);
+    --color-primitive-orange-100: rgb(255,223,202);
+    --color-semantic-warning: rgb(199,71,0);
+    --color-primitive-yellow-300: rgb(255,212,61);
+    --color-key-900: var(--color-primitive-blue-900);
+    --color-key-1000: var(--color-primitive-blue-1000);
+    --text-body: var(--color-neutral-solidgray-800);
+    --text-heading: var(--color-neutral-solidgray-900);
+    --text-muted: var(--color-neutral-solidgray-600);
+    --border-default: var(--color-neutral-solidgray-420);
+    --error: var(--color-primitive-red-800);
+    --font-sans: "Noto Sans TC", "Noto Sans JP", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.7; letter-spacing: 0.02em; color: var(--text-body); background: #fff; }
+  a { color: var(--color-key-900); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--color-key-1000); }
+  a:focus-visible, button:focus-visible, input:focus-visible { outline: 4px solid var(--color-neutral-black); outline-offset: 2px; background: var(--color-primitive-yellow-300); color: #000; border-radius: 2px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; font-size: 16px; text-decoration: none; cursor: pointer; border: 0; border-radius: 8px; padding: 12px 16px; min-height: 48px; font-family: inherit; }
+  .btn-solid { background: var(--color-key-900); color: #fff; }
+  .btn-solid:hover { background: var(--color-key-1000); }
+  .btn-full { width: 100%; }
+  .util-bar { background: var(--color-neutral-solidgray-50); border-bottom: 1px solid #ccc; }
+  .util-bar .wrap { padding-block: 8px; display: flex; justify-content: flex-end; gap: 24px; font-size: 14px; color: var(--text-muted); }
+  .util-bar a { text-decoration: none; }
+  header.site { border-bottom: 1px solid var(--border-default); }
+  .header-row { padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 2px; }
+  .brand .org { font-size: 14px; color: var(--text-muted); }
+  .brand .site-name { font-size: 24px; font-weight: 700; color: var(--text-heading); }
+  main.subpage { max-width: 1120px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+  .crumb { font-size: 16px; color: var(--text-muted); }
+  .page-title { margin: 0; font-size: 36px; font-weight: 700; color: var(--text-heading); }
+  .status-layout { display: grid; grid-template-columns: 360px 1fr; gap: 48px; align-items: start; }
+  .query-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .query-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field .req { color: var(--error); font-size: 16px; }
+  .input { height: 48px; width: 100%; padding: 0 16px; border: 0; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600); font-size: 16px; font-family: inherit; }
+  .input:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-key-900); }
+  .form-msg { padding: 14px 18px; border-radius: 8px; font-size: 16px; }
+  .form-msg.error { background: var(--color-primitive-red-100); color: var(--error); }
+  .result-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 16px; margin-bottom: 16px; }
+  .result-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .summary-grid { display: grid; grid-template-columns: 120px 1fr; gap: 12px 24px; font-size: 16px; }
+  .summary-grid .k { color: var(--text-muted); }
+  .pill { font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; }
+  .pill-green { background: var(--color-primitive-green-50); color: var(--color-primitive-green-800); }
+  .pill-orange { background: var(--color-primitive-orange-100); color: var(--color-semantic-warning); }
+  .pill-red { background: var(--color-primitive-red-100); color: var(--error); }
+  .pill-gray { background: var(--color-neutral-solidgray-100); color: var(--text-body); }
+  .empty-hint { color: var(--text-muted); font-size: 16px; }
+  @media (max-width: 960px) { .status-layout { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="util-bar">
+  <div class="wrap">
+    <a href="index.html">回首頁</a>
+    <a href="admin.html">承辦人員登入</a>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap header-row">
+    <div class="brand">
+      <span class="org">基隆市政府消防局</span>
+      <span class="site-name">基隆市防災士培訓報名系統</span>
+    </div>
+    <div class="header-actions">
+      <a href="register.html" class="btn btn-solid">我要報名</a>
+    </div>
+  </div>
+</header>
+
+<main class="subpage wrap">
+  <nav class="crumb"><a href="index.html">首頁</a>　/　報名進度查詢</nav>
+  <h1 class="page-title">報名進度查詢</h1>
+
+  <div class="status-layout">
+    <div class="query-card">
+      <span class="t">查詢條件</span>
+      <div id="query-msg"></div>
+      <div class="field"><span>身分證字號 <span class="req">必填</span></span><input class="input" id="q-id" placeholder="A123456789"></div>
+      <div class="field"><span>出生年月日 <span class="req">必填</span></span><input class="input" id="q-dob" placeholder="1990-05-12（西元年-月-日）"></div>
+      <button type="button" class="btn btn-solid btn-full" id="q-submit">查詢</button>
+    </div>
+
+    <div id="results">
+      <p class="empty-hint">請於左側輸入身分證字號與出生年月日以查詢報名進度。</p>
+    </div>
+  </div>
+</main>
+
+<script>
+  const statusMeta = {
+    pending: { label: '審核中', cls: 'pill-orange' },
+    approved: { label: '已錄取', cls: 'pill-green' },
+    rejected: { label: '未錄取', cls: 'pill-red' },
+    waitlist: { label: '候補中', cls: 'pill-gray' },
+    needs_more_info: { label: '待補件', cls: 'pill-red' },
+  };
+
+  const idInput = document.getElementById('q-id');
+  const dobInput = document.getElementById('q-dob');
+  const msgBox = document.getElementById('query-msg');
+  const results = document.getElementById('results');
+  const submitBtn = document.getElementById('q-submit');
+
+  function showMsg(text) {
+    msgBox.innerHTML = text ? `<div class="form-msg error">${text}</div>` : '';
+  }
+
+  async function runQuery() {
+    const id_number = idInput.value.trim();
+    const birth_date = dobInput.value.trim();
+    showMsg('');
+    if (!id_number || !birth_date) {
+      showMsg('請輸入身分證字號與出生年月日。');
+      return;
+    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = '查詢中…';
+    try {
+      const res = await fetch(`/api/registrations/lookup?id_number=${encodeURIComponent(id_number)}&birth_date=${encodeURIComponent(birth_date)}`);
+      const data = await res.json();
+      if (!res.ok) {
+        results.innerHTML = '';
+        showMsg(data.error || '查詢失敗');
+        return;
+      }
+      results.innerHTML = data.registrations.map((r) => {
+        const meta = statusMeta[r.status] || { label: r.status, cls: 'pill-gray' };
+        return `
+          <div class="result-card">
+            <span class="t">${r.batch_name}</span>
+            <div class="summary-grid">
+              <span class="k">報名序號</span><span style="font-weight:700;">${r.reg_no}</span>
+              <span class="k">審核狀態</span><span><span class="pill ${meta.cls}">${meta.label}</span></span>
+              <span class="k">上課日期</span><span>${r.start_date} ～ ${r.end_date}</span>
+              <span class="k">上課地點</span><span>${r.location}</span>
+              <span class="k">報名時間</span><span>${new Date(r.created_at).toLocaleString('zh-TW')}</span>
+              ${r.review_note ? `<span class="k">承辦備註</span><span>${r.review_note}</span>` : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    } catch {
+      showMsg('網路發生錯誤，請稍後再試。');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = '查詢';
+    }
+  }
+
+  submitBtn.addEventListener('click', runQuery);
+  dobInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') runQuery(); });
+</script>
+
+</body>
+</html>

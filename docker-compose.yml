@@ -8,3 +8,24 @@ services:
     # Bind to localhost; front it with your own reverse proxy (see compose.traefik.yml).
     ports:
       - "127.0.0.1:8020:80"
+    depends_on:
+      - api
+
+  api:
+    build: ./api
+    image: we-are-drv-api
+    container_name: we-are-drv-api
+    restart: unless-stopped
+    environment:
+      JWT_SECRET: ${JWT_SECRET}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      DATABASE_PATH: /app/data/drv.sqlite3
+      UPLOAD_DIR: /app/uploads
+    volumes:
+      - apidata:/app/data
+      - uploads:/app/uploads
+
+volumes:
+  apidata:
+  uploads:

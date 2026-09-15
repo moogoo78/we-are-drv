@@ -250,15 +250,15 @@
       <span class="site-name">基隆市防災士培訓報名系統</span>
     </div>
     <div class="header-actions">
-      <a href="#" class="btn btn-outlined">查詢報名進度</a>
-      <a href="#" class="btn btn-solid">我要報名</a>
+      <a href="status.html" class="btn btn-outlined">查詢報名進度</a>
+      <a href="register.html" class="btn btn-solid">我要報名</a>
     </div>
   </div>
   <nav class="main">
     <div class="wrap">
       <a href="#notice" class="active">活動公告</a>
       <a href="#sessions">梯次資訊</a>
-      <a href="#">線上報名</a>
+      <a href="register.html">線上報名</a>
       <a href="#faq">常見問題</a>
       <a href="#downloads">法規與下載</a>
       <a href="#footer-contact">聯絡我們</a>
@@ -320,8 +320,8 @@
             <div class="row"><span class="k">名額</span><span class="v">60 人</span></div>
             <div class="row"><span class="k">狀態</span><span class="v warn">尚未開放</span></div>
           </div>
-          <a href="#" class="btn btn-solid btn-lg btn-full">前往線上報名</a>
-          <a href="#" class="side-link">查詢報名進度／候補序號</a>
+          <a href="register.html" class="btn btn-solid btn-lg btn-full">前往線上報名</a>
+          <a href="status.html" class="side-link">查詢報名進度／候補序號</a>
         </div>
         <div class="side-card muted">
           <span class="card-title">洽詢窗口</span>
@@ -348,39 +348,8 @@
             <th scope="col">課程表</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight:700;">第 4 梯次</td>
-            <td>2026-09-20 ～ 09-21</td>
-            <td>基隆市消防局訓練中心</td>
-            <td>60 人</td>
-            <td><span class="status-pill status-open">9/15 開放</span></td>
-            <td><a href="#">下載 PDF</a></td>
-          </tr>
-          <tr class="alt">
-            <td style="font-weight:700;">第 3 梯次</td>
-            <td>2026-08-01 ～ 08-02</td>
-            <td>中正區行政中心 3 樓</td>
-            <td>60 人</td>
-            <td><span class="status-pill status-full">已額滿・候補中</span></td>
-            <td><a href="#">下載 PDF</a></td>
-          </tr>
-          <tr>
-            <td style="font-weight:700;">第 2 梯次</td>
-            <td>2026-07-12 ～ 07-13</td>
-            <td>七堵區公所禮堂</td>
-            <td>60 人</td>
-            <td><span class="status-pill status-done">已結訓</span></td>
-            <td><a href="#">成果報告</a></td>
-          </tr>
-          <tr class="alt">
-            <td style="font-weight:700;">第 1 梯次</td>
-            <td>2026-06-20 ～ 06-21</td>
-            <td>基隆市消防局訓練中心</td>
-            <td>60 人</td>
-            <td><span class="status-pill status-done">已結訓</span></td>
-            <td><a href="#">成果報告</a></td>
-          </tr>
+        <tbody id="sessions-body">
+          <tr><td colspan="6">梯次資訊載入中…</td></tr>
         </tbody>
       </table>
     </div>
@@ -424,6 +393,42 @@
     </div>
   </div>
 </footer>
+
+<script>
+  const statusPill = {
+    open: ['status-open', '開放報名中'],
+    upcoming: ['status-full', '尚未開放'],
+    full: ['status-full', '已額滿・候補中'],
+    closed: ['status-done', '已結訓'],
+  };
+
+  fetch('/api/batches')
+    .then((r) => r.json())
+    .then((data) => {
+      const tbody = document.getElementById('sessions-body');
+      const batches = data.batches || [];
+      if (!batches.length) {
+        tbody.innerHTML = '<tr><td colspan="6">目前尚無梯次資訊</td></tr>';
+        return;
+      }
+      tbody.innerHTML = batches.map((b, i) => {
+        const [cls, label] = statusPill[b.status] || ['status-full', b.status];
+        return `
+          <tr${i % 2 ? ' class="alt"' : ''}>
+            <td style="font-weight:700;">${b.name}</td>
+            <td>${b.start_date} ～ ${b.end_date}</td>
+            <td>${b.location}</td>
+            <td>${b.capacity} 人</td>
+            <td><span class="status-pill ${cls}">${label}</span></td>
+            <td>${b.status === 'open' ? '<a href="register.html">前往報名</a>' : '—'}</td>
+          </tr>
+        `;
+      }).join('');
+    })
+    .catch(() => {
+      document.getElementById('sessions-body').innerHTML = '<tr><td colspan="6">梯次資訊載入失敗</td></tr>';
+    });
+</script>
 
 </body>
 </html>
