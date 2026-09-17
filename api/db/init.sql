@@ -51,6 +51,38 @@ CREATE TABLE IF NOT EXISTS registrations (
   UNIQUE (batch_id, id_number)
 );
 
+CREATE TABLE IF NOT EXISTS instructors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  title TEXT,
+  phone TEXT,
+  email TEXT,
+  note TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS course_sessions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  batch_id INTEGER NOT NULL REFERENCES batches(id),
+  session_date TEXT NOT NULL,
+  start_time TEXT,
+  topic TEXT NOT NULL,
+  instructor_id INTEGER REFERENCES instructors(id),
+  hours REAL NOT NULL DEFAULT 2,
+  material_url TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS certificates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  registration_id INTEGER NOT NULL UNIQUE REFERENCES registrations(id),
+  cert_no TEXT UNIQUE NOT NULL,
+  delivery_method TEXT NOT NULL DEFAULT 'pickup' CHECK (delivery_method IN ('pickup', 'mail')),
+  pickup_status TEXT NOT NULL DEFAULT 'not_collected' CHECK (pickup_status IN ('not_collected', 'shipping', 'collected')),
+  note TEXT,
+  issued_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS operation_logs (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   actor TEXT NOT NULL,
@@ -62,3 +94,5 @@ CREATE TABLE IF NOT EXISTS operation_logs (
 CREATE INDEX IF NOT EXISTS idx_registrations_batch ON registrations(batch_id);
 CREATE INDEX IF NOT EXISTS idx_registrations_id_number ON registrations(id_number);
 CREATE INDEX IF NOT EXISTS idx_registrations_status ON registrations(status);
+CREATE INDEX IF NOT EXISTS idx_course_sessions_batch ON course_sessions(batch_id);
+CREATE INDEX IF NOT EXISTS idx_course_sessions_instructor ON course_sessions(instructor_id);

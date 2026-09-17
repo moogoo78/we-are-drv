@@ -3,7 +3,10 @@ from flask import Flask, jsonify
 from .migrate import init_db
 from .routes.auth import auth_bp
 from .routes.batches import batches_bp
+from .routes.certs import certs_bp
+from .routes.courses import courses_bp
 from .routes.dashboard import dashboard_bp
+from .routes.instructors import instructors_bp
 from .routes.logs import logs_bp
 from .routes.registrations import registrations_bp
 from .routes.users import users_bp
@@ -23,6 +26,9 @@ def create_app():
     app.register_blueprint(dashboard_bp, url_prefix="/api/admin/dashboard")
     app.register_blueprint(logs_bp, url_prefix="/api/admin/logs")
     app.register_blueprint(users_bp, url_prefix="/api/admin/users")
+    app.register_blueprint(instructors_bp, url_prefix="/api/admin/instructors")
+    app.register_blueprint(courses_bp, url_prefix="/api/admin/courses")
+    app.register_blueprint(certs_bp, url_prefix="/api/admin/certs")
 
     @app.route("/api/health")
     def health():

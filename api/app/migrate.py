@@ -12,6 +12,12 @@ SEED_BATCHES = [
     ("第 4 梯次", "2026-09-20", "2026-09-21", "基隆市消防局訓練中心", 60, "open"),
 ]
 
+SEED_INSTRUCTORS = [
+    ("李國強", "CPR/AED 術科講師"),
+    ("吳建民", "防災概論講師"),
+    ("黃志明", "災害應變實作講師"),
+]
+
 
 def init_db():
     conn = get_db()
@@ -46,5 +52,33 @@ def init_db():
             print("[migrate] seeded 4 initial batches", flush=True)
         except sqlite3.IntegrityError:
             conn.rollback()  # another worker process already seeded batches
+
+    instructor_count = conn.execute("SELECT COUNT(*) AS n FROM instructors").fetchone()["n"]
+    if instructor_count == 0:
+        for name, title in SEED_INSTRUCTORS:
+            conn.execute("INSERT INTO instructors (name, title) VALUES (?, ?)", (name, title))
+        conn.commit()
+        print("[migrate] seeded 3 initial instructors", flush=True)
+
+        instructors = {
+            row["name"]: row["id"]
+            for row in conn.execute("SELECT id, name FROM instructors").fetchall()
+        }
+        batch = conn.execute("SELECT id FROM batches WHERE name = ?", ("第 4 梯次",)).fetchone()
+        if batch:
+            seed_sessions = [
+                ("2026-09-20", "09:00", "防災概論", instructors.get("吳建民"), 2),
+                ("2026-09-20", "13:00", "災害應變實作", instructors.get("黃志明"), 4),
+                ("2026-09-21", "09:00", "CPR/AED 術科", instructors.get("李國強"), 3),
+                ("2026-09-21", "15:00", "結業測驗", None, 1),
+            ]
+            for session_date, start_time, topic, instructor_id, hours in seed_sessions:
+                conn.execute(
+                    """INSERT INTO course_sessions (batch_id, session_date, start_time, topic, instructor_id, hours)
+                       VALUES (?, ?, ?, ?, ?, ?)""",
+                    (batch["id"], session_date, start_time, topic, instructor_id, hours),
+                )
+            conn.commit()
+            print("[migrate] seeded course schedule for 第 4 梯次", flush=True)
 
     conn.close()

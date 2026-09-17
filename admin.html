@@ -356,74 +356,76 @@
 
     <!-- 四、證照管理 -->
     <section id="certs" class="panel-section">
-      <h2>📜 證照管理 <span class="note-flag">（示意資料，Beta 後續開發）</span></h2>
-      <p class="section-desc">證照申請／補發進度、核發狀態、編號建置、領取與郵寄紀錄</p>
+      <h2>📜 證照管理</h2>
+      <p class="section-desc">證照核發、編號建置、領取方式與領取狀況追蹤</p>
       <div class="card">
+        <div class="card-header"><h3>核發新證照</h3></div>
+        <form class="inline-form" id="cert-issue-form">
+          <input type="text" name="reg_no" placeholder="報名序號（例：B4-000001）" required>
+          <select name="delivery_method">
+            <option value="pickup">親領</option>
+            <option value="mail">郵寄</option>
+          </select>
+          <button type="submit" class="btn btn-primary">核發</button>
+        </form>
+        <div id="cert-issue-msg" style="font-size:0.82rem; color:var(--danger);"></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
         <div class="card-header">
           <h3>證照核發進度</h3>
-          <div class="card-toolbar"><button class="btn">📩 發送未領取提醒</button></div>
+          <div class="card-toolbar">
+            <input type="text" id="cert-q" placeholder="搜尋姓名 / 證照編號" style="padding:7px 9px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem;">
+            <button class="btn" id="cert-search">🔍 查詢</button>
+          </div>
         </div>
         <table>
-          <thead><tr><th>證照編號</th><th>姓名</th><th>梯次</th><th>核發狀態</th><th>領取方式</th><th>領取狀況</th></tr></thead>
-          <tbody>
-            <tr><td>DRV-2026-0311</td><td>王小明</td><td>第 2 梯次</td><td><span class="badge badge-ok">已核發</span></td><td>親領</td><td><span class="badge badge-ok">已領取</span></td></tr>
-            <tr><td>DRV-2026-0312</td><td>陳美玲</td><td>第 2 梯次</td><td><span class="badge badge-ok">已核發</span></td><td>郵寄</td><td><span class="badge badge-warn">寄送中</span></td></tr>
-            <tr><td>DRV-2026-0298</td><td>張淑芬</td><td>第 1 梯次</td><td><span class="badge badge-info">申請補發中</span></td><td>—</td><td><span class="badge badge-danger">未領取</span></td></tr>
-          </tbody>
+          <thead><tr><th>證照編號</th><th>姓名</th><th>梯次</th><th>領取方式</th><th>領取狀況</th><th>操作</th></tr></thead>
+          <tbody id="certs-body"><tr class="empty-row"><td colspan="6">載入中…</td></tr></tbody>
         </table>
       </div>
     </section>
 
     <!-- 五、講師管理 -->
     <section id="instructors" class="panel-section">
-      <h2>🧑‍🏫 講師管理 <span class="note-flag">（示意資料，Beta 後續開發）</span></h2>
-      <p class="section-desc">講師名冊、授課課程、授課時數統計、教材與講義管理</p>
-      <div class="instructor-grid">
-        <div class="card instructor-card">
-          <div class="instructor-avatar">李</div>
-          <h4>李國強 教官</h4>
-          <div class="role">CPR/AED 術科講師</div>
-          <div class="instructor-stats"><div><b>24</b>授課時數</div><div><b>6</b>授課場次</div></div>
-        </div>
-        <div class="card instructor-card">
-          <div class="instructor-avatar">吳</div>
-          <h4>吳建民 教官</h4>
-          <div class="role">防災概論講師</div>
-          <div class="instructor-stats"><div><b>18</b>授課時數</div><div><b>4</b>授課場次</div></div>
-        </div>
-        <div class="card instructor-card">
-          <div class="instructor-avatar">黃</div>
-          <h4>黃志明 教官</h4>
-          <div class="role">災害應變實作講師</div>
-          <div class="instructor-stats"><div><b>30</b>授課時數</div><div><b>7</b>授課場次</div></div>
-        </div>
+      <h2>🧑‍🏫 講師管理</h2>
+      <p class="section-desc">講師名冊、授課時數與場次統計（依課程管理排課自動彙總）</p>
+      <div class="card">
+        <div class="card-header"><h3>講師名冊</h3><button class="btn btn-primary" id="instructor-add-toggle">＋ 新增講師</button></div>
+        <form class="inline-form" id="instructor-add-form" hidden>
+          <input type="text" name="name" placeholder="姓名" required>
+          <input type="text" name="title" placeholder="職稱／專長（例：CPR/AED 術科講師）">
+          <input type="text" name="phone" placeholder="聯絡電話">
+          <input type="email" name="email" placeholder="Email">
+          <button type="submit" class="btn btn-primary">新增</button>
+        </form>
+      </div>
+      <div class="instructor-grid" id="instructors-grid" style="margin-top:16px;">
+        <p class="empty-row" style="padding:16px;">載入中…</p>
       </div>
     </section>
 
     <!-- 六、課程管理 -->
     <section id="courses" class="panel-section">
-      <h2>📚 課程管理 <span class="note-flag">（示意資料，Beta 後續開發）</span></h2>
-      <p class="section-desc">課程時程、教材下載、課程照片影片、滿意度問卷</p>
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-header"><h3>課程時程 — 第 2 梯次</h3></div>
-          <table>
-            <thead><tr><th>時間</th><th>課程</th><th>講師</th></tr></thead>
-            <tbody>
-              <tr><td>09/20 09:00</td><td>防災概論</td><td>吳建民</td></tr>
-              <tr><td>09/20 13:00</td><td>災害應變實作</td><td>黃志明</td></tr>
-              <tr><td>09/21 09:00</td><td>CPR/AED 術科</td><td>李國強</td></tr>
-              <tr><td>09/21 15:00</td><td>結業測驗</td><td>—</td></tr>
-            </tbody>
-          </table>
+      <h2>📚 課程管理</h2>
+      <p class="section-desc">依梯次排定課程時程、指派講師、附加教材連結</p>
+      <div class="card">
+        <div class="card-header">
+          <h3>課程時程</h3>
+          <div class="card-toolbar"><select id="course-batch"></select></div>
         </div>
-        <div class="card">
-          <div class="card-header"><h3>教材與問卷</h3></div>
-          <div class="rule-row"><div class="rule-title">📄 課程講義（第 2 梯次）</div><button class="btn">下載</button></div>
-          <div class="rule-row"><div class="rule-title">🖼️ 課程照片上傳</div><button class="btn">管理</button></div>
-          <div class="rule-row"><div class="rule-title">🎬 課程影片連結</div><button class="btn">管理</button></div>
-          <div class="rule-row"><div class="rule-title">📝 滿意度問卷結果</div><button class="btn">查看統計</button></div>
-        </div>
+        <form class="inline-form" id="course-add-form">
+          <input type="text" name="session_date" placeholder="日期 2026-09-20" required>
+          <input type="text" name="start_time" placeholder="時間 09:00">
+          <input type="text" name="topic" placeholder="課程名稱" required>
+          <select name="instructor_id"><option value="">未指定講師</option></select>
+          <input type="number" name="hours" placeholder="時數" step="0.5" min="0" value="2" style="width:80px;">
+          <input type="text" name="material_url" placeholder="教材連結（選填）">
+          <button type="submit" class="btn btn-primary">新增課程</button>
+        </form>
+        <table style="margin-top:12px;">
+          <thead><tr><th>時間</th><th>課程</th><th>講師</th><th>時數</th><th>教材</th><th>操作</th></tr></thead>
+          <tbody id="courses-body"><tr class="empty-row"><td colspan="6">請選擇梯次</td></tr></tbody>
+        </table>
       </div>
     </section>
 
@@ -839,6 +841,182 @@
     }
   });
 
+  const pickupMeta = {
+    not_collected: ['未領取', 'badge-danger'],
+    shipping: ['寄送中', 'badge-warn'],
+    collected: ['已領取', 'badge-ok'],
+  };
+  const deliveryLabel = { pickup: '親領', mail: '郵寄' };
+
+  async function loadCerts() {
+    const tbody = document.getElementById('certs-body');
+    const q = document.getElementById('cert-q').value.trim();
+    const params = new URLSearchParams();
+    if (q) params.set('q', q);
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入中…</td></tr>';
+    try {
+      const data = await apiFetch('/api/admin/certs?' + params.toString());
+      const rows = data.certificates || [];
+      tbody.innerHTML = rows.length
+        ? rows.map((c) => {
+            const [label, cls] = pickupMeta[c.pickup_status] || [c.pickup_status, 'badge-info'];
+            const actions = [];
+            if (c.pickup_status !== 'collected') actions.push(`<button class="btn" data-cert-act="collected" data-cert-id="${c.id}">標記已領取</button>`);
+            if (c.delivery_method === 'mail' && c.pickup_status === 'not_collected') actions.push(`<button class="btn" data-cert-act="shipping" data-cert-id="${c.id}">標記寄送中</button>`);
+            return `<tr>
+              <td class="mono">${c.cert_no}</td>
+              <td>${c.name}</td>
+              <td>${c.batch_name}</td>
+              <td>${deliveryLabel[c.delivery_method] || c.delivery_method}</td>
+              <td><span class="badge ${cls}">${label}</span></td>
+              <td>${actions.join(' ')}</td>
+            </tr>`;
+          }).join('')
+        : '<tr class="empty-row"><td colspan="6">尚無證照資料</td></tr>';
+    } catch (err) {
+      if (err.message !== 'unauthorized') tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入失敗</td></tr>';
+    }
+  }
+
+  document.getElementById('cert-search').addEventListener('click', loadCerts);
+  document.getElementById('cert-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadCerts(); });
+
+  document.getElementById('cert-issue-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = document.getElementById('cert-issue-msg');
+    msg.textContent = '';
+    const fd = new FormData(e.target);
+    const payload = Object.fromEntries(fd.entries());
+    try {
+      await apiFetch('/api/admin/certs', { method: 'POST', body: JSON.stringify(payload) });
+      e.target.reset();
+      loadCerts();
+    } catch (err) {
+      if (err.message !== 'unauthorized') msg.textContent = err.message;
+    }
+  });
+
+  document.getElementById('certs-body').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-cert-act]');
+    if (!btn) return;
+    try {
+      await apiFetch(`/api/admin/certs/${btn.dataset.certId}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ pickup_status: btn.dataset.certAct }),
+      });
+      loadCerts();
+    } catch (err) {
+      if (err.message !== 'unauthorized') alert(err.message);
+    }
+  });
+
+  let allInstructors = [];
+  async function loadInstructors() {
+    const grid = document.getElementById('instructors-grid');
+    try {
+      const data = await apiFetch('/api/admin/instructors');
+      allInstructors = data.instructors || [];
+      grid.innerHTML = allInstructors.length
+        ? allInstructors.map((i) => `
+          <div class="card instructor-card">
+            <div class="instructor-avatar">${(i.name || '?').slice(0, 1)}</div>
+            <h4>${i.name}</h4>
+            <div class="role">${i.title || '—'}</div>
+            <div class="instructor-stats"><div><b>${i.total_hours}</b>授課時數</div><div><b>${i.session_count}</b>授課場次</div></div>
+          </div>
+        `).join('')
+        : '<p class="empty-row" style="padding:16px;">尚無講師資料</p>';
+
+      const sel = document.querySelector('#course-add-form select[name="instructor_id"]');
+      sel.innerHTML = '<option value="">未指定講師</option>' + allInstructors.map((i) => `<option value="${i.id}">${i.name}</option>`).join('');
+    } catch (err) {
+      if (err.message !== 'unauthorized') grid.innerHTML = '<p class="empty-row" style="padding:16px;">載入失敗</p>';
+    }
+  }
+
+  document.getElementById('instructor-add-toggle').addEventListener('click', () => {
+    const form = document.getElementById('instructor-add-form');
+    form.hidden = !form.hidden;
+  });
+
+  document.getElementById('instructor-add-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const payload = Object.fromEntries(fd.entries());
+    try {
+      await apiFetch('/api/admin/instructors', { method: 'POST', body: JSON.stringify(payload) });
+      e.target.reset();
+      e.target.hidden = true;
+      loadInstructors();
+    } catch (err) {
+      if (err.message !== 'unauthorized') alert(err.message);
+    }
+  });
+
+  async function loadCourseBatchOptions() {
+    const sel = document.getElementById('course-batch');
+    const current = sel.value;
+    sel.innerHTML = allBatches.map((b) => `<option value="${b.id}">${b.name}</option>`).join('');
+    sel.value = allBatches.some((b) => String(b.id) === current) ? current : (allBatches[0] ? String(allBatches[0].id) : '');
+  }
+
+  async function loadCourses() {
+    const batchId = document.getElementById('course-batch').value;
+    const tbody = document.getElementById('courses-body');
+    if (!batchId) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">請先建立梯次</td></tr>'; return; }
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入中…</td></tr>';
+    try {
+      const data = await apiFetch('/api/admin/courses?batch_id=' + batchId);
+      const rows = data.sessions || [];
+      tbody.innerHTML = rows.length
+        ? rows.map((s) => `
+          <tr>
+            <td>${s.session_date}${s.start_time ? ' ' + s.start_time : ''}</td>
+            <td>${s.topic}</td>
+            <td>${s.instructor_name || '—'}</td>
+            <td>${s.hours}</td>
+            <td>${s.material_url ? `<a href="${s.material_url}" target="_blank" rel="noopener">連結</a>` : '—'}</td>
+            <td><button class="btn" data-course-del="${s.id}">刪除</button></td>
+          </tr>
+        `).join('')
+        : '<tr class="empty-row"><td colspan="6">尚無排課</td></tr>';
+    } catch (err) {
+      if (err.message !== 'unauthorized') tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入失敗</td></tr>';
+    }
+  }
+
+  document.getElementById('course-batch').addEventListener('change', loadCourses);
+
+  document.getElementById('course-add-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const batchId = document.getElementById('course-batch').value;
+    if (!batchId) { alert('請先建立梯次'); return; }
+    const fd = new FormData(e.target);
+    const payload = Object.fromEntries(fd.entries());
+    payload.batch_id = batchId;
+    try {
+      await apiFetch('/api/admin/courses', { method: 'POST', body: JSON.stringify(payload) });
+      e.target.reset();
+      loadCourses();
+      loadInstructors();
+    } catch (err) {
+      if (err.message !== 'unauthorized') alert(err.message);
+    }
+  });
+
+  document.getElementById('courses-body').addEventListener('click', async (e) => {
+    const btn = e.target.closest('[data-course-del]');
+    if (!btn) return;
+    if (!confirm('確定要刪除此課程排程？')) return;
+    try {
+      await apiFetch(`/api/admin/courses/${btn.dataset.courseDel}`, { method: 'DELETE' });
+      loadCourses();
+      loadInstructors();
+    } catch (err) {
+      if (err.message !== 'unauthorized') alert(err.message);
+    }
+  });
+
   async function loadLogs() {
     try {
       const data = await apiFetch('/api/admin/logs');
@@ -852,9 +1030,14 @@
 
   function loadAll() {
     loadDashboard();
-    loadBatchesEverywhere().then(loadStudents);
+    loadBatchesEverywhere().then(() => {
+      loadStudents();
+      loadCourseBatchOptions().then(loadCourses);
+    });
     loadUsers();
     loadLogs();
+    loadInstructors();
+    loadCerts();
   }
 
   (async function init() {
