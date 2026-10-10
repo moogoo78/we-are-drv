@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的防災士 | 基隆市防災士培訓報名系統</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --color-neutral-white: rgb(255,255,255);
+    --color-neutral-black: rgb(0,0,0);
+    --color-neutral-solidgray-50: rgb(242,242,242);
+    --color-neutral-solidgray-100: rgb(230,230,230);
+    --color-neutral-solidgray-200: rgb(204,204,204);
+    --color-neutral-solidgray-420: rgb(148,148,148);
+    --color-neutral-solidgray-536: rgb(118,118,118);
+    --color-neutral-solidgray-600: rgb(102,102,102);
+    --color-neutral-solidgray-800: rgb(51,51,51);
+    --color-neutral-solidgray-900: rgb(26,26,26);
+    --color-primitive-blue-50: rgb(232,241,254);
+    --color-primitive-blue-100: rgb(217,230,255);
+    --color-primitive-blue-200: rgb(197,215,251);
+    --color-primitive-blue-900: rgb(0,23,193);
+    --color-primitive-blue-1000: rgb(0,17,143);
+    --color-primitive-blue-1200: rgb(0,0,96);
+    --color-primitive-red-100: rgb(255,218,218);
+    --color-primitive-red-800: rgb(236,0,0);
+    --color-primitive-green-50: rgb(230,245,236);
+    --color-primitive-green-800: rgb(25,122,75);
+    --color-primitive-orange-100: rgb(255,223,202);
+    --color-semantic-warning: rgb(199,71,0);
+    --color-primitive-yellow-300: rgb(255,212,61);
+    --color-key-50: var(--color-primitive-blue-50);
+    --color-key-900: var(--color-primitive-blue-900);
+    --color-key-1000: var(--color-primitive-blue-1000);
+    --color-key-1200: var(--color-primitive-blue-1200);
+    --text-body: var(--color-neutral-solidgray-800);
+    --text-heading: var(--color-neutral-solidgray-900);
+    --text-muted: var(--color-neutral-solidgray-600);
+    --text-placeholder: var(--color-neutral-solidgray-536);
+    --text-link: var(--color-key-900);
+    --text-link-hover: var(--color-key-1000);
+    --border-default: var(--color-neutral-solidgray-420);
+    --border-subtle: var(--color-neutral-solidgray-200);
+    --border-divider: var(--color-neutral-solidgray-100);
+    --error: var(--color-primitive-red-800);
+    --focus-ring: var(--color-primitive-yellow-300);
+    --focus-ring-outline: var(--color-neutral-black);
+    --font-sans: "Noto Sans TC", "Noto Sans JP", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.7; letter-spacing: 0.02em; color: var(--text-body); background: var(--color-neutral-white); }
+  a { color: var(--text-link); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--text-link-hover); }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 4px solid var(--focus-ring-outline); outline-offset: 2px; background-color: var(--focus-ring); color: var(--color-neutral-black); border-radius: 2px;
+  }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-weight: 700; font-size: 16px; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 0; border-radius: 8px; padding: 12px 16px; min-height: 48px; min-width: 96px; font-family: inherit; }
+  .btn-solid { background: var(--color-key-900); color: #fff; }
+  .btn-solid:hover { background: var(--color-key-1000); color: #fff; }
+  .btn-solid:disabled { background: var(--color-neutral-solidgray-420); cursor: not-allowed; }
+  .btn-outlined { background: #fff; color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .btn-outlined:hover { background: var(--color-key-50); }
+  .btn-sm { min-height: 40px; padding: 8px 12px; font-size: 15px; min-width: 0; }
+  .btn-full { width: 100%; }
+  .util-bar { background: var(--color-neutral-solidgray-50); border-bottom: 1px solid var(--border-subtle); }
+  .util-bar .wrap { padding-block: 8px; display: flex; justify-content: flex-end; gap: 24px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+  .util-bar a { text-decoration: none; }
+  header.site { border-bottom: 1px solid var(--border-default); }
+  .header-row { padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 2px; }
+  .brand .org { font-size: 14px; color: var(--text-muted); }
+  .brand .site-name { font-size: 24px; font-weight: 700; color: var(--text-heading); }
+  .header-actions { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .who { font-size: 16px; color: var(--text-muted); }
+  .who strong { color: var(--text-heading); }
+  main.subpage { max-width: 1120px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+  .crumb { font-size: 16px; color: var(--text-muted); }
+  .page-title { margin: 0; font-size: 36px; font-weight: 700; color: var(--text-heading); }
+  .page-intro { margin: 0; font-size: 17px; }
+
+  /* login */
+  .login-layout { display: grid; grid-template-columns: 400px 1fr; gap: 48px; align-items: start; }
+  .query-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 20px; }
+  .query-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .notice-box { border-radius: 12px; box-shadow: 0 0 0 1px rgb(0,102,190); background: rgb(240,249,255); padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .notice-box .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .notice-box ul { margin: 0; padding-left: 1.4em; display: flex; flex-direction: column; gap: 4px; font-size: 16px; }
+
+  /* forms */
+  .field { display: flex; flex-direction: column; gap: 8px; }
+  .field > label, .field > .lbl { font-weight: 500; }
+  .req { color: var(--error); font-size: 16px; font-weight: 400; }
+  .opt { color: var(--text-muted); font-size: 16px; font-weight: 400; }
+  .hint-text { font-size: 16px; color: var(--text-muted); }
+  .input, .select, .textarea { width: 100%; padding: 0 16px; border: 0; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600); font-size: 16px; font-family: inherit; background: #fff; color: var(--text-body); }
+  .input, .select { height: 48px; }
+  .textarea { padding: 12px 16px; min-height: 112px; resize: vertical; line-height: 1.6; }
+  .input:focus, .select:focus, .textarea:focus { outline: none; box-shadow: inset 0 0 0 2px var(--color-key-900); }
+  .dob-row { display: flex; gap: 8px; align-items: center; }
+  .dob-row .input { width: 96px; flex: none; }
+  .dob-row .input.mid { width: 72px; }
+  .form-cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .form-cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .choice-group { display: flex; gap: 8px 24px; flex-wrap: wrap; }
+  .choice-group.stack { flex-direction: column; gap: 0; }
+  .choice-group.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 24px; }
+  .choice-item { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; min-height: 48px; cursor: pointer; }
+  .choice-item input { width: 20px; height: 20px; accent-color: var(--color-key-900); flex-shrink: 0; margin: 0; }
+  .form-msg { padding: 14px 18px; border-radius: 8px; font-size: 16px; }
+  .form-msg.error { background: var(--color-primitive-red-100); color: var(--error); }
+  .form-msg.success { background: var(--color-primitive-green-50); color: var(--color-primitive-green-800); }
+  .form-actions { display: flex; gap: 16px; flex-wrap: wrap; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { padding: 0; font-weight: 500; margin-bottom: 8px; }
+
+  /* portal */
+  .portal-layout { display: grid; grid-template-columns: 240px 1fr; gap: 40px; align-items: start; }
+  .side-nav { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 4px; border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 12px; }
+  .side-nav button { display: flex; gap: 8px; align-items: baseline; text-align: left; width: 100%; background: transparent; border: 0; border-radius: 8px; padding: 10px 12px; min-height: 48px; font: inherit; font-size: 16px; color: var(--text-body); cursor: pointer; }
+  .side-nav button .n { font-weight: 700; color: var(--text-muted); min-width: 1.2em; }
+  .side-nav button:hover { background: var(--color-neutral-solidgray-50); }
+  .side-nav button[aria-selected="true"] { background: var(--color-key-50); color: var(--color-key-900); font-weight: 700; box-shadow: inset 4px 0 0 var(--color-key-900); }
+  .side-nav button[aria-selected="true"] .n { color: var(--color-key-900); }
+  .panel { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
+  .panel h2 { margin: 0; padding-bottom: 8px; border-bottom: 1px solid var(--border-default); font-size: 24px; font-weight: 700; color: var(--text-heading); }
+  .panel h3 { margin: 0; font-size: 20px; font-weight: 700; color: var(--text-heading); }
+  .sub-section { display: flex; flex-direction: column; gap: 16px; }
+  .result-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+  .result-card .t { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; }
+  .card-list { display: flex; flex-direction: column; gap: 16px; }
+  .summary-grid { display: grid; grid-template-columns: 140px 1fr; gap: 10px 24px; font-size: 16px; }
+  .summary-grid .k { color: var(--text-muted); }
+  .summary-grid .v { min-width: 0; overflow-wrap: anywhere; }
+  .pill { display: inline-block; font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; white-space: nowrap; }
+  .pill-green { background: var(--color-primitive-green-50); color: var(--color-primitive-green-800); }
+  .pill-orange { background: var(--color-primitive-orange-100); color: var(--color-semantic-warning); }
+  .pill-red { background: var(--color-primitive-red-100); color: var(--error); }
+  .pill-gray { background: var(--color-neutral-solidgray-100); color: var(--text-body); }
+  .pill-blue { background: var(--color-primitive-blue-100); color: var(--color-key-1000); }
+  .empty-hint { color: var(--text-muted); font-size: 16px; margin: 0; }
+  .note-box { border-radius: 8px; background: var(--color-neutral-solidgray-50); padding: 12px 16px; font-size: 16px; white-space: pre-wrap; }
+  .readonly-grid { border-radius: 12px; background: var(--color-neutral-solidgray-50); padding: 16px 24px; }
+
+  /* progress */
+  .progress { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .progress li { padding: 8px 12px; border-top: 4px solid var(--border-default); display: flex; flex-direction: column; gap: 0; font-size: 16px; color: var(--text-muted); }
+  .progress li .num { font-size: 13px; font-weight: 700; }
+  .progress li.done { border-top-color: var(--color-key-900); color: var(--text-heading); }
+  .progress li.done .num { color: var(--color-key-900); }
+  .progress li.current { font-weight: 700; }
+
+  /* survey */
+  .q-block { display: flex; flex-direction: column; gap: 4px; padding-block: 12px; border-bottom: 1px solid var(--border-divider); }
+  .q-block.missing legend, .q-block.missing .q-label { color: var(--error); }
+  .q-label { font-weight: 500; }
+  .matrix-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table.matrix { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 15px; }
+  table.matrix caption { text-align: left; font-weight: 700; color: var(--text-heading); padding-bottom: 8px; font-size: 16px; }
+  table.matrix th, table.matrix td { border-bottom: 1px solid var(--border-divider); padding: 6px 8px; text-align: center; }
+  table.matrix thead th { background: var(--color-neutral-solidgray-50); font-weight: 500; font-size: 14px; line-height: 1.4; }
+  table.matrix tbody th { text-align: left; font-weight: 400; }
+  table.matrix tr.missing th { color: var(--error); }
+  table.matrix label { display: flex; align-items: center; justify-content: center; min-height: 40px; min-width: 40px; cursor: pointer; }
+  table.matrix input { width: 20px; height: 20px; accent-color: var(--color-key-900); margin: 0; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+  /* quiz */
+  .quiz-q { display: flex; flex-direction: column; gap: 4px; padding-block: 12px; border-bottom: 1px solid var(--border-divider); }
+  .quiz-q .qt { font-weight: 500; }
+  .quiz-q .qn { color: var(--color-key-900); font-weight: 700; margin-right: 4px; }
+  .big-result { font-size: 28px; font-weight: 700; }
+  .big-result.pass { color: var(--color-primitive-green-800); }
+  .big-result.fail { color: var(--error); }
+
+  /* materials */
+  .mat-layout { display: grid; grid-template-columns: 1fr 200px; gap: 24px; align-items: start; }
+  .mat-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .mat-list li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border-divider); flex-wrap: wrap; }
+  .mat-list .meta { font-size: 14px; color: var(--text-muted); }
+  .qr-box { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; font-size: 14px; color: var(--text-muted); }
+  .qr-box .qr { padding: 8px; background: #fff; box-shadow: 0 0 0 1px var(--border-default); border-radius: 8px; width: 178px; height: 178px; display: flex; align-items: center; justify-content: center; }
+  .qr-box .qr img, .qr-box .qr canvas { display: block; }
+
+  @media (max-width: 960px) {
+    .login-layout, .portal-layout { grid-template-columns: 1fr; }
+    .side-nav { position: static; flex-direction: row; overflow-x: auto; padding: 8px; gap: 4px; }
+    .side-nav button { width: auto; white-space: nowrap; flex: none; }
+    .side-nav button[aria-selected="true"] { box-shadow: inset 0 -3px 0 var(--color-key-900); }
+    .form-cols-2, .form-cols-3, .choice-group.cols, .mat-layout { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px) {
+    .wrap { padding-inline: 16px; }
+    main.subpage { padding: 24px 16px 64px; gap: 24px; }
+    .page-title { font-size: 28px; }
+    .brand .site-name { font-size: 20px; }
+    .summary-grid { grid-template-columns: 1fr; gap: 0; }
+    .summary-grid .v { margin-bottom: 8px; }
+    .result-card { padding: 16px; }
+    .progress { grid-template-columns: 1fr; }
+    .dob-row .input { width: 84px; }
+    .dob-row .input.mid { width: 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="util-bar">
+  <div class="wrap">
+    <a href="index.html">回首頁</a>
+    <a href="courses.html">培訓課程</a>
+    <a href="admin.html">承辦人員登入</a>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap header-row">
+    <div class="brand">
+      <span class="org">基隆市政府消防局</span>
+      <span class="site-name">基隆市防災士培訓報名系統</span>
+    </div>
+    <div class="header-actions" id="header-actions" hidden>
+      <span class="who"><strong id="who-name"></strong> 您好</span>
+      <button type="button" class="btn btn-outlined" id="logout-btn">登出</button>
+    </div>
+  </div>
+</header>
+
+<main class="subpage wrap">
+  <nav class="crumb" aria-label="頁面位置"><a href="index.html">首頁</a>　/　我的防災士</nav>
+  <h1 class="page-title">我的防災士</h1>
+
+  <!-- 登入 -->
+  <div id="login-view" hidden>
+    <div class="login-layout">
+      <form class="query-card" id="login-form" novalidate>
+        <span class="t">學員登入</span>
+        <div id="login-msg" role="alert"></div>
+        <div class="field">
+          <label for="l-id">身分證字號 <span class="req">必填</span></label>
+          <input class="input" id="l-id" name="id_number" autocomplete="off" placeholder="A123456789" required>
+        </div>
+        <fieldset class="field">
+          <legend>出生年月日 <span class="req">必填</span></legend>
+          <div class="dob-row">
+            <input class="input" id="l-y" inputmode="numeric" maxlength="4" placeholder="1990" aria-label="出生年（西元）" required><span aria-hidden="true">年</span>
+            <input class="input mid" id="l-m" inputmode="numeric" maxlength="2" placeholder="05" aria-label="出生月" required><span aria-hidden="true">月</span>
+            <input class="input mid" id="l-d" inputmode="numeric" maxlength="2" placeholder="12" aria-label="出生日" required><span aria-hidden="true">日</span>
+          </div>
+        </fieldset>
+        <div class="field">
+          <label for="l-phone">報名時填寫的手機號碼 <span class="req">必填</span></label>
+          <input class="input" id="l-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="09xx-xxx-xxx" required>
+        </div>
+        <button type="submit" class="btn btn-solid btn-full" id="login-btn">登入</button>
+      </form>
+      <div class="notice-box">
+        <span class="t">「我的防災士」可以做什麼？</span>
+        <ul>
+          <li>管理個人基本資料與緊急聯絡人</li>
+          <li>查詢報名錄取、報到與測驗結果</li>
+          <li>查詢證照申請進度、申請遺失補發</li>
+          <li>填寫課程滿意度問卷、參加線上測驗</li>
+          <li>申請參訓證明、下載每梯次教材</li>
+        </ul>
+        <p style="margin:0;" class="hint-text">請使用報名時填寫的身分證字號、出生年月日及手機號碼登入。登入狀態於關閉瀏覽器分頁或 2 小時後失效。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 學員專區 -->
+  <div id="portal-view" hidden>
+    <div id="portal-loading" class="empty-hint">資料載入中…</div>
+    <div class="portal-layout" id="portal-body" hidden>
+      <nav class="side-nav" role="tablist" aria-label="我的防災士功能" aria-orientation="vertical" id="side-nav">
+        <button type="button" role="tab" id="tab-profile" aria-controls="panel-profile" data-panel="profile"><span class="n">1</span><span>學員基本資料管理</span></button>
+        <button type="button" role="tab" id="tab-regs" aria-controls="panel-regs" data-panel="regs"><span class="n">2</span><span>報名及測驗查詢</span></button>
+        <button type="button" role="tab" id="tab-certs" aria-controls="panel-certs" data-panel="certs"><span class="n">3</span><span>證照管理</span></button>
+        <button type="button" role="tab" id="tab-survey" aria-controls="panel-survey" data-panel="survey"><span class="n">4</span><span>課程滿意度問卷</span></button>
+        <button type="button" role="tab" id="tab-quiz" aria-controls="panel-quiz" data-panel="quiz"><span class="n">5</span><span>線上測驗</span></button>
+        <button type="button" role="tab" id="tab-proof" aria-controls="panel-proof" data-panel="proof"><span class="n">6</span><span>申請參訓證明</span></button>
+        <button type="button" role="tab" id="tab-materials" aria-controls="panel-materials" data-panel="materials"><span class="n">7</span><span>每梯教材下載</span></button>
+      </nav>
+
+      <div>
+        <!-- 1 基本資料 -->
+        <section class="panel" role="tabpanel" id="panel-profile" aria-labelledby="tab-profile" tabindex="-1" hidden>
+          <h2>1. 學員基本資料管理</h2>
+          <div id="profile-body"></div>
+        </section>
+
+        <!-- 2 報名及測驗 -->
+        <section class="panel" role="tabpanel" id="panel-regs" aria-labelledby="tab-regs" tabindex="-1" hidden>
+          <h2>2. 報名及測驗查詢</h2>
+          <div id="regs-body" class="card-list"></div>
+        </section>
+
+        <!-- 3 證照 -->
+        <section class="panel" role="tabpanel" id="panel-certs" aria-labelledby="tab-certs" tabindex="-1" hidden>
+          <h2>3. 證照管理</h2>
+          <div class="sub-section">
+            <h3>證照申請進度</h3>
+            <div id="certs-body" class="card-list"></div>
+          </div>
+          <div class="sub-section">
+            <h3>遺失補發申請</h3>
+            <div id="reissue-body"></div>
+          </div>
+          <div class="sub-section">
+            <h3>我的申請紀錄</h3>
+            <div id="apps-reissue" class="card-list"></div>
+          </div>
+        </section>
+
+        <!-- 4 問卷 -->
+        <section class="panel" role="tabpanel" id="panel-survey" aria-labelledby="tab-survey" tabindex="-1" hidden>
+          <h2>4. 課程滿意度問卷</h2>
+          <div id="survey-body" class="card-list"></div>
+        </section>
+
+        <!-- 5 測驗 -->
+        <section class="panel" role="tabpanel" id="panel-quiz" aria-labelledby="tab-quiz" tabindex="-1" hidden>
+          <h2>5. 線上測驗</h2>
+          <div id="quiz-body" class="card-list"></div>
+        </section>
+
+        <!-- 6 參訓證明 -->
+        <section class="panel" role="tabpanel" id="panel-proof" aria-labelledby="tab-proof" tabindex="-1" hidden>
+          <h2>6. 申請參訓證明</h2>
+          <div id="proof-body"></div>
+          <div class="sub-section">
+            <h3>我的申請紀錄</h3>
+            <div id="apps-proof" class="card-list"></div>
+          </div>
+        </section>
+
+        <!-- 7 教材 -->
+        <section class="panel" role="tabpanel" id="panel-materials" aria-labelledby="tab-materials" tabindex="-1" hidden>
+          <h2>7. 每梯教材下載</h2>
+          <div id="materials-body" class="card-list"></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const TOKEN_KEY = 'drv_student_token';
+  const NAME_KEY = 'drv_student_name';
+
+  const OCCUPATIONS = ['軍公教', '醫療照護', '服務業', '製造業', '學生', '退休／待業', '其他'];
+  const EDUCATIONS = ['國小', '國中', '高中職', '專科', '大學', '碩士以上'];
+  const SPECIALTIES = [
+    '醫護或急救相關背景', '社工／心理關懷相關背景', '行政文書與資料整理能力',
+    '物資管理或倉儲物流經驗', '水電／機械維修', '駕駛（大型車／重機具）',
+    '通訊／資訊', '外語能力', '無特殊專長，但願意接受任務指派',
+  ];
+  const REG_STATUS = {
+    approved: { label: '正取（已錄取）', cls: 'pill-green' },
+    waitlist: { label: '備取（候補中）', cls: 'pill-blue' },
+    pending: { label: '審核中', cls: 'pill-orange' },
+    needs_more_info: { label: '待補件', cls: 'pill-red' },
+    rejected: { label: '未錄取', cls: 'pill-gray' },
+  };
+  const APPLY_STEPS = [['applying', '申請中'], ['submitted', '已送出'], ['issued', '已核發']];
+  const DELIVERY = { pickup: '親領', mail: '郵寄' };
+  const PICKUP = {
+    not_collected: { label: '未領取', cls: 'pill-orange' },
+    shipping: { label: '寄送中', cls: 'pill-blue' },
+    collected: { label: '已領取', cls: 'pill-green' },
+  };
+  const APP_KIND = { reissue: '證照遺失補發', attendance_proof: '參訓證明' };
+  const APP_STATUS = {
+    pending: { label: '待處理', cls: 'pill-orange' },
+    processing: { label: '處理中', cls: 'pill-blue' },
+    done: { label: '已完成', cls: 'pill-green' },
+    rejected: { label: '不受理', cls: 'pill-gray' },
+  };
+  const RATING_LABELS = { 5: '非常滿意', 4: '滿意', 3: '普通', 2: '不滿意', 1: '非常不滿意' };
+
+  const $ = (id) => document.getElementById(id);
+
+  function esc(v) {
+    if (v === null || v === undefined) return '';
+    return String(v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function maskId(id) {
+    const s = String(id || '');
+    if (s.length < 7) return s;
+    return s.slice(0, 3) + '*'.repeat(s.length - 6) + s.slice(-3);
+  }
+
+  function dateOnly(s) {
+    if (!s) return '';
+    return String(s).slice(0, 10);
+  }
+
+  function fmtDateTime(s) {
+    if (!s) return '';
+    const d = new Date(String(s).replace(' ', 'T'));
+    if (isNaN(d.getTime())) return String(s);
+    return d.toLocaleString('zh-TW', { hour12: false });
+  }
+
+  function pill(meta) {
+    return `<span class="pill ${esc(meta.cls)}">${esc(meta.label)}</span>`;
+  }
+
+  function passPill(v) {
+    if (v === 1 || v === true) return pill({ label: '合格', cls: 'pill-green' });
+    if (v === 0 || v === false) return pill({ label: '不合格', cls: 'pill-red' });
+    return pill({ label: '尚未公布', cls: 'pill-gray' });
+  }
+
+  function msgHtml(text, type) {
+    return text ? `<div class="form-msg ${type === 'success' ? 'success' : 'error'}" role="${type === 'success' ? 'status' : 'alert'}">${esc(text)}</div>` : '';
+  }
+
+  // ---------- API ----------
+  class AuthError extends Error {}
+
+  function getToken() {
+    try { return sessionStorage.getItem(TOKEN_KEY); } catch (e) { return null; }
+  }
+
+  async function api(path, opts) {
+    opts = opts || {};
+    const headers = Object.assign({}, opts.headers || {});
+    const token = getToken();
+    if (token && opts.auth !== false) headers.Authorization = `Bearer ${token}`;
+    if (opts.body !== undefined) headers['Content-Type'] = 'application/json';
+    let res;
+    try {
+      res = await fetch(path, {
+        method: opts.method || 'GET',
+        headers,
+        body: opts.body !== undefined ? JSON.stringify(opts.body) : undefined,
+      });
+    } catch (e) {
+      throw new Error('網路發生錯誤，請稍後再試。');
+    }
+    let data = {};
+    try { data = await res.json(); } catch (e) { data = {}; }
+    if (!res.ok) {
+      const errMsg = data.error || `發生錯誤（${res.status}）`;
+      // 401：登入失效；403 僅在身分驗證失敗時登出（測驗未開放等業務 403 不登出）
+      if (opts.auth !== false && (res.status === 401 || (res.status === 403 && /登入|token|權杖|身分/i.test(errMsg)))) {
+        forceLogout('登入已逾時或失效，請重新登入。');
+        throw new AuthError(errMsg);
+      }
+      const err = new Error(errMsg);
+      err.status = res.status;
+      throw err;
+    }
+    return data;
+  }
+
+  // ---------- state ----------
+  let state = { profile: null, registrations: [], certificates: [], applications: [] };
+  let villagesCache = null;
+  let surveyDefCache = null;
+  let currentPanel = 'profile';
+
+  // ---------- login / logout ----------
+  function showLogin(message) {
+    $('portal-view').hidden = true;
+    $('header-actions').hidden = true;
+    $('login-view').hidden = false;
+    $('login-msg').innerHTML = message ? msgHtml(message, 'error') : '';
+  }
+
+  function forceLogout(message) {
+    try { sessionStorage.removeItem(TOKEN_KEY); sessionStorage.removeItem(NAME_KEY); } catch (e) { /* ignore */ }
+    showLogin(message);
+  }
+
+  $('logout-btn').addEventListener('click', () => {
+    try { sessionStorage.removeItem(TOKEN_KEY); sessionStorage.removeItem(NAME_KEY); } catch (e) { /* ignore */ }
+    showLogin('');
+    $('login-form').reset();
+    $('login-msg').innerHTML = msgHtml('您已登出。', 'success');
+  });
+
+  $('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id_number = $('l-id').value.trim().toUpperCase();
+    const y = $('l-y').value.trim();
+    const m = $('l-m').value.trim();
+    const d = $('l-d').value.trim();
+    const phone = $('l-phone').value.trim();
+    $('login-msg').innerHTML = '';
+    if (!id_number || !y || !m || !d || !phone) {
+      $('login-msg').innerHTML = msgHtml('請完整輸入身分證字號、出生年月日與手機號碼。', 'error');
+      return;
+    }
+    if (!/^\d{4}$/.test(y) || !/^\d{1,2}$/.test(m) || !/^\d{1,2}$/.test(d)) {
+      $('login-msg').innerHTML = msgHtml('出生年月日格式有誤，年請輸入 4 位數西元年。', 'error');
+      return;
+    }
+    const birth_date = `${y}-${m.padStart(2, '0')}-${d.padStart(2, '0')}`;
+    const btn = $('login-btn');
+    btn.disabled = true;
+    btn.textContent = '登入中…';
+    try {
+      const data = await api('/api/me/login', { method: 'POST', auth: false, body: { id_number, birth_date, phone } });
+      try {
+        sessionStorage.setItem(TOKEN_KEY, data.token);
+        sessionStorage.setItem(NAME_KEY, data.name || '');
+      } catch (err) { /* ignore */ }
+      $('login-form').reset();
+      await enterPortal();
+    } catch (err) {
+      $('login-msg').innerHTML = msgHtml(err.message || '登入失敗', 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '登入';
+    }
+  });
+
+  async function enterPortal() {
+    $('login-view').hidden = true;
+    $('portal-view').hidden = false;
+    $('header-actions').hidden = false;
+    let nm = '';
+    try { nm = sessionStorage.getItem(NAME_KEY) || ''; } catch (e) { /* ignore */ }
+    $('who-name').textContent = nm;
+    await reload();
+  }
+
+  async function reload() {
+    $('portal-loading').hidden = false;
+    $('portal-loading').textContent = '資料載入中…';
+    try {
+      const data = await api('/api/me/overview');
+      state = {
+        profile: data.profile,
+        registrations: data.registrations || [],
+        certificates: data.certificates || [],
+        applications: data.applications || [],
+      };
+      if (state.profile && state.profile.name) $('who-name').textContent = state.profile.name;
+      $('portal-loading').hidden = true;
+      $('portal-body').hidden = false;
+      renderAll();
+      selectPanel(currentPanel, false);
+    } catch (err) {
+      if (err instanceof AuthError) return;
+      $('portal-loading').innerHTML = msgHtml(err.message || '資料載入失敗，請重新整理頁面。', 'error');
+    }
+  }
+
+  // ---------- tabs ----------
+  const tabButtons = Array.from(document.querySelectorAll('#side-nav [role="tab"]'));
+  function selectPanel(name, focus) {
+    currentPanel = name;
+    tabButtons.forEach((b) => {
+      const on = b.dataset.panel === name;
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+      b.tabIndex = on ? 0 : -1;
+      $(b.getAttribute('aria-controls')).hidden = !on;
+      if (on && focus) b.focus();
+    });
+    try { history.replaceState(null, '', `#${name}`); } catch (e) { /* ignore */ }
+  }
+  tabButtons.forEach((b, i) => {
+    b.addEventListener('click', () => {
+      selectPanel(b.dataset.panel, false);
+      if (window.matchMedia('(max-width: 960px)').matches) {
+        $(b.getAttribute('aria-controls')).scrollIntoView({ block: 'start' });
+      }
+    });
+    b.addEventListener('keydown', (e) => {
+      let j = null;
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') j = (i + 1) % tabButtons.length;
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') j = (i - 1 + tabButtons.length) % tabButtons.length;
+      else if (e.key === 'Home') j = 0;
+      else if (e.key === 'End') j = tabButtons.length - 1;
+      if (j !== null) { e.preventDefault(); selectPanel(tabButtons[j].dataset.panel, true); }
+    });
+  });
+
+  function renderAll() {
+    renderProfile();
+    renderRegs();
+    renderCerts();
+    renderSurveyList();
+    renderQuizList();
+    renderProof();
+    renderMaterials();
+  }
+
+  const approvedRegs = () => state.registrations.filter((r) => r.status === 'approved');
+  const batchOpt = (r) => `<option value="${esc(r.id)}">${esc(r.batch_name)}（${esc(r.start_date)}～${esc(r.end_date)}）</option>`;
+
+  // ---------- 1. profile ----------
+  function renderProfile() {
+    const p = state.profile;
+    const box = $('profile-body');
+    if (!p) { box.innerHTML = '<p class="empty-hint">查無基本資料。</p>'; return; }
+    const selOpts = (list, cur) => {
+      const opts = list.slice();
+      if (cur && !opts.includes(cur)) opts.push(cur);
+      return '<option value="">請選擇</option>' + opts.map((o) => `<option${o === cur ? ' selected' : ''}>${esc(o)}</option>`).join('');
+    };
+    const spec = Array.isArray(p.specialty) ? p.specialty : [];
+    const specOpts = SPECIALTIES.concat(spec.filter((s) => !SPECIALTIES.includes(s)));
+    const support = p.support_pref === '願意' || p.support_pref === '可支援';
+    box.innerHTML = `
+      <div style="display:flex; flex-direction:column; gap:24px;">
+        <div class="readonly-grid">
+          <div class="summary-grid">
+            <span class="k">姓名</span><span class="v" style="font-weight:700;">${esc(p.name)}</span>
+            <span class="k">身分證字號</span><span class="v">${esc(maskId(p.id_number))}</span>
+            <span class="k">出生年月日</span><span class="v">${esc(p.birth_date)}</span>
+            <span class="k">性別</span><span class="v">${esc(p.sex)}</span>
+            <span class="k">戶籍行政區</span><span class="v">${esc(p.district)}</span>
+          </div>
+          <p class="hint-text" style="margin:8px 0 0;">以上資料如需更正，請洽承辦人員：災害管理科 (02) 2431-0119 分機 302。</p>
+        </div>
+        <form id="profile-form" novalidate style="display:flex; flex-direction:column; gap:24px;">
+          <div id="profile-msg"></div>
+          <div class="form-cols-2">
+            <div class="field"><label for="pf-phone">行動電話 <span class="req">必填</span></label><input class="input" id="pf-phone" name="phone" type="tel" autocomplete="tel" required value="${esc(p.phone)}"></div>
+            <div class="field"><label for="pf-email">電子郵件 <span class="req">必填</span></label><input class="input" id="pf-email" name="email" type="email" autocomplete="email" required value="${esc(p.email)}"></div>
+          </div>
+          <div class="form-cols-2">
+            <div class="field"><label for="pf-home">市話 <span class="opt">選填</span></label><input class="input" id="pf-home" name="home_phone" type="tel" value="${esc(p.home_phone)}"></div>
+            <div class="field"><label for="pf-village">里別（${esc(p.district || '')}） <span class="opt">選填</span></label>
+              <select class="select" id="pf-village" name="village"><option value="">載入中…</option></select></div>
+          </div>
+          <div class="field"><label for="pf-address">通訊地址 <span class="req">必填</span></label><span class="hint-text" id="pf-address-hint">證照郵寄使用</span><input class="input" id="pf-address" name="address" autocomplete="street-address" aria-describedby="pf-address-hint" required value="${esc(p.address)}"></div>
+          <div class="form-cols-2">
+            <div class="field"><label for="pf-occ">職業別 <span class="opt">選填</span></label><select class="select" id="pf-occ" name="occupation">${selOpts(OCCUPATIONS, p.occupation)}</select></div>
+            <div class="field"><label for="pf-unit">服務單位／所屬團體 <span class="opt">選填</span></label><input class="input" id="pf-unit" name="unit_village" placeholder="如社區發展協會、里辦公處" value="${esc(p.unit_village)}"></div>
+          </div>
+          <div class="form-cols-2">
+            <div class="field"><label for="pf-edu">教育程度 <span class="opt">選填</span></label><select class="select" id="pf-edu" name="education">${selOpts(EDUCATIONS, p.education)}</select></div>
+            <div class="field"><label for="pf-job">職稱 <span class="opt">選填</span></label><input class="input" id="pf-job" name="job_title" value="${esc(p.job_title)}"></div>
+          </div>
+          <fieldset>
+            <legend>緊急聯絡人 <span class="opt">選填</span></legend>
+            <div class="form-cols-3">
+              <div class="field"><label for="pf-ename">姓名</label><input class="input" id="pf-ename" name="emergency_name" value="${esc(p.emergency_name)}"></div>
+              <div class="field"><label for="pf-erel">關係</label><input class="input" id="pf-erel" name="emergency_relation" placeholder="例：配偶" value="${esc(p.emergency_relation)}"></div>
+              <div class="field"><label for="pf-ephone">電話</label><input class="input" id="pf-ephone" name="emergency_phone" type="tel" value="${esc(p.emergency_phone)}"></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>專業背景或專長 <span class="opt">可複選</span></legend>
+            <div class="choice-group cols">
+              ${specOpts.map((s, i) => `<label class="choice-item" for="pf-spec-${i}"><input type="checkbox" id="pf-spec-${i}" name="specialty" value="${esc(s)}"${spec.includes(s) ? ' checked' : ''}>${esc(s)}</label>`).join('')}
+            </div>
+          </fieldset>
+          <label class="choice-item" for="pf-support"><input type="checkbox" id="pf-support" name="support_pref"${support ? ' checked' : ''}>我願意於災時支援災害應變</label>
+          <div class="form-actions"><button type="submit" class="btn btn-solid" id="pf-submit">儲存變更</button></div>
+        </form>
+      </div>`;
+    loadVillages(p.district, p.village);
+    $('profile-form').addEventListener('submit', saveProfile);
+  }
+
+  async function loadVillages(district, current) {
+    const sel = $('pf-village');
+    try {
+      if (!villagesCache) {
+        const data = await api('/api/public/villages', { auth: false });
+        villagesCache = data.districts || {};
+      }
+      const list = (villagesCache[district] || []).slice();
+      if (current && !list.includes(current)) list.unshift(current);
+      sel.innerHTML = '<option value="">請選擇</option>' + list.map((v) => `<option${v === current ? ' selected' : ''}>${esc(v)}</option>`).join('');
+    } catch (e) {
+      sel.innerHTML = current ? `<option selected>${esc(current)}</option>` : '<option value="">（里別清單載入失敗）</option>';
+    }
+  }
+
+  async function saveProfile(e) {
+    e.preventDefault();
+    const f = e.target;
+    const msg = $('profile-msg');
+    const v = (n) => f.elements[n].value.trim();
+    msg.innerHTML = '';
+    if (!v('phone') || !v('email') || !v('address')) {
+      msg.innerHTML = msgHtml('行動電話、電子郵件、通訊地址為必填。', 'error');
+      msg.scrollIntoView({ block: 'center' });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('email'))) {
+      msg.innerHTML = msgHtml('電子郵件格式有誤。', 'error');
+      msg.scrollIntoView({ block: 'center' });
+      return;
+    }
+    const body = {};
+    ['phone', 'email', 'address', 'village', 'occupation', 'unit_village', 'home_phone', 'education',
+      'job_title', 'emergency_name', 'emergency_relation', 'emergency_phone'].forEach((k) => { body[k] = v(k); });
+    body.specialty = Array.from(f.querySelectorAll('input[name="specialty"]:checked')).map((el) => el.value);
+    body.support_pref = f.elements.support_pref.checked;
+    const btn = $('pf-submit');
+    btn.disabled = true;
+    btn.textContent = '儲存中…';
+    try {
+      await api('/api/me/profile', { method: 'PATCH', body });
+      Object.assign(state.profile, body, { support_pref: body.support_pref ? '願意' : '未表示' });
+      msg.innerHTML = msgHtml('基本資料已更新。', 'success');
+    } catch (err) {
+      if (err instanceof AuthError) return;
+      msg.innerHTML = msgHtml(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '儲存變更';
+    }
+    msg.scrollIntoView({ block: 'center' });
+  }
+
+  // ---------- 2. registrations ----------
+  function renderRegs() {
+    const box = $('regs-body');
+    if (!state.registrations.length) { box.innerHTML = '<p class="empty-hint">目前沒有報名紀錄。</p>'; return; }
+    box.innerHTML = state.registrations.map((r) => {
+      const meta = REG_STATUS[r.status] || { label: r.status, cls: 'pill-gray' };
+      const approved = r.status === 'approved';
+      return `
+        <article class="result-card">
+          <div class="card-head"><span class="t">${esc(r.batch_name)}</span>${pill(meta)}</div>
+          <div class="summary-grid">
+            <span class="k">報名序號</span><span class="v" style="font-weight:700;">${esc(r.reg_no)}</span>
+            <span class="k">梯次時間</span><span class="v">${esc(r.start_date)} ～ ${esc(r.end_date)}</span>
+            <span class="k">上課地點</span><span class="v">${esc(r.location)}</span>
+            <span class="k">錄取狀態</span><span class="v">${pill(meta)}</span>
+            ${r.review_note ? `<span class="k">承辦備註</span><span class="v">${esc(r.review_note)}</span>` : ''}
+            <span class="k">報到情況</span><span class="v">${approved ? pill(r.checked_in ? { label: '已報到', cls: 'pill-green' } : { label: '未報到', cls: 'pill-gray' }) : '<span class="hint-text">—（錄取後適用）</span>'}</span>
+            <span class="k">學科測驗結果</span><span class="v">${passPill(r.written_passed)}</span>
+            <span class="k">CPR/AED 術科實作測驗結果</span><span class="v">${passPill(r.practical_passed)}</span>
+          </div>
+        </article>`;
+    }).join('');
+  }
+
+  // ---------- 3. certificates ----------
+  function renderCerts() {
+    const box = $('certs-body');
+    if (!state.certificates.length) {
+      box.innerHTML = '<p class="empty-hint">目前尚無證照申請紀錄。結訓且測驗合格後，承辦人員將為您辦理證照申請。</p>';
+    } else {
+      box.innerHTML = state.certificates.map((c) => {
+        const idx = APPLY_STEPS.findIndex((s) => s[0] === c.apply_status);
+        const issued = c.apply_status === 'issued';
+        const pk = PICKUP[c.pickup_status] || { label: c.pickup_status || '—', cls: 'pill-gray' };
+        return `
+          <article class="result-card">
+            <div class="card-head"><span class="t">${esc(c.batch_name)}</span></div>
+            <ol class="progress" aria-label="證照申請進度">
+              ${APPLY_STEPS.map((s, i) => `<li class="${i <= idx ? 'done' : ''}${i === idx ? ' current' : ''}"${i === idx ? ' aria-current="step"' : ''}><span class="num">步驟 ${i + 1}</span><span>${esc(s[1])}</span></li>`).join('')}
+            </ol>
+            <div class="summary-grid">
+              ${issued ? `<span class="k">證照字號</span><span class="v" style="font-weight:700;">${esc(c.cert_no || '—')}</span>` : ''}
+              ${issued && c.issued_at ? `<span class="k">核發日期</span><span class="v">${esc(dateOnly(c.issued_at))}</span>` : ''}
+              <span class="k">領取方式</span><span class="v">${esc(DELIVERY[c.delivery_method] || c.delivery_method || '—')}</span>
+              <span class="k">領取狀況</span><span class="v">${pill(pk)}${c.mailed_at ? `　<span class="hint-text">寄出：${esc(dateOnly(c.mailed_at))}</span>` : ''}${c.collected_at ? `　<span class="hint-text">領取：${esc(dateOnly(c.collected_at))}</span>` : ''}</span>
+            </div>
+          </article>`;
+      }).join('');
+    }
+
+    const issuedRegIds = new Set(state.certificates.filter((c) => c.apply_status === 'issued').map((c) => c.registration_id));
+    const eligible = approvedRegs().filter((r) => issuedRegIds.has(r.id));
+    const rb = $('reissue-body');
+    if (!eligible.length) {
+      rb.innerHTML = '<p class="empty-hint">您目前沒有已核發的證照，無需申請補發。</p>';
+    } else {
+      rb.innerHTML = `
+        <form id="reissue-form" class="result-card" novalidate>
+          <div id="reissue-msg"></div>
+          <div class="field"><label for="ri-reg">證照所屬梯次 <span class="req">必填</span></label>
+            <select class="select" id="ri-reg" required>${eligible.length > 1 ? '<option value="">請選擇</option>' : ''}${eligible.map(batchOpt).join('')}</select></div>
+          <div class="field"><label for="ri-reason">申請原因 <span class="req">必填</span></label>
+            <textarea class="textarea" id="ri-reason" required placeholder="請簡述遺失或損毀情形"></textarea></div>
+          <div class="form-actions"><button type="submit" class="btn btn-solid" id="ri-submit">送出補發申請</button></div>
+        </form>`;
+      $('reissue-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const reason = $('ri-reason').value.trim();
+        if (!reason) { $('reissue-msg').innerHTML = msgHtml('請填寫申請原因。', 'error'); return; }
+        submitApplication('reissue', $('ri-reg').value, reason, $('reissue-msg'), $('ri-submit'));
+      });
+    }
+    $('apps-reissue').innerHTML = renderApps('reissue');
+  }
+
+  function renderApps(kind) {
+    const list = state.applications.filter((a) => a.kind === kind);
+    if (!list.length) return '<p class="empty-hint">尚無申請紀錄。</p>';
+    return list.map((a) => {
+      const st = APP_STATUS[a.status] || { label: a.status, cls: 'pill-gray' };
+      const printable = a.kind === 'attendance_proof' && a.status === 'done';
+      return `
+        <article class="result-card">
+          <div class="card-head"><span class="t">${esc(APP_KIND[a.kind] || a.kind)}｜${esc(a.batch_name)}</span>${pill(st)}</div>
+          <div class="summary-grid">
+            <span class="k">申請時間</span><span class="v">${esc(fmtDateTime(a.created_at))}</span>
+            ${a.reason ? `<span class="k">申請原因</span><span class="v">${esc(a.reason)}</span>` : ''}
+            ${a.handled_at ? `<span class="k">處理時間</span><span class="v">${esc(fmtDateTime(a.handled_at))}</span>` : ''}
+            ${a.admin_note ? `<span class="k">承辦回覆</span><span class="v">${esc(a.admin_note)}</span>` : ''}
+          </div>
+          ${printable ? `<div class="form-actions"><button type="button" class="btn btn-outlined" data-print-app="${esc(a.id)}">列印參訓證明</button></div>` : ''}
+        </article>`;
+    }).join('');
+  }
+
+  async function submitApplication(kind, regId, reason, msgEl, btn) {
+    msgEl.innerHTML = '';
+    if (!regId) { msgEl.innerHTML = msgHtml('請選擇梯次。', 'error'); return; }
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = '送出中…';
+    try {
+      await api('/api/me/applications', { method: 'POST', body: { registration_id: Number(regId), kind, reason } });
+      await reload();
+      const target = kind === 'reissue' ? $('reissue-body') : $('proof-body');
+      target.insertAdjacentHTML('afterbegin', msgHtml('申請已送出，承辦人員處理後將更新申請狀態。', 'success'));
+    } catch (err) {
+      if (err instanceof AuthError) return;
+      msgEl.innerHTML = msgHtml(err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = label;
+    }
+  }
+
+  // ---------- 4. survey ----------
+  function renderSurveyList() {
+    const box = $('survey-body');
+    const regs = state.registrations.filter((r) => r.survey_available || r.survey_submitted);
+    if (!regs.length) {
+      box.innerHTML = '<p class="empty-hint">目前沒有需要填寫的課程滿意度問卷。課程結束後開放填寫，屆時將於此處顯示。</p>';
+      return;
+    }
+    box.innerHTML = regs.map((r) => `
+      <article class="result-card" id="survey-card-${esc(r.id)}">
+        <div class="card-head"><span class="t">${esc(r.batch_name)}</span>
+          ${r.survey_submitted ? pill({ label: '已填寫', cls: 'pill-green' }) : pill({ label: '待填寫', cls: 'pill-orange' })}</div>
+        ${r.survey_submitted
+          ? '<p style="margin:0;">已填寫，感謝您的回饋</p>'
+          : `<div class="form-actions"><button type="button" class="btn btn-solid" data-open-survey="${esc(r.id)}">填寫問卷</button></div><div data-survey-slot="${esc(r.id)}"></div>`}
+      </article>`).join('');
+  }
+
+  async function openSurvey(regId, btn) {
+    const slot = document.querySelector(`[data-survey-slot="${CSS.escape(String(regId))}"]`);
+    btn.disabled = true;
+    try {
+      if (!surveyDefCache) {
+        const data = await api('/api/me/survey', { auth: false });
+        surveyDefCache = data.questions || [];
+      }
+    } catch (err) {
+      slot.innerHTML = msgHtml(err.message, 'error');
+      btn.disabled = false;
+      return;
+    }
+    btn.parentElement.hidden = true;
+    const qs = surveyDefCache;
+    const fid = `sv${regId}`;
+    let html = '';
+    let i = 0;
+    while (i < qs.length) {
+      const q = qs[i];
+      if (q.type === 'rating') {
+        const group = q.group || q.label;
+        const rows = [];
+        while (i < qs.length && qs[i].type === 'rating' && (qs[i].group || qs[i].label) === group) { rows.push(qs[i]); i++; }
+        html += `
+          <div class="matrix-wrap"><table class="matrix">
+            <caption>${esc(group)}　<span class="req" style="font-size:14px;">必填</span></caption>
+            <thead><tr><th scope="col">評分項目</th>${[5, 4, 3, 2, 1].map((n) => `<th scope="col">${n}<br>${esc(RATING_LABELS[n])}</th>`).join('')}</tr></thead>
+            <tbody>${rows.map((rq) => `
+              <tr data-q="${esc(rq.id)}"><th scope="row" id="${fid}-${esc(rq.id)}-l">${esc(rq.aspect || rq.label)}</th>
+                ${[5, 4, 3, 2, 1].map((n) => `<td><label><input type="radio" name="${esc(rq.id)}" value="${n}" aria-labelledby="${fid}-${esc(rq.id)}-l ${fid}-${esc(rq.id)}-${n}"><span class="sr-only" id="${fid}-${esc(rq.id)}-${n}">${n} 分 ${esc(RATING_LABELS[n])}</span></label></td>`).join('')}
+              </tr>`).join('')}
+            </tbody></table></div>`;
+        continue;
+      }
+      const reqTag = q.optional ? '<span class="opt">選填</span>' : '<span class="req">必填</span>';
+      if (q.type === 'single' || q.type === 'multi') {
+        const t = q.type === 'single' ? 'radio' : 'checkbox';
+        html += `
+          <fieldset class="q-block" data-q="${esc(q.id)}">
+            <legend>${esc(q.label)} ${reqTag}</legend>
+            <div class="choice-group stack">
+              ${(q.options || []).map((o, k) => `<label class="choice-item" for="${fid}-${esc(q.id)}-${k}"><input type="${t}" id="${fid}-${esc(q.id)}-${k}" name="${esc(q.id)}" value="${esc(o)}">${esc(o)}</label>`).join('')}
+            </div>
+          </fieldset>`;
+      } else if (q.type === 'text') {
+        html += `
+          <div class="q-block field" data-q="${esc(q.id)}">
+            <label class="q-label" for="${fid}-${esc(q.id)}">${esc(q.label)} ${reqTag}</label>
+            <textarea class="textarea" id="${fid}-${esc(q.id)}" name="${esc(q.id)}"></textarea>
+          </div>`;
+      }
+      i++;
+    }
+    slot.innerHTML = `
+      <form class="survey-form" novalidate style="display:flex; flex-direction:column; gap:16px;">
+        <p class="hint-text" style="margin:0;">評分說明：5＝非常滿意、4＝滿意、3＝普通、2＝不滿意、1＝非常不滿意。</p>
+        ${html}
+        <div class="sv-msg"></div>
+        <div class="form-actions"><button type="submit" class="btn btn-solid">送出問卷</button></div>
+      </form>`;
+    const form = slot.querySelector('form');
+    form.addEventListener('submit', (e) => { e.preventDefault(); submitSurvey(regId, form); });
+  }
+
+  async function submitSurvey(regId, form) {
+    const msg = form.querySelector('.sv-msg');
+    const answers = {};
+    const missing = [];
+    form.querySelectorAll('.missing').forEach((el) => el.classList.remove('missing'));
+    surveyDefCache.forEach((q) => {
+      const els = Array.from(form.querySelectorAll(`[name="${CSS.escape(q.id)}"]`));
+      let val;
+      if (q.type === 'single') { const c = els.find((el) => el.checked); val = c ? c.value : undefined; }
+      else if (q.type === 'multi') { val = els.filter((el) => el.checked).map((el) => el.value); if (!val.length) val = undefined; }
+      else if (q.type === 'rating') { const c = els.find((el) => el.checked); val = c ? Number(c.value) : undefined; }
+      else if (q.type === 'text') { val = els[0] ? els[0].value.trim() : ''; }
+      if (q.type === 'text') { answers[q.id] = val || ''; if (!q.optional && !val) missing.push(q); return; }
+      if (val === undefined) { if (!q.optional) missing.push(q); return; }
+      answers[q.id] = val;
+    });
+    if (missing.length) {
+      missing.forEach((q) => { const el = form.querySelector(`[data-q="${CSS.escape(q.id)}"]`); if (el) el.classList.add('missing'); });
+      msg.innerHTML = msgHtml(`尚有 ${missing.length} 題未填答（已以紅色標示），第一題：${missing[0].label}`, 'error');
+      const first = form.querySelector('.missing');
+      if (first) { first.scrollIntoView({ block: 'center' }); const inp = first.querySelector('input, textarea'); if (inp) inp.focus({ preventScroll: true }); }
+      return;
+    }
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '送出中…';
+    msg.innerHTML = '';
+    try {
+      await api(`/api/me/survey/${encodeURIComponent(regId)}`, { method: 'POST', body: { answers } });
+      const r = state.registrations.find((x) => String(x.id) === String(regId));
+      if (r) { r.survey_submitted = true; r.survey_available = false; }
+      renderSurveyList();
+      const card = $(`survey-card-${regId}`);
+      if (card) card.scrollIntoView({ block: 'center' });
+    } catch (err) {
+      if (err instanceof AuthError) return;
+      msg.innerHTML = msgHtml(err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = '送出問卷';
+    }
+  }
+
+  // ---------- 5. quiz ----------
+  function renderQuizList() {
+    const box = $('quiz-body');
+    const regs = state.registrations.filter((r) => r.quiz_available || r.quiz_submitted);
+    if (!regs.length) {
+      box.innerHTML = '<p class="empty-hint">目前沒有開放中的線上測驗。測驗開放後將於此處顯示。</p>';
+      return;
+    }
+    box.innerHTML = regs.map((r) => `
+      <article class="result-card" id="quiz-card-${esc(r.id)}">
+        <div class="card-head"><span class="t">${esc(r.batch_name)}</span>
+          ${r.quiz_submitted ? pill({ label: '已完成測驗', cls: 'pill-green' }) : pill({ label: '開放作答', cls: 'pill-orange' })}</div>
+        ${r.quiz_submitted
+          ? `<div class="summary-grid"><span class="k">測驗狀態</span><span class="v">已完成測驗</span><span class="k">測驗結果</span><span class="v">${passPill(r.written_passed)}</span></div>`
+          : `<p style="margin:0;">每人僅限作答一次，送出後無法修改，請確認網路穩定後再開始作答。</p>
+             <div class="form-actions"><button type="button" class="btn btn-solid" data-start-quiz="${esc(r.id)}">開始測驗</button></div>
+             <div data-quiz-slot="${esc(r.id)}"></div>`}
+      </article>`).join('');
+  }
+
+  async function startQuiz(regId, btn) {
+    const slot = document.querySelector(`[data-quiz-slot="${CSS.escape(String(regId))}"]`);
+    btn.disabled = true;
+    btn.textContent = '載入中…';
+    let data;
+    try {
+      data = await api(`/api/me/quiz/${encodeURIComponent(regId)}`);
+    } catch (err) {
+      if (err instanceof AuthError) return;
+      slot.innerHTML = msgHtml(err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = '開始測驗';
+      if (err.status === 409) reload();
+      return;
+    }
+    btn.parentElement.hidden = true;
+    const qs = data.questions || [];
+    if (!qs.length) { slot.innerHTML = '<p class="empty-hint">題庫尚未建立，請稍後再試。</p>'; return; }
+    const tf = qs.filter((q) => q.qtype === 'tf');
+    const ch = qs.filter((q) => q.qtype !== 'tf');
+    const fid = `qz${regId}`;
+    const letters = ['A', 'B', 'C', 'D'];
+    const block = (q, n, opts) => `
+      <fieldset class="quiz-q" data-q="${esc(q.id)}">
+        <legend class="qt"><span class="qn">${n}.</span>${esc(q.question)}</legend>
+        <div class="choice-group${opts.stack ? ' stack' : ''}">
+          ${opts.items.map((it, k) => `<label class="choice-item" for="${fid}-${esc(q.id)}-${k}"><input type="radio" id="${fid}-${esc(q.id)}-${k}" name="q${esc(q.id)}" value="${esc(it.v)}">${it.html}</label>`).join('')}
+        </div>
+      </fieldset>`;
+    let html = '';
+    if (tf.length) {
+      html += `<div class="sub-section"><h3>是非題（共 ${tf.length} 題）</h3>
+        ${tf.map((q, idx) => block(q, idx + 1, { items: [{ v: 'O', html: '○ 對' }, { v: 'X', html: '✕ 錯' }] })).join('')}</div>`;
+    }
+    if (ch.length) {
+      html += `<div class="sub-section"><h3>選擇題（共 ${ch.length} 題）</h3>
+        ${ch.map((q, idx) => block(q, idx + 1, { stack: true, items: (q.options || []).slice(0, 4).map((o, k) => ({ v: letters[k], html: `(${letters[k]}) ${esc(o)}` })) })).join('')}</div>`;
+    }
+    slot.innerHTML = `
+      <form novalidate style="display:flex; flex-direction:column; gap:16px;">
+        ${html}
+        <div class="qz-msg"></div>
+        <div class="form-actions"><button type="submit" class="btn btn-solid">交卷</button></div>
+      </form>`;
+    const form = slot.querySelector('form');
+    form.addEventListener('submit', (e) => { e.preventDefault(); submitQuiz(regId, form, qs); });
+    const first = form.querySelector('input');
+    if (first) first.focus();
+  }
+
+  async function submitQuiz(regId, form, qs) {
+    const msg = form.querySelector('.qz-msg');
+    const answers = {};
+    let unanswered = 0;
+    qs.forEach((q) => {
+      const c = form.querySelector(`input[name="q${CSS.escape(String(q.id))}"]:checked`);
+      if (c) answers[String(q.id)] = c.value; else unanswered++;
+    });
+    const warn = unanswered ? `尚有 ${unanswered} 題未作答，未作答題目以錯誤計分。\n` : '';
+    if (!window.confirm(`${warn}測驗僅限作答一次，送出後無法修改。確定要交卷嗎？`)) return;
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = '送出中…';
+    msg.innerHTML = '';
+    try {
+      const res = await api(`/api/me/quiz/${encodeURIComponent(regId)}`, { method: 'POST', body: { answers } });
+      const r = state.registrations.find((x) => String(x.id) === String(regId));
+      if (r) { r.quiz_submitted = true; r.quiz_available = false; r.written_passed = res.passed ? 1 : 0; }
+      const card = $(`quiz-card-${regId}`);
+      renderQuizList();
+      renderRegs();
+      const card2 = $(`quiz-card-${regId}`);
+      if (card2) {
+        card2.insertAdjacentHTML('beforeend', `<div role="status"><p style="margin:0;">測驗已送出，您的結果為</p><p class="big-result ${res.passed ? 'pass' : 'fail'}" style="margin:0;">${res.passed ? '合格' : '不合格'}</p></div>`);
+        card2.scrollIntoView({ block: 'center' });
+      } else if (card) { card.scrollIntoView({ block: 'center' }); }
+    } catch (err) {
+      if (err instanceof AuthError) return;
+      msg.innerHTML = msgHtml(err.message, 'error');
+      if (err.status === 409) { reload(); return; }
+      btn.disabled = false;
+      btn.textContent = '交卷';
+    }
+  }
+
+  // ---------- 6. attendance proof ----------
+  function renderProof() {
+    const box = $('proof-body');
+    const regs = approvedRegs();
+    if (!regs.length) {
+      box.innerHTML = '<p class="empty-hint">僅錄取（正取）之梯次可申請參訓證明。</p>';
+    } else {
+      box.innerHTML = `
+        <form id="proof-form" class="result-card" novalidate>
+          <p style="margin:0;">參訓證明由承辦人員核對上課紀錄後核發，核發後可於下方申請紀錄中線上列印。</p>
+          <div id="proof-msg"></div>
+          <div class="field"><label for="pr-reg">參訓梯次 <span class="req">必填</span></label>
+            <select class="select" id="pr-reg" required>${regs.length > 1 ? '<option value="">請選擇</option>' : ''}${regs.map(batchOpt).join('')}</select></div>
+          <div class="field"><label for="pr-reason">申請用途 <span class="opt">選填</span></label>
+            <textarea class="textarea" id="pr-reason" placeholder="例：公務人員時數登錄、公司教育訓練證明"></textarea></div>
+          <div class="form-actions"><button type="submit" class="btn btn-solid" id="pr-submit">送出申請</button></div>
+        </form>`;
+      $('proof-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        submitApplication('attendance_proof', $('pr-reg').value, $('pr-reason').value.trim(), $('proof-msg'), $('pr-submit'));
+      });
+    }
+    $('apps-proof').innerHTML = renderApps('attendance_proof');
+  }
+
+  function printProof(appId) {
+    const a = state.applications.find((x) => String(x.id) === String(appId));
+    if (!a) return;
+    const p = state.profile || {};
+    const name = a.name || p.name || '';
+    const hours = a.total_hours !== null && a.total_hours !== undefined ? Number(a.total_hours) : '';
+    const issued = dateOnly(a.handled_at) || new Date().toISOString().slice(0, 10);
+    const doc = `<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>防災士培訓參訓證明</title>
+<style>
+  @page { size: A4 portrait; margin: 20mm; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Noto Serif TC", "Noto Sans TC", "PMingLiU", serif; color: #000; background: #f2f2f2; }
+  .sheet { width: 210mm; min-height: 297mm; margin: 16px auto; background: #fff; padding: 30mm 25mm; display: flex; flex-direction: column; box-shadow: 0 0 0 1px #ccc; }
+  h1 { text-align: center; font-size: 30pt; letter-spacing: 0.3em; margin: 20mm 0 24mm; }
+  .body { font-size: 16pt; line-height: 2.2; text-align: justify; text-indent: 2em; margin: 0; }
+  .footer { margin-top: auto; text-align: center; font-size: 16pt; line-height: 2; }
+  .footer .org { font-size: 22pt; font-weight: 700; letter-spacing: 0.2em; }
+  .toolbar { text-align: center; padding: 16px; font-family: "Noto Sans TC", sans-serif; }
+  .toolbar button { font: inherit; font-size: 16px; font-weight: 700; padding: 12px 24px; min-height: 48px; border: 0; border-radius: 8px; background: rgb(0,23,193); color: #fff; cursor: pointer; }
+  @media print { body { background: #fff; } .toolbar { display: none; } .sheet { margin: 0; box-shadow: none; width: auto; min-height: 257mm; padding: 10mm 5mm; } }
+</style></head>
+<body>
+  <div class="toolbar"><button type="button" onclick="window.print()">列印</button></div>
+  <div class="sheet">
+    <h1>防災士培訓參訓證明</h1>
+    <p class="body">茲證明 ${esc(name)}（身分證字號 ${esc(maskId(p.id_number))}）參加基隆市政府消防局辦理之「${esc(a.batch_name)}」防災士培訓，上課期間 ${esc(a.start_date)} 至 ${esc(a.end_date)}，地點 ${esc(a.location)}，課程時數共 ${esc(hours)} 小時。</p>
+    <p class="body">特此證明。</p>
+    <div class="footer">
+      <div class="org">基隆市政府消防局</div>
+      <div>核發日期：${esc(issued)}</div>
+    </div>
+  </div>
+</body></html>`;
+    const w = window.open('', '_blank');
+    if (!w) { alert('瀏覽器封鎖了彈出視窗，請允許本網站開啟新視窗後再試一次。'); return; }
+    w.document.open();
+    w.document.write(doc);
+    w.document.close();
+    w.focus();
+  }
+
+  // ---------- 7. materials ----------
+  function renderMaterials() {
+    const box = $('materials-body');
+    const regs = approvedRegs().filter((r) => r.material_key);
+    if (!regs.length) {
+      box.innerHTML = '<p class="empty-hint">錄取（正取）梯次的學員教材將於此處提供下載。</p>';
+      return;
+    }
+    box.innerHTML = regs.map((r) => `
+      <article class="result-card">
+        <div class="card-head"><span class="t">${esc(r.batch_name)}</span><span class="hint-text">${esc(r.start_date)} ～ ${esc(r.end_date)}</span></div>
+        <div class="mat-layout">
+          <div data-mat-list="${esc(r.id)}"><p class="empty-hint">教材清單載入中…</p></div>
+          <div class="qr-box"><div class="qr" data-mat-qr="${esc(r.id)}" role="img" aria-label="本梯次教材下載 QR Code"></div><span>掃描 QR Code 下載本梯次教材</span></div>
+        </div>
+      </article>`).join('');
+    regs.forEach((r) => {
+      const url = `${location.origin}/courses.html?batch=${encodeURIComponent(r.batch_id)}&key=${encodeURIComponent(r.material_key)}#materials`;
+      const qrEl = document.querySelector(`[data-mat-qr="${CSS.escape(String(r.id))}"]`);
+      if (window.QRCode) {
+        try { new QRCode(qrEl, { text: url, width: 160, height: 160 }); } catch (e) { qrEl.textContent = 'QR Code 產生失敗'; }
+      } else {
+        qrEl.innerHTML = `<a href="${esc(url)}">教材頁面連結</a>`;
+      }
+      loadMaterials(r);
+    });
+  }
+
+  async function loadMaterials(r) {
+    const el = document.querySelector(`[data-mat-list="${CSS.escape(String(r.id))}"]`);
+    try {
+      const data = await api(`/api/public/materials?batch_id=${encodeURIComponent(r.batch_id)}&key=${encodeURIComponent(r.material_key)}`, { auth: false });
+      const list = data.enrolled || [];
+      if (!list.length) { el.innerHTML = '<p class="empty-hint">本梯次教材尚未上架，請稍後再查看。</p>'; return; }
+      el.innerHTML = `<ul class="mat-list">${list.map((m) => `
+        <li>
+          <div><div style="font-weight:500;">${esc(m.title || m.original_name)}</div>
+            <div class="meta">${m.instructor_name ? `講師：${esc(m.instructor_name)}　` : ''}${m.original_name ? esc(m.original_name) : ''}</div></div>
+          <a class="btn btn-outlined btn-sm" href="/api/public/materials/${encodeURIComponent(m.id)}/download?key=${encodeURIComponent(r.material_key)}" download>下載<span class="sr-only">：${esc(m.title || m.original_name)}</span></a>
+        </li>`).join('')}</ul>`;
+    } catch (err) {
+      el.innerHTML = msgHtml(err.message, 'error');
+    }
+  }
+
+  // ---------- delegated clicks ----------
+  document.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-print-app], [data-open-survey], [data-start-quiz]');
+    if (!t) return;
+    if (t.dataset.printApp) printProof(t.dataset.printApp);
+    else if (t.dataset.openSurvey) openSurvey(t.dataset.openSurvey, t);
+    else if (t.dataset.startQuiz) startQuiz(t.dataset.startQuiz, t);
+  });
+
+  // ---------- init ----------
+  const initial = (location.hash || '').slice(1);
+  if (tabButtons.some((b) => b.dataset.panel === initial)) currentPanel = initial;
+  if (getToken()) enterPortal(); else showLogin('');
+})();
+</script>
+
+</body>
+</html>

@@ -202,12 +202,36 @@
   /* FAQ + downloads */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
   .two-col h2 { margin: 0 0 20px; font-size: 24px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
-  .faq-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  .faq-list li {
-    border-radius: 8px; box-shadow: 0 0 0 1px var(--border-default); padding: 16px 20px;
-    display: flex; justify-content: space-between; gap: 16px; align-items: center; font-size: 17px;
+  .faq-list { display: flex; flex-direction: column; gap: 8px; }
+  .faq-list details { border-radius: 8px; box-shadow: 0 0 0 1px var(--border-default); }
+  .faq-list summary {
+    list-style: none; cursor: pointer; padding: 16px 20px; font-size: 17px;
+    display: flex; justify-content: space-between; gap: 16px; align-items: center; border-radius: 8px;
   }
-  .faq-list .plus { color: var(--color-key-900); font-size: 20px; }
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::after { content: "＋"; color: var(--color-key-900); font-size: 20px; flex-shrink: 0; }
+  .faq-list details[open] summary::after { content: "－"; }
+  .faq-list details[open] summary { font-weight: 700; color: var(--text-heading); }
+  .faq-list summary:focus-visible {
+    outline: var(--focus-ring-outline-width) solid var(--focus-ring-outline);
+    outline-offset: var(--focus-ring-width); background-color: var(--focus-ring); color: var(--color-neutral-black);
+  }
+  .faq-list .answer { padding: 0 20px 16px; font-size: 16px; line-height: 1.8; }
+  .faq-list .answer p { margin: 0; }
+
+  /* 聯絡我們 */
+  .contact-grid { display: grid; grid-template-columns: 120px 1fr; gap: 12px 24px; margin: 0; font-size: 16px; }
+  .contact-grid dt { color: var(--text-muted); }
+  .contact-grid dd { margin: 0; font-weight: 500; }
+  .contact-card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 24px; }
+
+  .pinned-mark {
+    display: inline-block; font-size: 12px; font-weight: 700; line-height: 1.4; padding: 1px 6px; margin-right: 6px;
+    border-radius: 4px; background: var(--color-semantic-warning-orange-2); color: var(--color-neutral-white); vertical-align: 2px;
+  }
+  .empty-hint { color: var(--text-muted); padding: 16px 0; }
+  .btn[aria-disabled="true"] { background: var(--color-neutral-solidgray-300); color: var(--color-neutral-solidgray-800); cursor: not-allowed; pointer-events: none; }
+  .banner[hidden] { display: none; }
   .dl-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
   .dl-list li {
     padding: 14px 0; border-bottom: 1px solid var(--border-divider);
@@ -224,10 +248,18 @@
   @media (max-width: 900px) {
     .notice-layout { grid-template-columns: 1fr; }
     .two-col { grid-template-columns: 1fr; gap: 40px; }
-    .notice-items li { grid-template-columns: 92px 76px 1fr; gap: 10px; }
+    .notice-items li { grid-template-columns: 92px 108px 1fr; gap: 10px; }
   }
   @media (max-width: 640px) {
     .header-row { flex-direction: column; align-items: flex-start; }
+    .header-actions { flex-wrap: wrap; }
+    .header-actions .btn { min-width: 0; }
+    .notice-items li { grid-template-columns: auto 1fr; gap: 6px 10px; }
+    .notice-items .title-link { grid-column: 1 / -1; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2px; }
+    .contact-grid dd { margin-bottom: 10px; }
+    .section-head h2 { font-size: 24px; }
+    .wrap { padding-inline: 16px; }
     nav.main .wrap { gap: 4px; }
     nav.main a { padding: 10px 12px; }
   }
@@ -251,25 +283,27 @@
     </div>
     <div class="header-actions">
       <a href="status.html" class="btn btn-outlined">查詢報名進度</a>
+      <a href="my.html" class="btn btn-outlined">我的防災士</a>
       <a href="register.html" class="btn btn-solid">我要報名</a>
     </div>
   </div>
-  <nav class="main">
+  <nav class="main" aria-label="主選單">
     <div class="wrap">
       <a href="#notice" class="active">活動公告</a>
       <a href="#sessions">梯次資訊</a>
       <a href="register.html">線上報名</a>
+      <a href="courses.html">培訓課程</a>
+      <a href="my.html">我的防災士</a>
       <a href="#faq">常見問題</a>
-      <a href="#downloads">法規與下載</a>
-      <a href="#footer-contact">聯絡我們</a>
+      <a href="#contact">聯絡我們</a>
     </div>
   </nav>
 </header>
 
-<div class="banner">
+<div class="banner" id="banner" role="status" hidden>
   <div class="wrap">
     <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path fill="currentColor" d="M11 7h2v6h-2zm0 8h2v2h-2zm1-13a10 10 0 100 20 10 10 0 000-20zm0 18a8 8 0 110-16 8 8 0 010 16z"></path></svg>
-    <p><strong>第 4 梯次報名將於 2026 年 9 月 15 日上午 10:00 開放</strong>，名額 60 人，額滿後開放候補登記。</p>
+    <p id="banner-text"></p>
   </div>
 </div>
 
@@ -280,47 +314,23 @@
       <div>
         <div class="section-head">
           <h2>最新消息</h2>
-          <a href="#">更多消息</a>
+          <a href="news.html">更多消息</a>
         </div>
-        <ul class="notice-items">
-          <li>
-            <span class="date">2026-09-01</span>
-            <span class="tag tag-notice">報名公告</span>
-            <a href="#" class="title-link">115 年度基隆市防災士培訓第 4 梯次招生簡章公告</a>
-          </li>
-          <li>
-            <span class="date">2026-08-25</span>
-            <span class="tag tag-change">課程異動</span>
-            <a href="#" class="title-link">第 3 梯次因場地因素順延一週，詳情請點閱說明</a>
-          </li>
-          <li>
-            <span class="date">2026-08-18</span>
-            <span class="tag tag-notice">報名公告</span>
-            <a href="#" class="title-link">115 年度第 2 梯次防災士培訓開放報名</a>
-          </li>
-          <li>
-            <span class="date">2026-08-10</span>
-            <span class="tag tag-cert">證照發放</span>
-            <a href="#" class="title-link">第 1 梯次防災士證照已核發，請於 9 月 30 日前完成領取</a>
-          </li>
-          <li>
-            <span class="date">2026-08-05</span>
-            <span class="tag tag-general">一般公告</span>
-            <a href="#" class="title-link">防災士相關法規及申請表單更新，請至下載專區查閱</a>
-          </li>
+        <ul class="notice-items" id="notice-items" aria-live="polite">
+          <li><span class="date">載入中…</span></li>
         </ul>
       </div>
 
       <aside class="side">
-        <div class="side-card">
-          <span class="card-title">本期報名狀態</span>
+        <div class="side-card" aria-labelledby="reg-status-title">
+          <span class="card-title" id="reg-status-title">本期報名狀態</span>
           <div class="status-rows">
-            <div class="row"><span class="k">梯次</span><span class="v">第 4 梯次</span></div>
-            <div class="row"><span class="k">報名期間</span><span class="v">09/15－09/30</span></div>
-            <div class="row"><span class="k">名額</span><span class="v">60 人</span></div>
-            <div class="row"><span class="k">狀態</span><span class="v warn">尚未開放</span></div>
+            <div class="row"><span class="k">梯次</span><span class="v" id="st-name">—</span></div>
+            <div class="row"><span class="k">報名期間</span><span class="v" id="st-period">—</span></div>
+            <div class="row"><span class="k">名額</span><span class="v" id="st-cap">—</span></div>
+            <div class="row"><span class="k">狀態</span><span class="v warn" id="st-status">載入中…</span></div>
           </div>
-          <a href="register.html" class="btn btn-solid btn-lg btn-full">前往線上報名</a>
+          <a href="register.html" class="btn btn-solid btn-lg btn-full" id="st-register" hidden>前往線上報名</a>
           <a href="status.html" class="side-link">查詢報名進度／候補序號</a>
         </div>
         <div class="side-card muted">
@@ -334,7 +344,7 @@
   <section id="sessions" class="wrap">
     <div class="section-head">
       <h2>各梯次培訓資訊</h2>
-      <a href="#">查看全部梯次</a>
+      <a href="courses.html#schedule">課程時程查詢</a>
     </div>
     <div class="table-scroll">
       <table class="sessions">
@@ -358,12 +368,32 @@
   <section class="wrap two-col">
     <div>
       <h2 id="faq">常見問題</h2>
-      <ul class="faq-list">
-        <li>報名資格有年齡限制嗎？<span class="plus">＋</span></li>
-        <li>已持有 EMT1 證照可以折抵課程嗎？<span class="plus">＋</span></li>
-        <li>證件照的規格與檔案大小限制？<span class="plus">＋</span></li>
-        <li>候補名單如何遞補？會如何通知？<span class="plus">＋</span></li>
-      </ul>
+      <div class="faq-list">
+        <details>
+          <summary>報名資格有年齡限制嗎？</summary>
+          <div class="answer"><p>報名者須年滿 18 歲，並設籍或就業於基隆市。報名時請依表單填寫戶籍或服務單位資料，承辦單位將於審核時確認資格。</p></div>
+        </details>
+        <details>
+          <summary>已持有 EMT1 證照可以折抵課程嗎？</summary>
+          <div class="answer"><p>持有 EMT1 等相關證照者，請於報名表「相關證照」欄位填寫並上傳證明。可否折抵及折抵時數，依內政部消防署防災士培訓相關規定，由承辦單位審核後通知。</p></div>
+        </details>
+        <details>
+          <summary>證件照的規格與檔案大小限制？</summary>
+          <div class="answer"><p>請上傳六個月內二吋正面脫帽證件照，檔案格式為 JPG 或 PNG，大小 5MB 以內。照片將用於防災士證照製作，請確認清晰可辨識。</p></div>
+        </details>
+        <details>
+          <summary>候補名單如何遞補？會如何通知？</summary>
+          <div class="answer"><p>梯次額滿後仍可登記候補，候補依報名順序遞補。如有正取學員放棄或未完成報到，承辦單位將以 Email／簡訊通知遞補者，並可於「<a href="status.html">查詢報名進度</a>」查看候補序號。</p></div>
+        </details>
+        <details>
+          <summary>如何查詢錄取結果與測驗成績？</summary>
+          <div class="answer"><p>錄取結果可於「<a href="status.html">查詢報名進度</a>」查詢；結訓後的測驗成績、上課紀錄與證照進度，請登入「<a href="my.html">我的防災士</a>」查看。</p></div>
+        </details>
+        <details>
+          <summary>證照何時可以領取？</summary>
+          <div class="answer"><p>防災士證照由中央（內政部消防署）核發，核發後承辦單位將另行通知領取方式與時間；期間可於「<a href="my.html">我的防災士</a>」查詢證照進度。</p></div>
+        </details>
+      </div>
     </div>
     <div>
       <h2 id="downloads">法規與文件下載</h2>
@@ -374,6 +404,21 @@
         <li><a href="#">參訓證明申請書</a><span class="meta">ODT・64KB</span></li>
         <li><a href="#">證照遺失補發申請書</a><span class="meta">ODT・58KB</span></li>
       </ul>
+    </div>
+  </section>
+
+  <section id="contact" class="wrap" aria-labelledby="contact-title">
+    <div class="section-head">
+      <h2 id="contact-title">聯絡我們</h2>
+    </div>
+    <div class="contact-card">
+      <dl class="contact-grid">
+        <dt>承辦單位</dt><dd>基隆市政府消防局 災害管理科</dd>
+        <dt>電話</dt><dd><a href="tel:+886224310119,302">(02) 2431-0119 分機 302</a></dd>
+        <dt>傳真</dt><dd>(02) 2422-1119</dd>
+        <dt>地址</dt><dd>20144 基隆市信義區信一路 190 號</dd>
+        <dt>服務時間</dt><dd>週一至週五 08:30－17:30</dd>
+      </dl>
     </div>
   </section>
 
@@ -395,38 +440,118 @@
 </footer>
 
 <script>
+  function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  const datePart = (v) => (v ? String(v).split(/[ T]/)[0] : '');
+
   const statusPill = {
     open: ['status-open', '開放報名中'],
     upcoming: ['status-full', '尚未開放'],
     full: ['status-full', '已額滿・候補中'],
     closed: ['status-done', '已結訓'],
   };
+  const annCat = {
+    register: ['tag-notice', '報名公告'],
+    batch: ['tag-notice', '梯次資訊'],
+    change: ['tag-change', '開課通知／異動'],
+    cert: ['tag-cert', '證照發放'],
+    general: ['tag-general', '一般公告'],
+  };
+
+  // 最新消息
+  fetch('/api/public/announcements?limit=8')
+    .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
+    .then((data) => {
+      const list = document.getElementById('notice-items');
+      const items = data.announcements || [];
+      if (!items.length) {
+        list.innerHTML = '<li class="empty-hint" style="display:block;">目前尚無公告</li>';
+        return;
+      }
+      list.innerHTML = items.map((a) => {
+        const [cls, label] = annCat[a.category] || annCat.general;
+        return `
+          <li>
+            <span class="date">${esc(datePart(a.published_at))}</span>
+            <span class="tag ${cls}">${label}</span>
+            <span>${a.pinned ? '<span class="pinned-mark">置頂</span>' : ''}<a href="news.html?id=${encodeURIComponent(a.id)}" class="title-link">${esc(a.title)}</a></span>
+          </li>`;
+      }).join('');
+    })
+    .catch(() => {
+      document.getElementById('notice-items').innerHTML = '<li class="empty-hint" style="display:block;">公告載入失敗，請稍後再試。</li>';
+    });
+
+  // 梯次：橫幅、本期報名狀態、梯次表
+  function renderCurrent(batches) {
+    const open = batches.find((b) => b.status === 'open');
+    const upcoming = batches
+      .filter((b) => b.status === 'upcoming')
+      .sort((a, b) => String(a.start_date).localeCompare(String(b.start_date)))[0];
+    const cur = open || upcoming;
+
+    const banner = document.getElementById('banner');
+    const bannerText = document.getElementById('banner-text');
+    if (open) {
+      const rs = datePart(open.register_start), re = datePart(open.register_end);
+      const period = rs && re ? `，報名期間 ${esc(rs)}～${esc(re)}` : '';
+      bannerText.innerHTML = `<strong>${esc(open.name)} 開放報名中</strong>${period}，名額 ${esc(open.capacity)} 人，額滿後開放候補登記。`;
+      banner.hidden = false;
+    } else if (upcoming) {
+      const rs = datePart(upcoming.register_start);
+      bannerText.innerHTML = `<strong>${esc(upcoming.name)} 即將開放報名</strong>${rs ? `，預計 ${esc(rs)} 起開放` : ''}，名額 ${esc(upcoming.capacity)} 人，敬請留意最新消息。`;
+      banner.hidden = false;
+    } else {
+      banner.hidden = true;
+    }
+
+    const $ = (id) => document.getElementById(id);
+    const btn = $('st-register');
+    if (!cur) {
+      $('st-name').textContent = '—';
+      $('st-period').textContent = '—';
+      $('st-cap').textContent = '—';
+      $('st-status').textContent = '目前無開放梯次';
+      btn.hidden = true;
+      return;
+    }
+    const rs = datePart(cur.register_start), re = datePart(cur.register_end);
+    $('st-name').textContent = cur.name;
+    $('st-period').textContent = rs && re ? `${rs}～${re}` : '—';
+    $('st-cap').textContent = `${cur.registered_count ?? 0} / ${cur.capacity} 人`;
+    $('st-status').textContent = (statusPill[cur.status] || [null, cur.status])[1];
+    btn.hidden = cur.status !== 'open';
+  }
 
   fetch('/api/batches')
-    .then((r) => r.json())
+    .then((r) => { if (!r.ok) throw new Error(); return r.json(); })
     .then((data) => {
       const tbody = document.getElementById('sessions-body');
       const batches = data.batches || [];
+      renderCurrent(batches);
       if (!batches.length) {
         tbody.innerHTML = '<tr><td colspan="6">目前尚無梯次資訊</td></tr>';
         return;
       }
       tbody.innerHTML = batches.map((b, i) => {
         const [cls, label] = statusPill[b.status] || ['status-full', b.status];
+        const id = encodeURIComponent(b.id);
         return `
           <tr${i % 2 ? ' class="alt"' : ''}>
-            <td style="font-weight:700;">${b.name}</td>
-            <td>${b.start_date} ～ ${b.end_date}</td>
-            <td>${b.location}</td>
-            <td>${b.capacity} 人</td>
-            <td><span class="status-pill ${cls}">${label}</span></td>
-            <td>${b.status === 'open' ? '<a href="register.html">前往報名</a>' : '—'}</td>
+            <td style="font-weight:700;white-space:nowrap;">${esc(b.name)}</td>
+            <td style="white-space:nowrap;">${esc(b.start_date)} ～ ${esc(b.end_date)}</td>
+            <td>${esc(b.location)}</td>
+            <td style="white-space:nowrap;">${esc(b.capacity)} 人</td>
+            <td style="white-space:nowrap;"><span class="status-pill ${cls}">${esc(label)}</span></td>
+            <td style="white-space:nowrap;"><a href="courses.html?batch=${id}#schedule" aria-label="${esc(b.name)} 課程表">課程表</a>${b.status === 'open' ? `<br><a href="register.html" aria-label="${esc(b.name)} 前往報名">前往報名</a>` : ''}</td>
           </tr>
         `;
       }).join('');
     })
     .catch(() => {
       document.getElementById('sessions-body').innerHTML = '<tr><td colspan="6">梯次資訊載入失敗</td></tr>';
+      document.getElementById('st-status').textContent = '資訊載入失敗';
     });
 </script>
 

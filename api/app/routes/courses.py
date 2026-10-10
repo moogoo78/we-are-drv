@@ -1,7 +1,8 @@
-from flask import Blueprint, g, jsonify, request
+from flask import Blueprint, g, jsonify, request, send_from_directory
 
 from ..auth import require_auth, require_role
 from ..db import get_db
+from ..files import remove_file, save_image, save_material, upload_path
 from ..log import log_action
 
 courses_bp = Blueprint("courses", __name__)
@@ -98,3 +99,143 @@ def delete_session(session_id):
 
     log_action(g.user["name"], "刪除課程", existing["topic"])
     return "", 204
+
+
+# ---- 課程照片 ----
+
+@courses_bp.route("/photos", methods=["GET"])
+@require_auth
+def list_photos():
+    batch_id = request.args.get("batch_id")
+    conn = get_db()
+    sql = """SELECT p.id, p.batch_id, p.file_path, p.caption, p.created_at, b.name AS batch_name
+             FROM course_photos p JOIN batches b ON b.id = p.batch_id"""
+    rows = conn.execute(
+        sql + (" WHERE p.batch_id = ?" if batch_id else "") + " ORDER BY p.created_at DESC",
+        (batch_id,) if batch_id else (),
+    ).fetchall()
+    conn.close()
+    return jsonify({"photos": [dict(r) for r in rows]})
+
+
+@courses_bp.route("/photos", methods=["POST"])
+@require_auth
+@require_role("admin", "staff")
+def upload_photo():
+    batch_id = request.form.get("batch_id")
+    files = [f for f in request.files.getlist("photo") if f and f.filename]
+    if not batch_id or not files:
+        return jsonify({"error": "請選擇梯次與照片"}), 400
+    conn = get_db()
+    batch = conn.execute("SELECT name FROM batches WHERE id = ?", (batch_id,)).fetchone()
+    if not batch:
+        conn.close()
+        return jsonify({"error": "找不到指定梯次"}), 400
+    saved = 0
+    for f in files:
+        filename = save_image(f, "photos")
+        if filename:
+            conn.execute(
+                "INSERT INTO course_photos (batch_id, file_path, caption) VALUES (?, ?, ?)",
+                (batch_id, filename, request.form.get("caption") or None),
+            )
+            saved += 1
+    conn.commit()
+    conn.close()
+    if not saved:
+        return jsonify({"error": "照片僅接受 JPG 或 PNG"}), 400
+    log_action(g.user["name"], "上傳課程照片", f'{batch["name"]} {saved} 張')
+    return jsonify({"saved": saved}), 201
+
+
+@courses_bp.route("/photos/<int:photo_id>", methods=["DELETE"])
+@require_auth
+@require_role("admin", "staff")
+def delete_photo(photo_id):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM course_photos WHERE id = ?", (photo_id,)).fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"error": "找不到照片"}), 404
+    conn.execute("DELETE FROM course_photos WHERE id = ?", (photo_id,))
+    conn.commit()
+    conn.close()
+    remove_file("photos", row["file_path"])
+    log_action(g.user["name"], "刪除課程照片", f"#{photo_id}")
+    return "", 204
+
+
+# ---- 課程教材 ----
+
+@courses_bp.route("/materials", methods=["GET"])
+@require_auth
+def list_materials():
+    batch_id = request.args.get("batch_id")
+    conn = get_db()
+    sql = """SELECT m.id, m.batch_id, m.instructor_id, m.title, m.file_path, m.original_name, m.visibility, m.created_at,
+                    b.name AS batch_name, i.name AS instructor_name
+             FROM course_materials m
+             LEFT JOIN batches b ON b.id = m.batch_id
+             LEFT JOIN instructors i ON i.id = m.instructor_id"""
+    rows = conn.execute(
+        sql + (" WHERE m.batch_id = ?" if batch_id else "") + " ORDER BY m.created_at DESC",
+        (batch_id,) if batch_id else (),
+    ).fetchall()
+    conn.close()
+    return jsonify({"materials": [dict(r) for r in rows]})
+
+
+@courses_bp.route("/materials", methods=["POST"])
+@require_auth
+@require_role("admin", "staff")
+def upload_material():
+    f = request.files.get("file")
+    title = (request.form.get("title") or "").strip()
+    if not f or not f.filename or not title:
+        return jsonify({"error": "請填寫教材名稱並選擇檔案"}), 400
+    visibility = request.form.get("visibility")
+    if visibility not in ("public", "enrolled"):
+        visibility = "enrolled"
+    filename = save_material(f)
+    if not filename:
+        return jsonify({"error": "不支援的檔案格式（接受 PDF、Office、ODF、ZIP、圖片）"}), 400
+    conn = get_db()
+    cur = conn.execute(
+        """INSERT INTO course_materials (batch_id, instructor_id, title, file_path, original_name, visibility)
+           VALUES (?, ?, ?, ?, ?, ?)""",
+        (request.form.get("batch_id") or None, request.form.get("instructor_id") or None,
+         title, filename, f.filename, visibility),
+    )
+    conn.commit()
+    conn.close()
+    log_action(g.user["name"], "上傳教材", title)
+    return jsonify({"id": cur.lastrowid}), 201
+
+
+@courses_bp.route("/materials/<int:material_id>", methods=["DELETE"])
+@require_auth
+@require_role("admin", "staff")
+def delete_material(material_id):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM course_materials WHERE id = ?", (material_id,)).fetchone()
+    if not row:
+        conn.close()
+        return jsonify({"error": "找不到教材"}), 404
+    conn.execute("DELETE FROM course_materials WHERE id = ?", (material_id,))
+    conn.commit()
+    conn.close()
+    remove_file("materials", row["file_path"])
+    log_action(g.user["name"], "刪除教材", row["title"])
+    return "", 204
+
+
+@courses_bp.route("/materials/<int:material_id>/download", methods=["GET"])
+@require_auth
+def download_material(material_id):
+    conn = get_db()
+    row = conn.execute("SELECT * FROM course_materials WHERE id = ?", (material_id,)).fetchone()
+    conn.close()
+    if not row:
+        return jsonify({"error": "找不到教材"}), 404
+    return send_from_directory(upload_path("materials"), row["file_path"], as_attachment=True,
+                               download_name=row["original_name"] or row["file_path"])

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>培訓課程 | 基隆市防災士培訓報名系統</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --color-neutral-white: rgb(255,255,255);
+    --color-neutral-black: rgb(0,0,0);
+    --color-neutral-solidgray-50: rgb(242,242,242);
+    --color-neutral-solidgray-100: rgb(230,230,230);
+    --color-neutral-solidgray-200: rgb(204,204,204);
+    --color-neutral-solidgray-420: rgb(148,148,148);
+    --color-neutral-solidgray-600: rgb(102,102,102);
+    --color-neutral-solidgray-800: rgb(51,51,51);
+    --color-neutral-solidgray-900: rgb(26,26,26);
+    --color-primitive-blue-100: rgb(217,230,255);
+    --color-primitive-blue-200: rgb(197,215,251);
+    --color-primitive-blue-300: rgb(157,183,249);
+    --color-primitive-blue-900: rgb(0,23,193);
+    --color-primitive-blue-1000: rgb(0,17,143);
+    --color-primitive-blue-1200: rgb(0,0,96);
+    --color-primitive-orange-100: rgb(255,223,202);
+    --color-primitive-orange-800: rgb(199,71,0);
+    --color-primitive-green-100: rgb(194,229,209);
+    --color-primitive-green-800: rgb(25,122,75);
+    --color-primitive-red-100: rgb(255,218,218);
+    --color-primitive-red-800: rgb(236,0,0);
+    --color-primitive-yellow-300: rgb(255,212,61);
+    --color-key-200: var(--color-primitive-blue-200);
+    --color-key-300: var(--color-primitive-blue-300);
+    --color-key-900: var(--color-primitive-blue-900);
+    --color-key-1000: var(--color-primitive-blue-1000);
+    --color-key-1200: var(--color-primitive-blue-1200);
+    --text-body: var(--color-neutral-solidgray-800);
+    --text-heading: var(--color-neutral-solidgray-900);
+    --text-muted: var(--color-neutral-solidgray-600);
+    --border-default: var(--color-neutral-solidgray-420);
+    --border-subtle: var(--color-neutral-solidgray-200);
+    --border-divider: var(--color-neutral-solidgray-100);
+    --error: var(--color-primitive-red-800);
+    --font-sans: "Noto Sans TC", "Noto Sans JP", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.7; letter-spacing: 0.02em; color: var(--text-body); background: var(--color-neutral-white); -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-key-900); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--color-key-1000); }
+  a:focus-visible, button:focus-visible { outline: 4px solid var(--color-neutral-black); outline-offset: 2px; background-color: var(--color-primitive-yellow-300); color: #000; text-decoration: none; border-radius: 2px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-family: var(--font-sans); font-weight: 700; font-size: 16px; line-height: 1; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 0; border-radius: 8px; padding: 12px 16px; min-height: 48px; }
+  .btn-solid { background: var(--color-key-900); color: #fff; }
+  .btn-solid:hover { background: var(--color-key-1000); color: #fff; }
+  .btn-outlined { background: #fff; color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .btn-outlined:hover { background: var(--color-key-200); color: var(--color-key-1000); }
+  .util-bar { background: var(--color-neutral-solidgray-50); border-bottom: 1px solid var(--border-subtle); }
+  .util-bar .wrap { padding-block: 8px; display: flex; justify-content: flex-end; gap: 24px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+  .util-bar a { text-decoration: none; }
+  header.site { border-bottom: 1px solid var(--border-default); }
+  .header-row { padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 2px; color: inherit; text-decoration: none; }
+  .brand .org { font-size: 14px; line-height: 1.4; color: var(--text-muted); }
+  .brand .site-name { font-size: 24px; font-weight: 700; line-height: 1.4; color: var(--text-heading); }
+  .header-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  nav.main { border-top: 1px solid var(--border-divider); }
+  nav.main .wrap { display: flex; flex-wrap: wrap; }
+  nav.main a { padding: 14px 20px; text-decoration: none; color: var(--text-body); }
+  nav.main a[aria-current="page"] { font-weight: 700; color: var(--text-heading); box-shadow: inset 0 -4px 0 var(--color-key-900); }
+
+  main.subpage { max-width: 1120px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+  .crumb { font-size: 16px; color: var(--text-muted); }
+  .page-title { margin: 0; font-size: 36px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-family: inherit; font-size: 16px; min-height: 40px; padding: 6px 16px; border: 0; border-radius: 9999px; cursor: pointer; background: #fff; color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .chip:hover { background: var(--color-key-200); }
+  .chip[aria-pressed="true"] { background: var(--color-key-900); color: #fff; font-weight: 700; }
+
+  .notice-items { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--text-heading); }
+  .notice-items li { display: grid; grid-template-columns: 112px 128px 1fr; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-divider); }
+  .date { color: var(--text-muted); }
+  .tag { justify-self: start; font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; white-space: nowrap; }
+  .tag-notice { background: var(--color-primitive-blue-100); color: var(--color-primitive-blue-900); }
+  .tag-change { background: var(--color-primitive-orange-100); color: var(--color-primitive-orange-800); }
+  .tag-cert   { background: var(--color-primitive-green-100); color: var(--color-primitive-green-800); }
+  .tag-general{ background: var(--color-neutral-solidgray-100); color: var(--color-neutral-solidgray-800); }
+  .title-link { font-size: 17px; }
+  .pinned-mark { display: inline-block; font-size: 12px; font-weight: 700; line-height: 1.4; padding: 1px 6px; margin-right: 6px; border-radius: 4px; background: var(--color-primitive-orange-800); color: #fff; vertical-align: 2px; }
+  .empty-hint { color: var(--text-muted); padding: 24px 0; }
+  .form-msg.error { padding: 14px 18px; border-radius: 8px; background: var(--color-primitive-red-100); color: var(--error); }
+
+  article.ann { display: flex; flex-direction: column; gap: 16px; }
+  .ann-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 2px solid var(--text-heading); }
+  .ann-content { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 17px; line-height: 1.9; margin: 0; padding-bottom: 24px; border-bottom: 1px solid var(--border-divider); }
+  .back-link { align-self: flex-start; }
+
+  footer.site { background: var(--color-neutral-solidgray-50); border-top: 1px solid var(--border-default); }
+  footer.site .wrap { padding-block: 32px; display: flex; flex-direction: column; gap: 8px; }
+  footer.site .org-name { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  footer.site p { margin: 0; }
+
+
+  .subnav { position: sticky; top: 0; z-index: 5; background: #fff; border-bottom: 1px solid var(--border-subtle); }
+  .subnav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; padding-block: 12px; }
+  .subnav a { display: inline-block; padding: 6px 16px; border-radius: 9999px; text-decoration: none; box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .subnav a:hover { background: var(--color-key-200); }
+  section.block { scroll-margin-top: 80px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-bottom: 12px; border-bottom: 2px solid var(--text-heading); margin-bottom: 20px; }
+  .section-head h2 { margin: 0; font-size: 28px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
+  .note { color: var(--text-muted); font-size: 15px; margin: 0 0 16px; }
+  .field-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px; }
+  .field-row label { font-weight: 700; }
+  .select { height: 48px; min-width: 240px; max-width: 100%; padding: 0 12px; border: 0; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--color-neutral-solidgray-600); font-size: 16px; font-family: inherit; background: #fff; color: var(--text-body); }
+  .select:focus { outline: 4px solid #000; outline-offset: 2px; box-shadow: inset 0 0 0 2px var(--color-key-900); }
+  .table-scroll { overflow-x: auto; }
+  table.data { border-collapse: collapse; width: 100%; font-size: 16px; }
+  table.data caption { text-align: left; font-weight: 700; padding-bottom: 8px; color: var(--text-heading); }
+  table.data th { background: var(--color-neutral-solidgray-100); padding: 14px 16px; text-align: left; font-weight: 700; border-bottom: 1px solid var(--border-default); white-space: nowrap; }
+  table.data td { padding: 16px; border-bottom: 1px solid var(--border-default); vertical-align: top; }
+  table.data tr:nth-child(even) td { background: var(--color-neutral-solidgray-50); }
+  table.data td.nowrap { white-space: nowrap; }
+  .muted { color: var(--text-muted); font-size: 14px; }
+
+  .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .card { border-radius: 16px; box-shadow: 0 0 0 1px var(--border-default); padding: 20px 24px; display: flex; flex-direction: column; gap: 8px; }
+  .card h3 { margin: 0; font-size: 20px; color: var(--text-heading); }
+  .card .title { color: var(--text-muted); margin: 0; }
+  .card .topics-label { font-size: 14px; font-weight: 700; margin-top: 4px; }
+  .card ul.topics { margin: 0; padding-left: 20px; }
+
+  .file-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border-divider); }
+  .file-list li { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; padding: 14px 0; border-bottom: 1px solid var(--border-divider); font-size: 17px; }
+  .file-list .meta { color: var(--text-muted); font-size: 14px; }
+  .enrolled-box { background: var(--color-primitive-blue-100); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; box-shadow: inset 4px 0 0 var(--color-key-900); }
+  .enrolled-box h3 { margin: 0 0 8px; font-size: 20px; color: var(--text-heading); }
+  .enrolled-box .file-list { border-color: var(--color-primitive-blue-300); }
+  .enrolled-box .file-list li { border-color: var(--color-primitive-blue-300); }
+
+  .gallery { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .gallery button { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; text-align: left; font: inherit; color: inherit; border-radius: 12px; }
+  .gallery button:focus-visible { outline: 4px solid #000; outline-offset: 2px; }
+  .gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; background: var(--color-neutral-solidgray-100); }
+  .gallery .cap { display: block; padding: 8px 2px 0; font-size: 15px; line-height: 1.5; }
+  .gallery .batch { display: block; color: var(--text-muted); font-size: 13px; }
+
+  dialog.lightbox { border: 0; padding: 0; max-width: min(1000px, 94vw); background: transparent; }
+  dialog.lightbox::backdrop { background: rgba(0,0,0,.8); }
+  .lightbox figure { margin: 0; background: #fff; border-radius: 12px; overflow: hidden; }
+  .lightbox img { display: block; max-width: 100%; max-height: 78vh; margin: 0 auto; background: #000; }
+  .lightbox figcaption { padding: 12px 16px; display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+  .lightbox .close { min-height: 40px; }
+
+  @media (max-width: 640px) {
+    .wrap, main.subpage { padding-inline: 16px; }
+    .header-row { flex-direction: column; align-items: flex-start; }
+    nav.main a { padding: 10px 12px; }
+    .page-title { font-size: 28px; }
+    .section-head h2 { font-size: 24px; }
+    .select { min-width: 0; width: 100%; }
+    .gallery { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .cards { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="util-bar">
+  <div class="wrap">
+    <a href="index.html">回首頁</a>
+    <a href="admin.html">承辦人員登入</a>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap header-row">
+    <a class="brand" href="index.html">
+      <span class="org">基隆市政府消防局</span>
+      <span class="site-name">基隆市防災士培訓報名系統</span>
+    </a>
+    <div class="header-actions">
+      <a href="status.html" class="btn btn-outlined">查詢報名進度</a>
+      <a href="my.html" class="btn btn-outlined">我的防災士</a>
+      <a href="register.html" class="btn btn-solid">我要報名</a>
+    </div>
+  </div>
+  <nav class="main" aria-label="主選單">
+    <div class="wrap">
+      <a href="news.html">活動公告</a>
+      <a href="index.html#sessions">梯次資訊</a>
+      <a href="register.html">線上報名</a>
+      <a href="courses.html" aria-current="page">培訓課程</a>
+      <a href="my.html">我的防災士</a>
+      <a href="index.html#faq">常見問題</a>
+      <a href="index.html#contact">聯絡我們</a>
+    </div>
+  </nav>
+</header>
+
+<main class="subpage">
+  <nav class="crumb" aria-label="麵包屑"><a href="index.html">首頁</a>　/　培訓課程</nav>
+  <h1 class="page-title">培訓課程</h1>
+
+  <nav class="subnav" aria-label="本頁導覽">
+    <ul>
+      <li><a href="#schedule">課程時程查詢</a></li>
+      <li><a href="#instructors">講師查詢</a></li>
+      <li><a href="#materials">講義下載</a></li>
+      <li><a href="#photos">課程實況</a></li>
+    </ul>
+  </nav>
+
+  <section id="schedule" class="block" aria-labelledby="schedule-title">
+    <div class="section-head"><h2 id="schedule-title">課程時程查詢</h2></div>
+    <p class="note">可選擇目前及歷屆梯次，查詢各梯次課程時程（含歷屆資料）。</p>
+    <div class="field-row">
+      <label for="batch-select">梯次</label>
+      <select id="batch-select" class="select"><option value="">載入中…</option></select>
+    </div>
+    <div id="schedule-body" aria-live="polite"><p class="empty-hint">課程時程載入中…</p></div>
+  </section>
+
+  <section id="instructors" class="block" aria-labelledby="instructors-title">
+    <div class="section-head"><h2 id="instructors-title">講師查詢</h2></div>
+    <div id="instructors-body"><p class="empty-hint">講師資料載入中…</p></div>
+  </section>
+
+  <section id="materials" class="block" aria-labelledby="materials-title">
+    <div class="section-head"><h2 id="materials-title">講義下載</h2></div>
+    <div id="enrolled-body"></div>
+    <h3 style="margin:0 0 8px;font-size:20px;color:var(--text-heading);">公開講義</h3>
+    <div id="materials-body"><p class="empty-hint">講義載入中…</p></div>
+  </section>
+
+  <section id="photos" class="block" aria-labelledby="photos-title">
+    <div class="section-head"><h2 id="photos-title">課程實況</h2></div>
+    <p class="note">課程影片僅作為存檔使用，不對外公開。</p>
+    <div class="field-row">
+      <label for="photo-batch">梯次篩選</label>
+      <select id="photo-batch" class="select"><option value="">全部梯次</option></select>
+    </div>
+    <div id="photos-body" aria-live="polite"><p class="empty-hint">照片載入中…</p></div>
+  </section>
+</main>
+
+<dialog class="lightbox" id="lightbox" aria-labelledby="lb-cap">
+  <figure>
+    <img id="lb-img" src="" alt="">
+    <figcaption>
+      <span id="lb-cap"></span>
+      <button type="button" class="btn btn-outlined close" id="lb-close">關閉</button>
+    </figcaption>
+  </figure>
+</dialog>
+
+<footer class="site">
+  <div class="wrap">
+    <span class="org-name">基隆市政府消防局</span>
+    <p>20144 基隆市信義區信一路 190 號　電話：(02) 2431-0119　傳真：(02) 2422-1119</p>
+  </div>
+</footer>
+
+<script>
+  function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  const datePart = (v) => (v ? String(v).split(/[ T]/)[0] : '');
+  const timePart = (v) => (v ? String(v).slice(0, 5) : '');
+  const empty = (msg) => `<p class="empty-hint">${esc(msg)}</p>`;
+  async function getJSON(url) {
+    const r = await fetch(url);
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) { const e = new Error(data.error || '資料載入失敗，請稍後再試。'); e.status = r.status; throw e; }
+    return data;
+  }
+
+  const params = new URLSearchParams(location.search);
+  const paramBatch = params.get('batch');
+  const materialKey = params.get('key');
+  const statusLabel = { open: '開放報名中', upcoming: '尚未開放', full: '已額滿', closed: '已結訓' };
+
+  // 1. 課程時程
+  const batchSelect = document.getElementById('batch-select');
+  const photoSelect = document.getElementById('photo-batch');
+  const scheduleBody = document.getElementById('schedule-body');
+
+  async function loadSchedule() {
+    const id = batchSelect.value;
+    if (!id) { scheduleBody.innerHTML = empty('目前尚無梯次資料'); return; }
+    scheduleBody.innerHTML = empty('課程時程載入中…');
+    try {
+      const { sessions = [] } = await getJSON(`/api/public/sessions?batch_id=${encodeURIComponent(id)}`);
+      const name = batchSelect.selectedOptions[0]?.dataset.name || '';
+      if (!sessions.length) { scheduleBody.innerHTML = empty(`${name} 尚未公布課程時程`); return; }
+      const total = sessions.reduce((s, x) => s + (Number(x.hours) || 0), 0);
+      scheduleBody.innerHTML = `
+        <div class="table-scroll">
+          <table class="data">
+            <caption>${esc(name)} 課程時程${sessions[0].location ? `（上課地點：${esc(sessions[0].location)}）` : ''}</caption>
+            <thead><tr><th scope="col">日期</th><th scope="col">時間</th><th scope="col">課程</th><th scope="col">講師</th><th scope="col">時數</th></tr></thead>
+            <tbody>${sessions.map((s) => `
+              <tr>
+                <td class="nowrap">${esc(s.session_date)}</td>
+                <td class="nowrap">${esc(timePart(s.start_time)) || '—'}</td>
+                <td>${esc(s.topic)}</td>
+                <td>${s.instructor_name ? `${esc(s.instructor_name)}${s.instructor_title ? `<br><span class="muted">${esc(s.instructor_title)}</span>` : ''}` : '—'}</td>
+                <td class="nowrap">${s.hours != null ? `${esc(s.hours)} 小時` : '—'}</td>
+              </tr>`).join('')}
+            </tbody>
+            <tfoot><tr><td colspan="4" style="text-align:right;font-weight:700;">合計</td><td class="nowrap" style="font-weight:700;">${esc(total)} 小時</td></tr></tfoot>
+          </table>
+        </div>`;
+    } catch (e) {
+      scheduleBody.innerHTML = empty(e.message);
+    }
+  }
+
+  async function loadBatches() {
+    try {
+      const { batches = [] } = await getJSON('/api/batches');
+      const sorted = [...batches].sort((a, b) => String(b.start_date).localeCompare(String(a.start_date)));
+      if (!sorted.length) {
+        batchSelect.innerHTML = '<option value="">目前尚無梯次</option>';
+        batchSelect.disabled = true;
+      } else {
+        batchSelect.innerHTML = sorted.map((b) => {
+          const hist = b.status === 'closed' ? '（歷屆）' : `（${statusLabel[b.status] || esc(b.status)}）`;
+          return `<option value="${esc(b.id)}" data-name="${esc(b.name)}">${esc(b.name)}　${esc(b.start_date)}${hist}</option>`;
+        }).join('');
+        const open = sorted.find((b) => b.status === 'open');
+        const pick = sorted.find((b) => String(b.id) === paramBatch) || open || sorted[0];
+        batchSelect.value = String(pick.id);
+      }
+      photoSelect.innerHTML = '<option value="">全部梯次</option>' +
+        sorted.map((b) => `<option value="${esc(b.id)}">${esc(b.name)}</option>`).join('');
+    } catch (e) {
+      batchSelect.innerHTML = '<option value="">梯次載入失敗</option>';
+      batchSelect.disabled = true;
+    }
+    loadSchedule();
+  }
+  batchSelect.addEventListener('change', () => {
+    const url = new URL(location.href);
+    url.searchParams.set('batch', batchSelect.value);
+    history.replaceState(null, '', url);
+    loadSchedule();
+  });
+
+  // 2. 講師
+  async function loadInstructors() {
+    const box = document.getElementById('instructors-body');
+    try {
+      const { instructors = [] } = await getJSON('/api/public/instructors');
+      if (!instructors.length) { box.innerHTML = empty('目前尚無講師資料'); return; }
+      box.innerHTML = `<ul class="cards">${instructors.map((i) => `
+        <li class="card">
+          <h3>${esc(i.name)}</h3>
+          ${i.title ? `<p class="title">${esc(i.title)}</p>` : ''}
+          <span class="topics-label">授課課程</span>
+          ${(i.topics || []).length
+            ? `<ul class="topics">${i.topics.map((t) => `<li>${esc(t)}</li>`).join('')}</ul>`
+            : '<span class="muted">尚未排定課程</span>'}
+        </li>`).join('')}</ul>`;
+    } catch (e) {
+      box.innerHTML = empty(e.message);
+    }
+  }
+
+  // 3. 講義
+  function fileItems(list, keyParam) {
+    return `<ul class="file-list">${list.map((m) => {
+      const href = `/api/public/materials/${encodeURIComponent(m.id)}/download${keyParam ? `?key=${encodeURIComponent(keyParam)}` : ''}`;
+      const meta = [m.batch_name, m.instructor_name && `講師 ${m.instructor_name}`, datePart(m.created_at)].filter(Boolean).map(esc).join('・');
+      return `<li><a href="${href}" download>${esc(m.title || m.original_name)}</a><span class="meta">${meta}</span></li>`;
+    }).join('')}</ul>`;
+  }
+  async function loadMaterials() {
+    const pubBox = document.getElementById('materials-body');
+    const enrBox = document.getElementById('enrolled-body');
+    const keyed = paramBatch && materialKey;
+    let data;
+    try {
+      data = await getJSON(keyed
+        ? `/api/public/materials?batch_id=${encodeURIComponent(paramBatch)}&key=${encodeURIComponent(materialKey)}`
+        : '/api/public/materials');
+    } catch (e) {
+      if (keyed) {
+        enrBox.innerHTML = `<div class="form-msg error" role="alert" style="margin-bottom:24px;">${esc(e.message)}</div>`;
+        try { data = await getJSON('/api/public/materials'); } catch (e2) { pubBox.innerHTML = empty(e2.message); return; }
+      } else { pubBox.innerHTML = empty(e.message); return; }
+    }
+    if (keyed && data.batch_name) {
+      const enrolled = data.enrolled || [];
+      enrBox.innerHTML = `
+        <div class="enrolled-box" role="region" aria-label="${esc(data.batch_name)} 學員教材">
+          <h3>${esc(data.batch_name)} 學員教材</h3>
+          <p class="note" style="margin-bottom:8px;">本區教材僅供該梯次學員使用，請勿轉載或分享連結。</p>
+          ${enrolled.length ? fileItems(enrolled, materialKey) : empty('本梯次尚未上傳學員教材')}
+        </div>`;
+    }
+    const pub = data.public || [];
+    pubBox.innerHTML = pub.length ? fileItems(pub) : empty('目前尚無公開講義');
+  }
+
+  // 4. 課程實況
+  const photosBody = document.getElementById('photos-body');
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lb-img');
+  const lbCap = document.getElementById('lb-cap');
+  let lastTrigger = null;
+
+  async function loadPhotos() {
+    const id = photoSelect.value;
+    photosBody.innerHTML = empty('照片載入中…');
+    try {
+      const { photos = [] } = await getJSON(`/api/public/photos${id ? `?batch_id=${encodeURIComponent(id)}` : ''}`);
+      if (!photos.length) { photosBody.innerHTML = empty('目前尚無課程照片'); return; }
+      photosBody.innerHTML = `<ul class="gallery">${photos.map((p) => {
+        const alt = p.caption || `${p.batch_name} 課程照片`;
+        return `<li><button type="button" data-src="/api/public/photos/${encodeURIComponent(p.id)}" data-cap="${esc(p.caption || '')}" data-batch="${esc(p.batch_name)}" aria-label="放大檢視：${esc(alt)}">
+          <img src="/api/public/photos/${encodeURIComponent(p.id)}" alt="${esc(alt)}" loading="lazy" decoding="async">
+          <span class="cap">${esc(p.caption || '')}<span class="batch">${esc(p.batch_name)}</span></span>
+        </button></li>`;
+      }).join('')}</ul>`;
+    } catch (e) {
+      photosBody.innerHTML = empty(e.message);
+    }
+  }
+  photoSelect.addEventListener('change', loadPhotos);
+  photosBody.addEventListener('click', (e) => {
+    const btn = e.target.closest('button[data-src]');
+    if (!btn) return;
+    lastTrigger = btn;
+    lbImg.src = btn.dataset.src;
+    lbImg.alt = btn.dataset.cap || `${btn.dataset.batch} 課程照片`;
+    lbCap.textContent = [btn.dataset.cap, btn.dataset.batch].filter(Boolean).join('｜');
+    if (typeof lb.showModal === 'function') lb.showModal(); else window.open(btn.dataset.src, '_blank');
+  });
+  document.getElementById('lb-close').addEventListener('click', () => lb.close());
+  lb.addEventListener('click', (e) => { if (e.target === lb) lb.close(); });
+  lb.addEventListener('close', () => { lbImg.removeAttribute('src'); lastTrigger?.focus(); });
+
+  loadBatches();
+  loadInstructors();
+  loadMaterials();
+  loadPhotos();
+
+  if (location.hash) {
+    // 內容載入後重新定位錨點
+    window.addEventListener('load', () => setTimeout(() => document.querySelector(location.hash)?.scrollIntoView(), 300));
+  }
+</script>
+
+</body>
+</html>

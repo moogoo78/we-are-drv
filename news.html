@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>最新消息 | 基隆市防災士培訓報名系統</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+  :root {
+    --color-neutral-white: rgb(255,255,255);
+    --color-neutral-black: rgb(0,0,0);
+    --color-neutral-solidgray-50: rgb(242,242,242);
+    --color-neutral-solidgray-100: rgb(230,230,230);
+    --color-neutral-solidgray-200: rgb(204,204,204);
+    --color-neutral-solidgray-420: rgb(148,148,148);
+    --color-neutral-solidgray-600: rgb(102,102,102);
+    --color-neutral-solidgray-800: rgb(51,51,51);
+    --color-neutral-solidgray-900: rgb(26,26,26);
+    --color-primitive-blue-100: rgb(217,230,255);
+    --color-primitive-blue-200: rgb(197,215,251);
+    --color-primitive-blue-300: rgb(157,183,249);
+    --color-primitive-blue-900: rgb(0,23,193);
+    --color-primitive-blue-1000: rgb(0,17,143);
+    --color-primitive-blue-1200: rgb(0,0,96);
+    --color-primitive-orange-100: rgb(255,223,202);
+    --color-primitive-orange-800: rgb(199,71,0);
+    --color-primitive-green-100: rgb(194,229,209);
+    --color-primitive-green-800: rgb(25,122,75);
+    --color-primitive-red-100: rgb(255,218,218);
+    --color-primitive-red-800: rgb(236,0,0);
+    --color-primitive-yellow-300: rgb(255,212,61);
+    --color-key-200: var(--color-primitive-blue-200);
+    --color-key-300: var(--color-primitive-blue-300);
+    --color-key-900: var(--color-primitive-blue-900);
+    --color-key-1000: var(--color-primitive-blue-1000);
+    --color-key-1200: var(--color-primitive-blue-1200);
+    --text-body: var(--color-neutral-solidgray-800);
+    --text-heading: var(--color-neutral-solidgray-900);
+    --text-muted: var(--color-neutral-solidgray-600);
+    --border-default: var(--color-neutral-solidgray-420);
+    --border-subtle: var(--color-neutral-solidgray-200);
+    --border-divider: var(--color-neutral-solidgray-100);
+    --error: var(--color-primitive-red-800);
+    --font-sans: "Noto Sans TC", "Noto Sans JP", "Noto Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: var(--font-sans); font-size: 16px; line-height: 1.7; letter-spacing: 0.02em; color: var(--text-body); background: var(--color-neutral-white); -webkit-font-smoothing: antialiased; }
+  a { color: var(--color-key-900); text-decoration: underline; text-underline-offset: 2px; }
+  a:hover { color: var(--color-key-1000); }
+  a:focus-visible, button:focus-visible { outline: 4px solid var(--color-neutral-black); outline-offset: 2px; background-color: var(--color-primitive-yellow-300); color: #000; text-decoration: none; border-radius: 2px; }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-inline: 24px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 4px; font-family: var(--font-sans); font-weight: 700; font-size: 16px; line-height: 1; letter-spacing: 0.02em; text-decoration: none; cursor: pointer; border: 0; border-radius: 8px; padding: 12px 16px; min-height: 48px; }
+  .btn-solid { background: var(--color-key-900); color: #fff; }
+  .btn-solid:hover { background: var(--color-key-1000); color: #fff; }
+  .btn-outlined { background: #fff; color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .btn-outlined:hover { background: var(--color-key-200); color: var(--color-key-1000); }
+  .util-bar { background: var(--color-neutral-solidgray-50); border-bottom: 1px solid var(--border-subtle); }
+  .util-bar .wrap { padding-block: 8px; display: flex; justify-content: flex-end; gap: 24px; font-size: 14px; color: var(--text-muted); flex-wrap: wrap; }
+  .util-bar a { text-decoration: none; }
+  header.site { border-bottom: 1px solid var(--border-default); }
+  .header-row { padding-block: 20px; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+  .brand { display: flex; flex-direction: column; gap: 2px; color: inherit; text-decoration: none; }
+  .brand .org { font-size: 14px; line-height: 1.4; color: var(--text-muted); }
+  .brand .site-name { font-size: 24px; font-weight: 700; line-height: 1.4; color: var(--text-heading); }
+  .header-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+  nav.main { border-top: 1px solid var(--border-divider); }
+  nav.main .wrap { display: flex; flex-wrap: wrap; }
+  nav.main a { padding: 14px 20px; text-decoration: none; color: var(--text-body); }
+  nav.main a[aria-current="page"] { font-weight: 700; color: var(--text-heading); box-shadow: inset 0 -4px 0 var(--color-key-900); }
+
+  main.subpage { max-width: 1120px; margin: 0 auto; padding: 32px 24px 80px; display: flex; flex-direction: column; gap: 32px; }
+  .crumb { font-size: 16px; color: var(--text-muted); }
+  .page-title { margin: 0; font-size: 36px; line-height: 1.4; font-weight: 700; color: var(--text-heading); }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { font-family: inherit; font-size: 16px; min-height: 40px; padding: 6px 16px; border: 0; border-radius: 9999px; cursor: pointer; background: #fff; color: var(--color-key-900); box-shadow: inset 0 0 0 1px var(--color-key-900); }
+  .chip:hover { background: var(--color-key-200); }
+  .chip[aria-pressed="true"] { background: var(--color-key-900); color: #fff; font-weight: 700; }
+
+  .notice-items { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--text-heading); }
+  .notice-items li { display: grid; grid-template-columns: 112px 128px 1fr; gap: 16px; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-divider); }
+  .date { color: var(--text-muted); }
+  .tag { justify-self: start; font-size: 14px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; white-space: nowrap; }
+  .tag-notice { background: var(--color-primitive-blue-100); color: var(--color-primitive-blue-900); }
+  .tag-change { background: var(--color-primitive-orange-100); color: var(--color-primitive-orange-800); }
+  .tag-cert   { background: var(--color-primitive-green-100); color: var(--color-primitive-green-800); }
+  .tag-general{ background: var(--color-neutral-solidgray-100); color: var(--color-neutral-solidgray-800); }
+  .title-link { font-size: 17px; }
+  .pinned-mark { display: inline-block; font-size: 12px; font-weight: 700; line-height: 1.4; padding: 1px 6px; margin-right: 6px; border-radius: 4px; background: var(--color-primitive-orange-800); color: #fff; vertical-align: 2px; }
+  .empty-hint { color: var(--text-muted); padding: 24px 0; }
+  .form-msg.error { padding: 14px 18px; border-radius: 8px; background: var(--color-primitive-red-100); color: var(--error); }
+
+  article.ann { display: flex; flex-direction: column; gap: 16px; }
+  .ann-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; padding-bottom: 16px; border-bottom: 2px solid var(--text-heading); }
+  .ann-content { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 17px; line-height: 1.9; margin: 0; padding-bottom: 24px; border-bottom: 1px solid var(--border-divider); }
+  .back-link { align-self: flex-start; }
+
+  footer.site { background: var(--color-neutral-solidgray-50); border-top: 1px solid var(--border-default); }
+  footer.site .wrap { padding-block: 32px; display: flex; flex-direction: column; gap: 8px; }
+  footer.site .org-name { font-size: 18px; font-weight: 700; color: var(--text-heading); }
+  footer.site p { margin: 0; }
+
+  @media (max-width: 640px) {
+    .wrap, main.subpage { padding-inline: 16px; }
+    .header-row { flex-direction: column; align-items: flex-start; }
+    nav.main a { padding: 10px 12px; }
+    .page-title { font-size: 28px; }
+    .notice-items li { grid-template-columns: auto 1fr; gap: 6px 10px; }
+    .notice-items li > :last-child { grid-column: 1 / -1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="util-bar">
+  <div class="wrap">
+    <a href="index.html">回首頁</a>
+    <a href="admin.html">承辦人員登入</a>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap header-row">
+    <a class="brand" href="index.html">
+      <span class="org">基隆市政府消防局</span>
+      <span class="site-name">基隆市防災士培訓報名系統</span>
+    </a>
+    <div class="header-actions">
+      <a href="status.html" class="btn btn-outlined">查詢報名進度</a>
+      <a href="my.html" class="btn btn-outlined">我的防災士</a>
+      <a href="register.html" class="btn btn-solid">我要報名</a>
+    </div>
+  </div>
+  <nav class="main" aria-label="主選單">
+    <div class="wrap">
+      <a href="news.html" aria-current="page">活動公告</a>
+      <a href="index.html#sessions">梯次資訊</a>
+      <a href="register.html">線上報名</a>
+      <a href="courses.html">培訓課程</a>
+      <a href="my.html">我的防災士</a>
+      <a href="index.html#faq">常見問題</a>
+      <a href="index.html#contact">聯絡我們</a>
+    </div>
+  </nav>
+</header>
+
+<main class="subpage">
+  <nav class="crumb" aria-label="麵包屑"><a href="index.html">首頁</a>　/　<span id="crumb-tail">最新消息</span></nav>
+
+  <div id="list-view" hidden>
+    <h1 class="page-title" style="margin-bottom:24px;">最新消息</h1>
+    <div class="chips" role="group" aria-label="公告分類篩選" id="chips" style="margin-bottom:24px;"></div>
+    <ul class="notice-items" id="list" aria-live="polite"><li class="empty-hint" style="display:block;">載入中…</li></ul>
+  </div>
+
+  <div id="detail-view" hidden></div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span class="org-name">基隆市政府消防局</span>
+    <p>20144 基隆市信義區信一路 190 號　電話：(02) 2431-0119　傳真：(02) 2422-1119</p>
+  </div>
+</footer>
+
+<script>
+  function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  const datePart = (v) => (v ? String(v).split(/[ T]/)[0] : '');
+  const CATS = {
+    register: ['tag-notice', '報名公告'],
+    batch: ['tag-notice', '梯次資訊'],
+    change: ['tag-change', '開課通知／異動'],
+    cert: ['tag-cert', '證照發放'],
+    general: ['tag-general', '一般公告'],
+  };
+  const catOf = (c) => CATS[c] || CATS.general;
+  const params = new URLSearchParams(location.search);
+  const annId = params.get('id');
+
+  if (annId) showDetail(annId); else showList();
+
+  async function showList() {
+    const view = document.getElementById('list-view');
+    view.hidden = false;
+    const list = document.getElementById('list');
+    const chips = document.getElementById('chips');
+    let items = [];
+    let current = params.get('category') || '';
+
+    const renderChips = () => {
+      chips.innerHTML = [['', '全部'], ...Object.entries(CATS).map(([k, v]) => [k, v[1]])]
+        .map(([k, label]) => `<button type="button" class="chip" data-cat="${k}" aria-pressed="${k === current}">${label}</button>`).join('');
+    };
+    const renderList = () => {
+      const shown = current ? items.filter((a) => a.category === current) : items;
+      if (!shown.length) {
+        list.innerHTML = '<li class="empty-hint" style="display:block;">目前尚無公告</li>';
+        return;
+      }
+      list.innerHTML = shown.map((a) => {
+        const [cls, label] = catOf(a.category);
+        return `<li>
+          <span class="date">${esc(datePart(a.published_at))}</span>
+          <span class="tag ${cls}">${label}</span>
+          <span>${a.pinned ? '<span class="pinned-mark">置頂</span>' : ''}<a class="title-link" href="news.html?id=${encodeURIComponent(a.id)}">${esc(a.title)}</a></span>
+        </li>`;
+      }).join('');
+    };
+    chips.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip');
+      if (!btn) return;
+      current = btn.dataset.cat;
+      const url = new URL(location.href);
+      if (current) url.searchParams.set('category', current); else url.searchParams.delete('category');
+      history.replaceState(null, '', url);
+      renderChips();
+      renderList();
+      chips.querySelector(`[data-cat="${current}"]`).focus();
+    });
+    renderChips();
+    try {
+      const r = await fetch('/api/public/announcements?limit=100');
+      if (!r.ok) throw new Error();
+      items = (await r.json()).announcements || [];
+      renderList();
+    } catch {
+      list.innerHTML = '<li class="empty-hint" style="display:block;">公告載入失敗，請稍後再試。</li>';
+    }
+  }
+
+  async function showDetail(id) {
+    const view = document.getElementById('detail-view');
+    view.hidden = false;
+    const crumb = document.getElementById('crumb-tail');
+    crumb.innerHTML = '<a href="news.html">最新消息</a>';
+    view.innerHTML = '<p class="empty-hint">公告載入中…</p>';
+    try {
+      const r = await fetch(`/api/public/announcements/${encodeURIComponent(id)}`);
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data.error || '公告載入失敗');
+      const a = data.announcement;
+      const [cls, label] = catOf(a.category);
+      document.title = `${a.title} | 最新消息 | 基隆市防災士培訓報名系統`;
+      crumb.innerHTML = `<a href="news.html">最新消息</a>　/　公告內容`;
+      view.innerHTML = `
+        <article class="ann">
+          <h1 class="page-title">${a.pinned ? '<span class="pinned-mark" style="font-size:14px;">置頂</span>' : ''}${esc(a.title)}</h1>
+          <div class="ann-meta">
+            <span class="tag ${cls}">${label}</span>
+            <span class="date">發布日期：<time datetime="${esc(datePart(a.published_at))}">${esc(datePart(a.published_at))}</time></span>
+          </div>
+          <div class="ann-content">${esc(a.content)}</div>
+          <a href="news.html" class="btn btn-outlined back-link">← 回最新消息列表</a>
+        </article>`;
+    } catch (err) {
+      view.innerHTML = `<div class="form-msg error" role="alert">${esc(err.message || '公告載入失敗')}</div>
+        <p><a href="news.html" class="btn btn-outlined back-link" style="margin-top:16px;">← 回最新消息列表</a></p>`;
+    }
+  }
+</script>
+
+</body>
+</html>

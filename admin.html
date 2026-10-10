@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>防災士培訓管理後台 | 示意版型</title>
+<title>防災士培訓管理後台</title>
 <style>
   :root {
     --primary: #d9480f;
@@ -201,7 +201,7 @@
     border: 1px dashed var(--border);
   }
 
-  input[type=text], select {
+  input[type=text], input[type=number], input[type=date], input[type=time], input[type=email], input[type=password], select, textarea {
     padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.85rem; font-family: inherit;
   }
   .filter-bar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
@@ -228,6 +228,27 @@
   .inline-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
   .inline-form input, .inline-form select { padding: 7px 9px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.82rem; font-family: inherit; }
   .empty-row td { color: var(--muted); text-align: center; padding: 20px; }
+  .msg { font-size: 0.82rem; min-height: 1.2em; margin-top: 6px; }
+  .msg.err { color: var(--danger); }
+  .msg.ok { color: var(--ok); }
+  .check-label { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted); }
+  .table-wrap { overflow-x: auto; }
+  .pager { display: flex; gap: 10px; align-items: center; justify-content: flex-end; margin-top: 12px; font-size: 0.85rem; color: var(--muted); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn { cursor: pointer; font-family: inherit; }
+  .mono { font-family: ui-monospace, Menlo, monospace; font-size: 0.82rem; }
+  .stack-form { display: flex; flex-direction: column; gap: 10px; }
+  .stack-form textarea { width: 100%; resize: vertical; }
+  .photo-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; margin-top: 12px; }
+  .photo-grid figure { margin: 0; display: flex; flex-direction: column; gap: 4px; font-size: 0.78rem; color: var(--muted); }
+  .photo-grid img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 6px; border: 1px solid var(--border); }
+  .bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 120px; }
+  .grid-2 > .card { min-width: 0; }
+  @media (max-width: 760px) {
+    body { display: block; }
+    .sidebar { position: static; width: 100%; height: auto; }
+    .content { padding: 16px; }
+  }
 </style>
 </head>
 <body>
@@ -248,24 +269,31 @@
   <a href="index.html" class="sidebar-logo"><span class="badge">災</span>管理後台</a>
   <nav>
     <div class="sidebar-group-label">總覽</div>
-    <a href="#dashboard" class="nav-link active"><span class="nav-icon">📊</span>統計分析儀表板</a>
+    <a href="#dashboard" class="nav-link active"><span class="nav-icon">📊</span>報名統計儀表板</a>
+
+    <div class="sidebar-group-label">當期培訓報名</div>
+    <a href="#students" class="nav-link"><span class="nav-icon">🧑‍🎓</span>報名審核與名單</a>
+    <a href="#training" class="nav-link"><span class="nav-icon">✅</span>報到與測驗登錄</a>
+
+    <div class="sidebar-group-label">防災士管理</div>
+    <a href="#members" class="nav-link"><span class="nav-icon">🦺</span>防災士名冊與統計</a>
+    <a href="#certs" class="nav-link"><span class="nav-icon">📜</span>證照管理</a>
 
     <div class="sidebar-group-label">教學管理</div>
-    <a href="#students" class="nav-link"><span class="nav-icon">🧑‍🎓</span>學員管理</a>
-    <a href="#certs" class="nav-link"><span class="nav-icon">📜</span>證照管理</a>
     <a href="#instructors" class="nav-link"><span class="nav-icon">🧑‍🏫</span>講師管理</a>
     <a href="#courses" class="nav-link"><span class="nav-icon">📚</span>課程管理</a>
+    <a href="#quiz" class="nav-link"><span class="nav-icon">📝</span>學科測驗題庫</a>
 
     <div class="sidebar-group-label">營運</div>
-    <a href="#notify" class="nav-link"><span class="nav-icon">🔔</span>通知與提醒機制</a>
+    <a href="#announcements" class="nav-link"><span class="nav-icon">📣</span>公告管理</a>
+    <a href="#notify" class="nav-link"><span class="nav-icon">🔔</span>通知與提醒</a>
     <a href="#reports" class="nav-link"><span class="nav-icon">🖨️</span>成果報告一鍵產出</a>
-    <a href="#settings" class="nav-link"><span class="nav-icon">⚙️</span>管理者後台設定</a>
+    <a href="#settings" class="nav-link"><span class="nav-icon">⚙️</span>使用者後台設定</a>
   </nav>
   <div class="sidebar-footer">
     登入身分：<span id="whoami-role">—</span><br>
     <button type="button" class="logout-link" id="logout-btn" style="color:#b8bdc9; margin-top:8px;">登出</button><br>
-    <a href="index.html" style="color:#b8bdc9; text-decoration:underline; display:inline-block; margin-top:8px;">← 回到公開報名網站</a><br>
-    <a href="demo.html" style="color:#b8bdc9; text-decoration:underline; display:inline-block; margin-top:4px;">全站功能展示</a>
+    <a href="index.html" style="color:#b8bdc9; text-decoration:underline; display:inline-block; margin-top:8px;">← 回到公開報名網站</a>
   </div>
 </aside>
 
@@ -280,72 +308,51 @@
 
   <div class="content">
 
-    <!-- 七、統計分析儀表板 -->
+    <!-- 報名統計儀表板 -->
     <section id="dashboard" class="panel-section">
-      <h2>📊 統計分析儀表板</h2>
-      <p class="section-desc">各梯次報名人數、報到率、結訓率、合格率等即時呈現</p>
-
+      <h2>📊 報名統計儀表板</h2>
+      <p class="section-desc">各梯次報名與審核狀態即時統計（防災士人數統計請見「防災士名冊與統計」）</p>
       <div class="stat-grid">
         <div class="stat-card"><div class="stat-label">累計報名人數</div><div class="stat-value" id="stat-total">—</div><div class="stat-delta" id="stat-total-sub"></div></div>
         <div class="stat-card"><div class="stat-label">審核中</div><div class="stat-value" id="stat-pending">—</div><div class="stat-delta">待承辦人員審核</div></div>
-        <div class="stat-card"><div class="stat-label">已錄取</div><div class="stat-value" id="stat-approved">—</div><div class="stat-delta" id="stat-approve-rate"></div></div>
-        <div class="stat-card"><div class="stat-label">候補中</div><div class="stat-value" id="stat-waitlist">—</div><div class="stat-delta">名額額滿後遞補</div></div>
-        <div class="stat-card"><div class="stat-label">待補件</div><div class="stat-value" id="stat-needsinfo">—</div><div class="stat-delta">通知承辦人員追蹤</div></div>
+        <div class="stat-card"><div class="stat-label">正取（已錄取）</div><div class="stat-value" id="stat-approved">—</div><div class="stat-delta" id="stat-approve-rate"></div></div>
+        <div class="stat-card"><div class="stat-label">備取（候補）</div><div class="stat-value" id="stat-waitlist">—</div><div class="stat-delta">名額釋出後遞補</div></div>
+        <div class="stat-card"><div class="stat-label">待補件</div><div class="stat-value" id="stat-needsinfo">—</div><div class="stat-delta">通知學員補件</div></div>
         <div class="stat-card"><div class="stat-label">未錄取</div><div class="stat-value" id="stat-rejected">—</div><div class="stat-delta">已完成審核</div></div>
       </div>
-
-      <div class="chart-grid">
-        <div class="card">
-          <div class="card-header"><h3>行政區分布</h3></div>
-          <div id="chart-district"><div class="bar-row"><span class="bar-label">載入中…</span></div></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>性別分布</h3></div>
-          <div id="chart-sex"><div class="bar-row"><span class="bar-label">載入中…</span></div></div>
-        </div>
-      </div>
-
       <div class="grid-2">
-        <div class="card">
-          <div class="card-header"><h3>年齡分布</h3></div>
-          <div id="chart-age"><div class="bar-row"><span class="bar-label">載入中…</span></div></div>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>職業別統計</h3></div>
-          <div id="chart-occupation"><div class="bar-row"><span class="bar-label">載入中…</span></div></div>
-        </div>
-      </div>
-
-      <div class="card" style="margin-top:16px;">
-        <div class="card-header"><h3>GIS 地圖視覺化 — 防災士分布熱點 <span class="note-flag">（規劃中，尚未串接）</span></h3><div class="card-toolbar"><button class="btn" disabled>切換：每里人數</button><button class="btn" disabled>切換：人力缺口分析</button></div></div>
-        <div class="map-placeholder">🗺️ 地圖套疊區塊（各行政區防災士數量 / 每里人數 / 熱點分析 / 人力缺口分析）— Beta 後續開發</div>
+        <div class="card"><div class="card-header"><h3>各梯次報名人數</h3></div><div id="chart-batch"></div></div>
+        <div class="card"><div class="card-header"><h3>報名者行政區分布</h3></div><div id="chart-district"></div></div>
       </div>
     </section>
 
-    <!-- 三、學員管理系統 -->
+    <!-- 報名審核與名單管理 -->
     <section id="students" class="panel-section">
-      <h2>🧑‍🎓 學員管理</h2>
-      <p class="section-desc">報名審核、學員基本資料、梯次分類、審核狀態</p>
+      <h2>🧑‍🎓 報名審核與名單管理</h2>
+      <p class="section-desc">報名審核、學員基本報名資訊；審核後的錄取通知由承辦人員於「通知與提醒」篩選後發送</p>
       <div class="card">
         <div class="filter-bar">
           <input type="text" id="stu-q" placeholder="搜尋姓名 / 身分證字號 / 報名序號">
-          <select id="stu-batch"><option value="">全部梯次</option></select>
+          <select id="stu-batch" class="batch-select" data-all="全部梯次"></select>
+          <select id="stu-district" class="district-select"><option value="">全部行政區</option></select>
           <select id="stu-status">
             <option value="">全部狀態</option>
             <option value="pending">審核中</option>
-            <option value="approved">已錄取</option>
-            <option value="waitlist">候補中</option>
+            <option value="approved">正取</option>
+            <option value="waitlist">備取</option>
             <option value="needs_more_info">待補件</option>
             <option value="rejected">未錄取</option>
           </select>
-          <button class="btn btn-primary" id="stu-search" style="margin-left:auto;">🔍 查詢</button>
+          <button class="btn btn-primary" id="stu-search">🔍 查詢</button>
+          <button class="btn" id="stu-export" style="margin-left:auto;">⬇ 匯出報名名冊（Excel）</button>
         </div>
-        <table>
-          <thead><tr><th>報名序號</th><th>姓名</th><th>梯次</th><th>審核狀態</th><th>報名時間</th><th>操作</th></tr></thead>
-          <tbody id="students-body">
-            <tr class="empty-row"><td colspan="6">載入中…</td></tr>
-          </tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>報名序號</th><th>姓名</th><th>梯次</th><th>行政區／里</th><th>審核狀態</th><th>已通知</th><th>報名時間</th><th>操作</th></tr></thead>
+            <tbody id="students-body"><tr class="empty-row"><td colspan="8">載入中…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pager" id="stu-pager"></div>
       </div>
 
       <div class="card" id="stu-detail-card" hidden style="margin-top:16px;">
@@ -354,41 +361,128 @@
       </div>
     </section>
 
-    <!-- 四、證照管理 -->
-    <section id="certs" class="panel-section">
-      <h2>📜 證照管理</h2>
-      <p class="section-desc">證照核發、編號建置、領取方式與領取狀況追蹤</p>
+    <!-- 報到與測驗登錄 -->
+    <section id="training" class="panel-section">
+      <h2>✅ 報到與測驗登錄</h2>
+      <p class="section-desc">登錄正取學員報到、學科成績與 CPR/AED 術科結果；學員於「我的防災士」僅看到合格／不合格</p>
       <div class="card">
-        <div class="card-header"><h3>核發新證照</h3></div>
-        <form class="inline-form" id="cert-issue-form">
-          <input type="text" name="reg_no" placeholder="報名序號（例：B4-000001）" required>
-          <select name="delivery_method">
-            <option value="pickup">親領</option>
-            <option value="mail">郵寄</option>
-          </select>
-          <button type="submit" class="btn btn-primary">核發</button>
-        </form>
-        <div id="cert-issue-msg" style="font-size:0.82rem; color:var(--danger);"></div>
-      </div>
-      <div class="card" style="margin-top:16px;">
-        <div class="card-header">
-          <h3>證照核發進度</h3>
-          <div class="card-toolbar">
-            <input type="text" id="cert-q" placeholder="搜尋姓名 / 證照編號" style="padding:7px 9px; border:1px solid var(--border); border-radius:6px; font-size:0.82rem;">
-            <button class="btn" id="cert-search">🔍 查詢</button>
-          </div>
+        <div class="filter-bar">
+          <select id="train-batch" class="batch-select"></select>
+          <label class="check-label"><input type="checkbox" id="train-quiz-open"> 開放線上學科測驗</label>
+          <label class="check-label"><input type="checkbox" id="train-survey-open"> 開放課後問卷</label>
+          <span class="note-flag" id="train-summary" style="margin-left:auto;"></span>
         </div>
-        <table>
-          <thead><tr><th>證照編號</th><th>姓名</th><th>梯次</th><th>領取方式</th><th>領取狀況</th><th>操作</th></tr></thead>
-          <tbody id="certs-body"><tr class="empty-row"><td colspan="6">載入中…</td></tr></tbody>
-        </table>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>報名序號</th><th>姓名</th><th>報到</th><th>學科成績</th><th>學科結果</th><th>術科（CPR/AED）</th></tr></thead>
+            <tbody id="train-body"><tr class="empty-row"><td colspan="6">請選擇梯次</td></tr></tbody>
+          </table>
+        </div>
+        <div class="msg" id="train-msg"></div>
       </div>
     </section>
 
-    <!-- 五、講師管理 -->
+    <!-- 防災士名冊與統計 -->
+    <section id="members" class="panel-section">
+      <h2>🦺 防災士名冊與統計</h2>
+      <p class="section-desc">防災士 = 本系統結訓並核發證照者 ＋ 匯入之消防署歷年培訓名單；供災時快速盤點可運用人力</p>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">防災士累計人數</div><div class="stat-value" id="mem-total">—</div><div class="stat-delta" id="mem-total-sub"></div></div>
+        <div class="stat-card"><div class="stat-label">可支援災害應變</div><div class="stat-value" id="mem-support">—</div><div class="stat-delta">勾選「我願意」者</div></div>
+        <div class="stat-card"><div class="stat-label">尚無防災士的里</div><div class="stat-value" id="mem-empty-villages">—</div><div class="stat-delta">全市 157 里</div></div>
+      </div>
+      <div class="grid-2">
+        <div class="card"><div class="card-header"><h3>行政區分布</h3></div><div id="mem-chart-district"></div></div>
+        <div class="card"><div class="card-header"><h3>里別分布（前 15 名）</h3></div><div id="mem-chart-village"></div></div>
+        <div class="card"><div class="card-header"><h3>男女比例</h3></div><div id="mem-chart-sex"></div></div>
+        <div class="card"><div class="card-header"><h3>年齡分布</h3></div><div id="mem-chart-age"></div></div>
+        <div class="card"><div class="card-header"><h3>職業別統計</h3></div><div id="mem-chart-occupation"></div></div>
+        <div class="card"><div class="card-header"><h3>專長統計</h3></div><div id="mem-chart-specialty"></div></div>
+        <div class="card"><div class="card-header"><h3>所屬單位（前 20 名）</h3></div><div id="mem-chart-unit"></div></div>
+        <div class="card">
+          <div class="card-header"><h3>匯入歷年培訓名單</h3></div>
+          <p class="note-flag" style="margin-bottom:10px;">支援消防署「防災士公版表格（學員名冊）」xlsx，或含「姓名、身分證字號、性別、出生日期、行動電話、居住地址、證書編號、培訓計畫名稱、完訓日期」欄位的 CSV。身分證字號相同者更新資料。</p>
+          <form class="inline-form" id="mem-import-form">
+            <input type="file" name="file" accept=".xlsx,.csv" required>
+            <button type="submit" class="btn btn-primary">匯入</button>
+          </form>
+          <div class="msg" id="mem-import-msg"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><h3>歷史資料查詢</h3></div>
+        <div class="filter-bar">
+          <input type="text" id="mem-q" placeholder="姓名 / 身分證字號 / 證書編號 / 培訓計畫">
+          <select id="mem-district" class="district-select"><option value="">全部行政區</option></select>
+          <select id="mem-village"><option value="">全部里</option></select>
+          <input type="text" id="mem-year" placeholder="完訓年度（西元）" style="width:130px;">
+          <select id="mem-source"><option value="">全部來源</option><option value="training">本系統結訓</option><option value="import">歷年匯入</option></select>
+          <label class="check-label"><input type="checkbox" id="mem-support-only"> 僅可支援災害應變</label>
+          <button class="btn btn-primary" id="mem-search">🔍 查詢</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>姓名</th><th>行政區／里</th><th>性別</th><th>聯絡電話</th><th>證書編號</th><th>培訓計畫</th><th>完訓日期</th><th>專長</th><th>災時支援</th><th>來源</th></tr></thead>
+            <tbody id="mem-body"><tr class="empty-row"><td colspan="10">載入中…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pager" id="mem-pager"></div>
+      </div>
+    </section>
+
+    <!-- 證照管理 -->
+    <section id="certs" class="panel-section">
+      <h2>📜 證照管理</h2>
+      <p class="section-desc">證照申請進度（申請中 → 已送出中央 → 已核發）、郵寄或親領紀錄、未領取提醒名單；核發後自動列入防災士名冊</p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><h3>建立證照申請</h3></div>
+          <form class="inline-form" id="cert-issue-form">
+            <input type="text" name="reg_no" placeholder="報名序號（例：B4-000001）" required>
+            <select name="delivery_method"><option value="pickup">親領</option><option value="mail">郵寄</option></select>
+            <button type="submit" class="btn btn-primary">建立</button>
+          </form>
+          <div class="msg" id="cert-issue-msg"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>未領取提醒名單</h3><button class="btn btn-primary" id="cert-remind-btn">發送領證提醒</button></div>
+          <p style="font-size:0.9rem;">已核發且尚未親領：<b id="cert-unclaimed-count">—</b> 人</p>
+          <div id="cert-unclaimed-list" class="note-flag" style="margin-top:6px;"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><h3>證照申請與領取狀況</h3></div>
+        <div class="filter-bar">
+          <input type="text" id="cert-q" placeholder="姓名 / 證照編號 / 報名序號">
+          <select id="cert-batch" class="batch-select" data-all="全部梯次"></select>
+          <select id="cert-apply"><option value="">全部申請狀態</option><option value="applying">申請中</option><option value="submitted">已送出</option><option value="issued">已核發</option></select>
+          <select id="cert-pickup"><option value="">全部領取狀況</option><option value="not_collected">未領取</option><option value="shipping">已寄出</option><option value="collected">已領取</option></select>
+          <button class="btn btn-primary" id="cert-search">🔍 查詢</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>證照編號</th><th>姓名</th><th>梯次</th><th>申請狀態</th><th>領取方式</th><th>領取狀況</th><th>紀錄</th><th>操作</th></tr></thead>
+            <tbody id="certs-body"><tr class="empty-row"><td colspan="8">載入中…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><h3>學員線上申請（證照遺失補發／參訓證明）</h3>
+          <select id="app-status"><option value="">全部</option><option value="pending" selected>待處理</option><option value="processing">處理中</option><option value="done">已完成</option><option value="rejected">不受理</option></select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>申請時間</th><th>類型</th><th>姓名</th><th>梯次</th><th>申請原因</th><th>狀態</th><th>操作</th></tr></thead>
+            <tbody id="apps-body"><tr class="empty-row"><td colspan="7">載入中…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 講師管理 -->
     <section id="instructors" class="panel-section">
       <h2>🧑‍🏫 講師管理</h2>
-      <p class="section-desc">講師名冊、授課時數與場次統計（依課程管理排課自動彙總）</p>
+      <p class="section-desc">講師名冊、授課課程／日期查詢、授課時數統計（依課程管理排課自動彙總）、教官簽名檔</p>
       <div class="card">
         <div class="card-header"><h3>講師名冊</h3><button class="btn btn-primary" id="instructor-add-toggle">＋ 新增講師</button></div>
         <form class="inline-form" id="instructor-add-form" hidden>
@@ -398,81 +492,245 @@
           <input type="email" name="email" placeholder="Email">
           <button type="submit" class="btn btn-primary">新增</button>
         </form>
-      </div>
-      <div class="instructor-grid" id="instructors-grid" style="margin-top:16px;">
-        <p class="empty-row" style="padding:16px;">載入中…</p>
-      </div>
-    </section>
-
-    <!-- 六、課程管理 -->
-    <section id="courses" class="panel-section">
-      <h2>📚 課程管理</h2>
-      <p class="section-desc">依梯次排定課程時程、指派講師、附加教材連結</p>
-      <div class="card">
-        <div class="card-header">
-          <h3>課程時程</h3>
-          <div class="card-toolbar"><select id="course-batch"></select></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>姓名</th><th>職稱／專長</th><th>聯絡方式</th><th>授課場次</th><th>授課時數</th><th>授課期間</th><th>簽名檔</th><th>操作</th></tr></thead>
+            <tbody id="instructors-body"><tr class="empty-row"><td colspan="8">載入中…</td></tr></tbody>
+          </table>
         </div>
-        <form class="inline-form" id="course-add-form">
-          <input type="text" name="session_date" placeholder="日期 2026-09-20" required>
-          <input type="text" name="start_time" placeholder="時間 09:00">
-          <input type="text" name="topic" placeholder="課程名稱" required>
-          <select name="instructor_id"><option value="">未指定講師</option></select>
-          <input type="number" name="hours" placeholder="時數" step="0.5" min="0" value="2" style="width:80px;">
-          <input type="text" name="material_url" placeholder="教材連結（選填）">
-          <button type="submit" class="btn btn-primary">新增課程</button>
-        </form>
-        <table style="margin-top:12px;">
-          <thead><tr><th>時間</th><th>課程</th><th>講師</th><th>時數</th><th>教材</th><th>操作</th></tr></thead>
-          <tbody id="courses-body"><tr class="empty-row"><td colspan="6">請選擇梯次</td></tr></tbody>
+      </div>
+      <div class="card" id="ins-detail-card" hidden style="margin-top:16px;">
+        <div class="card-header"><h3 id="ins-detail-title">授課紀錄</h3><button class="btn" id="ins-detail-close">關閉</button></div>
+        <div class="filter-bar">
+          <label class="check-label">授課日期 <input type="date" id="ins-from"></label>
+          <label class="check-label">至 <input type="date" id="ins-to"></label>
+          <button class="btn btn-primary" id="ins-filter">查詢</button>
+          <span class="note-flag" id="ins-total" style="margin-left:auto;"></span>
+        </div>
+        <table>
+          <thead><tr><th>授課日期</th><th>時間</th><th>課程</th><th>梯次</th><th>地點</th><th>時數</th></tr></thead>
+          <tbody id="ins-sessions-body"></tbody>
         </table>
       </div>
     </section>
 
-    <!-- 八、通知與提醒機制 -->
-    <section id="notify" class="panel-section">
-      <h2>🔔 通知與提醒機制 <span class="note-flag">（Email 規則已規劃，SMS/LINE 待廠商簽約）</span></h2>
-      <p class="section-desc">Email / SMS / LINE 通知規則設定與待發送提醒</p>
-      <div class="grid-2">
+    <!-- 課程管理 -->
+    <section id="courses" class="panel-section">
+      <h2>📚 課程管理</h2>
+      <p class="section-desc">課程登錄（前台「課程時程查詢」即時顯示）、課程教材上傳、課程照片上傳</p>
+      <div class="card">
+        <div class="card-header"><h3>課程時程</h3><div class="card-toolbar"><select id="course-batch" class="batch-select"></select></div></div>
+        <form class="inline-form" id="course-add-form">
+          <input type="date" name="session_date" required aria-label="日期">
+          <input type="time" name="start_time" aria-label="時間">
+          <input type="text" name="topic" placeholder="課程名稱" required>
+          <select name="instructor_id" class="instructor-select"><option value="">未指定講師</option></select>
+          <input type="number" name="hours" placeholder="時數" step="0.5" min="0" value="2" style="width:80px;">
+          <button type="submit" class="btn btn-primary">新增課程</button>
+        </form>
+        <table style="margin-top:12px;">
+          <thead><tr><th>時間</th><th>課程</th><th>講師</th><th>時數</th><th>操作</th></tr></thead>
+          <tbody id="courses-body"><tr class="empty-row"><td colspan="5">請選擇梯次</td></tr></tbody>
+        </table>
+      </div>
+
+      <div class="grid-2" style="margin-top:16px;">
         <div class="card">
-          <div class="card-header"><h3>通知管道設定</h3></div>
-          <div class="rule-row"><div><div class="rule-title">Email 通知</div><div class="rule-desc">開課提醒、補件通知、證照領取通知</div></div><div class="toggle on"></div></div>
-          <div class="rule-row"><div><div class="rule-title">SMS 簡訊通知</div><div class="rule-desc">開課前三日提醒（依發送費用計費）</div></div><div class="toggle on"></div></div>
-          <div class="rule-row"><div><div class="rule-title">LINE Notify／官方帳號</div><div class="rule-desc">尚未導入，規劃中</div></div><div class="toggle"></div></div>
-          <div class="rule-row"><div><div class="rule-title">回訓提醒</div><div class="rule-desc">未來制度實施後啟用</div></div><div class="toggle"></div></div>
+          <div class="card-header"><h3>課程教材管理</h3></div>
+          <form class="inline-form" id="material-form">
+            <input type="text" name="title" placeholder="教材名稱" required>
+            <select name="batch_id" class="batch-select" data-all="不限梯次"></select>
+            <select name="instructor_id" class="instructor-select"><option value="">未指定講師</option></select>
+            <select name="visibility">
+              <option value="enrolled">僅該梯次學員（報名成功 QR Code 下載）</option>
+              <option value="public">公開講義（前台可下載）</option>
+            </select>
+            <input type="file" name="file" required>
+            <button type="submit" class="btn btn-primary">上傳</button>
+          </form>
+          <div class="msg" id="material-msg"></div>
+          <div id="material-qr" class="note-flag" style="margin-bottom:10px;"></div>
+          <table>
+            <thead><tr><th>教材</th><th>梯次</th><th>講師</th><th>開放對象</th><th>操作</th></tr></thead>
+            <tbody id="materials-body"></tbody>
+          </table>
         </div>
         <div class="card">
-          <div class="card-header"><h3>待發送提醒佇列</h3></div>
+          <div class="card-header"><h3>課程照片上傳</h3></div>
+          <form class="inline-form" id="photo-form">
+            <select name="batch_id" class="batch-select" required></select>
+            <input type="text" name="caption" placeholder="照片說明（選填）">
+            <input type="file" name="photo" accept="image/jpeg,image/png" multiple required>
+            <button type="submit" class="btn btn-primary">上傳</button>
+          </form>
+          <div class="msg" id="photo-msg"></div>
+          <div class="photo-grid" id="photos-grid"></div>
+          <p class="note-flag" style="margin-top:8px;">課程影片連結上傳：本階段暫不開放（僅作為存檔使用）。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 學科測驗題庫 -->
+    <section id="quiz" class="panel-section">
+      <h2>📝 學科測驗題庫</h2>
+      <p class="section-desc">學員於「我的防災士」線上作答、自動核對答案計分；各梯次是否開放作答請於「報到與測驗登錄」設定</p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-header"><h3>新增題目</h3></div>
+          <form id="quiz-form" class="stack-form">
+            <div class="inline-form">
+              <select name="qtype" id="quiz-qtype"><option value="tf">是非題</option><option value="choice">選擇題</option></select>
+              <input type="number" name="points" value="2" min="1" style="width:80px;" aria-label="配分"> 分
+            </div>
+            <textarea name="question" rows="3" placeholder="題目" required></textarea>
+            <div id="quiz-options" hidden class="inline-form">
+              <input type="text" name="opt_a" placeholder="(A)"><input type="text" name="opt_b" placeholder="(B)">
+              <input type="text" name="opt_c" placeholder="(C)"><input type="text" name="opt_d" placeholder="(D)">
+            </div>
+            <div class="inline-form">
+              <select name="answer" id="quiz-answer"></select>
+              <button type="submit" class="btn btn-primary">新增</button>
+            </div>
+          </form>
+          <div class="msg" id="quiz-msg"></div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>匯入與設定</h3></div>
+          <p class="note-flag">CSV 欄位：題型(是非/選擇), 題目, 選項A, 選項B, 選項C, 選項D, 答案(O/X 或 A～D), 配分</p>
+          <form class="inline-form" id="quiz-import-form" style="margin-top:8px;">
+            <input type="file" name="file" accept=".csv" required>
+            <button type="submit" class="btn btn-primary">匯入題庫</button>
+          </form>
+          <div class="msg" id="quiz-import-msg"></div>
+          <form class="inline-form" id="quiz-settings-form" style="margin-top:12px;">
+            <label class="check-label">及格分數 <input type="number" name="quiz_pass_score" min="0" max="100" style="width:80px;"></label>
+            <button type="submit" class="btn">儲存</button>
+          </form>
+          <p style="font-size:0.9rem; margin-top:8px;" id="quiz-summary"></p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="table-wrap">
           <table>
-            <thead><tr><th>類型</th><th>對象人數</th><th>預定發送</th><th>狀態</th></tr></thead>
-            <tbody>
-              <tr><td>開課前三日提醒</td><td>52</td><td>09/17</td><td><span class="badge badge-info">排程中</span></td></tr>
-              <tr><td>補件提醒</td><td>6</td><td>即時</td><td><span class="badge badge-warn">待發送</span></td></tr>
-              <tr><td>證照未領取提醒</td><td>3</td><td>即時</td><td><span class="badge badge-warn">待發送</span></td></tr>
-            </tbody>
+            <thead><tr><th>#</th><th>題型</th><th>題目</th><th>答案</th><th>配分</th><th>啟用</th><th>操作</th></tr></thead>
+            <tbody id="quiz-body"></tbody>
           </table>
         </div>
       </div>
     </section>
 
-    <!-- 十一、成果報告一鍵產出 -->
-    <section id="reports" class="panel-section">
-      <h2>🖨️ 成果報告一鍵產出 <span class="note-flag">（示意資料，Beta 後續開發）</span></h2>
-      <p class="section-desc">各項報表與表單一鍵匯出（Excel／PDF）</p>
-      <div class="report-grid">
-        <div class="card report-card"><div class="report-icon">報告</div><div><div class="report-title">各梯次成果報告</div><div class="report-desc">報名／報到／結訓統計</div></div><button class="btn btn-primary">產出</button></div>
-        <div class="card report-card"><div class="report-icon">名冊</div><div><div class="report-title">防災士公版學員名冊</div><div class="report-desc">符合中央函報格式</div></div><button class="btn btn-primary">產出</button></div>
-        <div class="card report-card"><div class="report-icon">學科</div><div><div class="report-title">學科測驗卷結果</div><div class="report-desc">自動核對答案與成績</div></div><button class="btn btn-primary">產出</button></div>
-        <div class="card report-card"><div class="report-icon">術科</div><div><div class="report-title">術科測驗卷結果</div><div class="report-desc">學員姓名＋教官簽名檔</div></div><button class="btn btn-primary">產出</button></div>
-        <div class="card report-card"><div class="report-icon">同意</div><div><div class="report-title">個人資料同意書</div><div class="report-desc">彙整已簽署名單</div></div><button class="btn btn-primary">產出</button></div>
-        <div class="card report-card"><div class="report-icon">問卷</div><div><div class="report-title">課後問卷調查</div><div class="report-desc">滿意度統計報表</div></div><button class="btn btn-primary">產出</button></div>
+    <!-- 公告管理 -->
+    <section id="announcements" class="panel-section">
+      <h2>📣 公告管理</h2>
+      <p class="section-desc">前台首頁「活動公告專區」：最新消息、各梯次培訓資訊、報名時間、開課通知及異動（延期、停課）</p>
+      <div class="card">
+        <form id="ann-form" class="stack-form">
+          <input type="hidden" name="id">
+          <div class="inline-form">
+            <input type="text" name="title" placeholder="公告標題" required style="flex:1; min-width:260px;">
+            <select name="category">
+              <option value="general">一般公告</option>
+              <option value="register">報名公告</option>
+              <option value="batch">梯次資訊</option>
+              <option value="change">開課通知／異動</option>
+              <option value="cert">證照發放</option>
+            </select>
+            <label class="check-label">發布日期 <input type="date" name="published_at"></label>
+            <label class="check-label"><input type="checkbox" name="pinned"> 置頂</label>
+          </div>
+          <textarea name="content" rows="5" placeholder="公告內容"></textarea>
+          <div class="inline-form">
+            <button type="submit" class="btn btn-primary" id="ann-submit">發布公告</button>
+            <button type="button" class="btn" id="ann-cancel" hidden>取消編輯</button>
+          </div>
+        </form>
+        <div class="msg" id="ann-msg"></div>
+        <table style="margin-top:12px;">
+          <thead><tr><th>發布日期</th><th>分類</th><th>標題</th><th>操作</th></tr></thead>
+          <tbody id="ann-body"></tbody>
+        </table>
       </div>
     </section>
 
-    <!-- 十、管理者後台 -->
+    <!-- 通知與提醒 -->
+    <section id="notify" class="panel-section">
+      <h2>🔔 通知與提醒</h2>
+      <p class="section-desc">非系統自動通知：依類型篩選名單、人工確認後發送。Email 經 SMTP 寄出；簡訊及 LINE 尚未簽約，發送後列入「待發送」，可匯出名單人工發送</p>
+      <div class="card">
+        <div class="note-flag" id="notify-smtp" style="margin-bottom:10px;"></div>
+        <div class="filter-bar">
+          <select id="notify-kind"></select>
+          <select id="notify-batch" class="batch-select" data-all="全部梯次"></select>
+          <select id="notify-status" hidden>
+            <option value="">全部報名狀態</option><option value="pending">審核中</option><option value="approved">正取</option>
+            <option value="waitlist">備取</option><option value="needs_more_info">待補件</option><option value="rejected">未錄取</option>
+          </select>
+          <button class="btn btn-primary" id="notify-load">載入名單</button>
+        </div>
+        <div id="notify-upcoming" class="note-flag" style="margin-bottom:10px;"></div>
+        <div class="table-wrap" style="max-height:320px; overflow:auto;">
+          <table>
+            <thead><tr><th><input type="checkbox" id="notify-all" checked aria-label="全選"></th><th>姓名</th><th>梯次</th><th>Email</th><th>手機</th><th>上次通知</th></tr></thead>
+            <tbody id="notify-body"><tr class="empty-row"><td colspan="6">請選擇通知類型並載入名單</td></tr></tbody>
+          </table>
+        </div>
+        <form id="notify-form" class="stack-form" style="margin-top:14px;">
+          <div class="inline-form">
+            <select name="channel"><option value="email">Email</option><option value="sms">SMS 簡訊</option></select>
+            <input type="text" name="subject" placeholder="Email 主旨" style="flex:1; min-width:260px;">
+          </div>
+          <textarea name="body" rows="6" placeholder="內容"></textarea>
+          <p class="note-flag">可用變數：{name} 姓名、{batch} 梯次、{start_date} {end_date} 上課日期、{location} 地點、{reg_no} 報名序號、{note} 審核備註、{cert_no} 證照編號</p>
+          <div class="inline-form"><button type="submit" class="btn btn-primary">發送給勾選的 <span id="notify-count">0</span> 人</button></div>
+        </form>
+        <div class="msg" id="notify-msg"></div>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><h3>發送紀錄</h3>
+          <div class="card-toolbar">
+            <button class="btn" id="notify-export-sms">⬇ 匯出待發送簡訊</button>
+            <button class="btn" id="notify-mark-sms">標記簡訊已發送</button>
+            <button class="btn" id="notify-export-email">⬇ 匯出待發送 Email</button>
+          </div>
+        </div>
+        <div class="table-wrap" style="max-height:360px; overflow:auto;">
+          <table>
+            <thead><tr><th>時間</th><th>類型</th><th>管道</th><th>收件人</th><th>狀態</th><th>發送者</th></tr></thead>
+            <tbody id="notify-log-body"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 成果報告一鍵產出 -->
+    <section id="reports" class="panel-section">
+      <h2>🖨️ 成果報告一鍵產出</h2>
+      <p class="section-desc">Excel 直接下載；表單類開啟可列印頁面，可於瀏覽器「列印 → 另存為 PDF」</p>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="filter-bar" style="margin-bottom:0;">
+          <select id="report-batch" class="batch-select"></select>
+          <select id="report-instructor" class="instructor-select"><option value="">術科測驗教官（簽名檔）</option></select>
+        </div>
+      </div>
+      <div class="report-grid">
+        <div class="card report-card"><div class="report-icon">報告</div><div><div class="report-title">各梯次成果報告</div><div class="report-desc">報名／報到／合格／結訓／證照／滿意度</div></div><button class="btn btn-primary" data-report="summary.html">產出</button></div>
+        <div class="card report-card"><div class="report-icon">名冊</div><div><div class="report-title">防災士公版表格＿學員名冊</div><div class="report-desc">符合中央函報格式（Excel）</div></div><button class="btn btn-primary" data-report="roster.xlsx">產出</button></div>
+        <div class="card report-card"><div class="report-icon">照片</div><div><div class="report-title">學員證件照</div><div class="report-desc">依名冊照片編號命名（ZIP）</div></div><button class="btn btn-primary" data-report="roster-photos.zip">產出</button></div>
+        <div class="card report-card"><div class="report-icon">報名</div><div><div class="report-title">報名名冊</div><div class="report-desc">報名表範本格式（Excel）</div></div><button class="btn btn-primary" data-report="registrations.xlsx">產出</button></div>
+        <div class="card report-card"><div class="report-icon">PDF</div><div><div class="report-title">報名名冊（PDF）</div><div class="report-desc">可列印／另存 PDF</div></div><button class="btn btn-primary" data-report="registrations.html">產出</button></div>
+        <div class="card report-card"><div class="report-icon">學科</div><div><div class="report-title">學科測驗卷結果</div><div class="report-desc">線上測驗自動計分（Excel）</div></div><button class="btn btn-primary" data-report="written.xlsx">產出</button></div>
+        <div class="card report-card"><div class="report-icon">術科</div><div><div class="report-title">術科測驗表單</div><div class="report-desc">學員姓名＋教官簽名檔、勾選合格</div></div><button class="btn btn-primary" data-report="practical.html">產出</button></div>
+        <div class="card report-card"><div class="report-icon">同意</div><div><div class="report-title">個人資料同意書（個人）</div><div class="report-desc">每位學員一頁，可列印</div></div><button class="btn btn-primary" data-report="consent.html">產出</button></div>
+        <div class="card report-card"><div class="report-icon">總表</div><div><div class="report-title">個人資料同意書（總表）</div><div class="report-desc">同意方式與時間（Excel）</div></div><button class="btn btn-primary" data-report="consent.xlsx">產出</button></div>
+        <div class="card report-card"><div class="report-icon">問卷</div><div><div class="report-title">課後問卷調查</div><div class="report-desc">公版欄位＋滿意度統計（Excel）</div></div><button class="btn btn-primary" data-report="survey.xlsx">產出</button></div>
+      </div>
+      <div class="msg" id="report-msg"></div>
+    </section>
+
+    <!-- 使用者後台設定 -->
     <section id="settings" class="panel-section">
-      <h2>⚙️ 管理者後台設定</h2>
-      <p class="section-desc">權限管理、梯次建立、名額設定、報名審核、操作紀錄</p>
+      <h2>⚙️ 使用者後台設定</h2>
+      <p class="section-desc">權限管理、梯次建立與名額設定、操作紀錄</p>
 
       <div class="grid-2">
         <div class="card">
@@ -490,36 +748,44 @@
           </table>
         </div>
         <div class="card">
-          <div class="card-header"><h3>梯次建立與名額設定</h3></div>
+          <div class="card-header"><h3>梯次建立</h3></div>
           <form id="batch-form">
             <div class="rule-row"><div class="rule-title">梯次名稱</div><input type="text" name="name" placeholder="例：115年度第5梯次" required></div>
-            <div class="rule-row"><div class="rule-title">上課日期</div><input type="text" name="start_date" placeholder="開始 2026-10-17" required><input type="text" name="end_date" placeholder="結束 2026-10-18" required style="margin-left:8px;"></div>
+            <div class="rule-row"><div class="rule-title">上課日期</div><div><input type="date" name="start_date" required aria-label="開始"> ～ <input type="date" name="end_date" required aria-label="結束"></div></div>
+            <div class="rule-row"><div class="rule-title">報名期間</div><div><input type="date" name="register_start" aria-label="報名開始"> ～ <input type="date" name="register_end" aria-label="報名截止"></div></div>
             <div class="rule-row"><div class="rule-title">上課地點</div><input type="text" name="location" placeholder="例：基隆市消防局訓練中心" required></div>
-            <div class="rule-row"><div class="rule-title">名額上限</div><input type="text" name="capacity" placeholder="例：60" required></div>
+            <div class="rule-row"><div class="rule-title">名額上限</div><input type="number" name="capacity" min="1" placeholder="例：60" required></div>
             <div class="rule-row"><div class="rule-title">狀態</div>
               <select name="status">
-                <option value="upcoming">尚未開放</option>
-                <option value="open">開放報名中</option>
-                <option value="full">已額滿</option>
-                <option value="closed">已結束</option>
+                <option value="upcoming">尚未開放</option><option value="open">開放報名中</option>
+                <option value="full">已額滿</option><option value="closed">已結束</option>
               </select>
             </div>
-            <div id="batch-form-msg" style="font-size:0.82rem; color:var(--danger);"></div>
+            <div class="rule-row"><div><div class="rule-title">名額額滿自動關閉</div><div class="rule-desc">報名（審核中＋正取）人數達名額時自動改為「已額滿」（待討論，預設關閉）</div></div><input type="checkbox" name="auto_close"></div>
+            <div class="msg" id="batch-form-msg"></div>
             <div style="margin-top:12px; text-align:right;"><button type="submit" class="btn btn-primary">建立梯次</button></div>
           </form>
-          <table style="margin-top:16px;">
-            <thead><tr><th>梯次</th><th>名額</th><th>狀態</th></tr></thead>
-            <tbody id="batches-admin-body"><tr class="empty-row"><td colspan="3">載入中…</td></tr></tbody>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <div class="card-header"><h3>梯次與名額設定</h3></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>梯次</th><th>上課日期</th><th>報名／名額</th><th>名額</th><th>狀態</th><th>額滿自動關閉</th></tr></thead>
+            <tbody id="batches-admin-body"><tr class="empty-row"><td colspan="6">載入中…</td></tr></tbody>
           </table>
         </div>
       </div>
 
       <div class="card" style="margin-top:16px;">
         <div class="card-header"><h3>操作紀錄（Log）</h3></div>
-        <table>
-          <thead><tr><th>時間</th><th>操作者</th><th>動作</th></tr></thead>
-          <tbody id="logs-body"><tr class="empty-row"><td colspan="3">載入中…</td></tr></tbody>
-        </table>
+        <div class="table-wrap" style="max-height:400px; overflow:auto;">
+          <table>
+            <thead><tr><th>時間</th><th>操作者</th><th>動作</th></tr></thead>
+            <tbody id="logs-body"><tr class="empty-row"><td colspan="3">載入中…</td></tr></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
@@ -530,47 +796,49 @@
 <script>
   // Highlight the sidebar link matching the section currently scrolled into view.
   const navLinks = Array.from(document.querySelectorAll('.sidebar a.nav-link'));
-  const sections = navLinks
-    .map(link => document.querySelector(link.getAttribute('href')))
-    .filter(Boolean);
-
   function setActive(id) {
-    navLinks.forEach(link => {
-      link.classList.toggle('active', link.getAttribute('href') === '#' + id);
-    });
+    navLinks.forEach((link) => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
   }
-
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) setActive(entry.target.id);
-    });
+    entries.forEach((entry) => { if (entry.isIntersecting) setActive(entry.target.id); });
   }, { rootMargin: '-45% 0px -50% 0px', threshold: 0 });
-
-  sections.forEach(section => observer.observe(section));
+  navLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean).forEach((s) => observer.observe(s));
 </script>
 
 <script>
   const TOKEN_KEY = 'drv_admin_token';
   const USER_KEY = 'drv_admin_user';
+  const $ = (id) => document.getElementById(id);
   const statusMeta = {
     pending: ['審核中', 'badge-warn'],
-    approved: ['已錄取', 'badge-ok'],
+    approved: ['正取', 'badge-ok'],
     rejected: ['未錄取', 'badge-danger'],
-    waitlist: ['候補中', 'badge-info'],
+    waitlist: ['備取', 'badge-info'],
     needs_more_info: ['待補件', 'badge-danger'],
   };
   const roleMeta = { admin: ['管理員', 'badge-info'], staff: ['承辦人員', 'badge-ok'] };
+  const batchStatusLabel = { upcoming: '尚未開放', open: '開放報名中', full: '已額滿', closed: '已結束' };
+  const annCategory = { general: '一般公告', register: '報名公告', batch: '梯次資訊', change: '開課通知／異動', cert: '證照發放' };
 
+  function esc(v) {
+    return String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
   function getToken() { return localStorage.getItem(TOKEN_KEY); }
   function getUser() { try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); } catch { return null; } }
+  function fmtDate(s) { return s ? new Date(s.replace(' ', 'T') + (s.length > 10 ? 'Z' : '')).toLocaleString('zh-TW') : '—'; }
+  function fmtDay(s) { return s ? String(s).slice(0, 10) : '—'; }
+  function setMsg(id, text, ok) {
+    const el = $(id);
+    el.textContent = text || '';
+    el.className = 'msg' + (text ? (ok ? ' ok' : ' err') : '');
+  }
+  function quiet(err) { return err.message === 'unauthorized'; }
 
   async function apiFetch(path, opts = {}) {
     const headers = Object.assign({}, opts.headers || {});
     const token = getToken();
     if (token) headers['Authorization'] = 'Bearer ' + token;
-    if (opts.body && !(opts.body instanceof FormData) && !headers['Content-Type']) {
-      headers['Content-Type'] = 'application/json';
-    }
+    if (opts.body && !(opts.body instanceof FormData) && !headers['Content-Type']) headers['Content-Type'] = 'application/json';
     const res = await fetch(path, Object.assign({}, opts, { headers }));
     if (res.status === 401) {
       localStorage.removeItem(TOKEN_KEY);
@@ -578,32 +846,55 @@
       showLogin('登入已逾期，請重新登入');
       throw new Error('unauthorized');
     }
-    const data = await res.json().catch(() => ({}));
+    if (opts.raw) {
+      if (!res.ok) { const d = await res.json().catch(() => ({})); throw new Error(d.error || '發生錯誤'); }
+      return res;
+    }
+    const data = res.status === 204 ? {} : await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || '發生錯誤');
     return data;
   }
 
+  // 帶 token 下載檔案（Excel/ZIP 直接下載；HTML 報表開新視窗）
+  async function download(path, filename) {
+    const res = await apiFetch(path, { raw: true });
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    if (blob.type.startsWith('text/html')) {
+      window.open(url, '_blank');
+    } else {
+      const a = document.createElement('a');
+      const cd = res.headers.get('Content-Disposition') || '';
+      const m = cd.match(/filename\*=UTF-8''([^;]+)/) || cd.match(/filename="?([^";]+)"?/);
+      a.href = url;
+      a.download = filename || (m ? decodeURIComponent(m[1]) : 'download');
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+
   function showLogin(msg) {
-    document.getElementById('app').hidden = true;
-    document.getElementById('login-gate').hidden = false;
-    document.getElementById('login-msg').textContent = msg || '';
+    $('app').hidden = true;
+    $('login-gate').hidden = false;
+    $('login-msg').textContent = msg || '';
   }
 
   function showApp() {
     const user = getUser();
-    document.getElementById('login-gate').hidden = true;
-    document.getElementById('app').hidden = false;
+    $('login-gate').hidden = true;
+    $('app').hidden = false;
     const [label] = roleMeta[user.role] || [user.role];
-    document.getElementById('whoami-role').textContent = `${user.display_name}（${label}）`;
-    document.getElementById('whoami-avatar').textContent = (user.display_name || '?').slice(0, 1);
+    $('whoami-role').textContent = `${user.display_name}（${label}）`;
+    $('whoami-avatar').textContent = (user.display_name || '?').slice(0, 1);
     loadAll();
   }
 
-  document.getElementById('login-form').addEventListener('submit', async (e) => {
+  $('login-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const btn = document.getElementById('login-btn');
-    const msg = document.getElementById('login-msg');
-    msg.textContent = '';
+    const btn = $('login-btn');
+    $('login-msg').textContent = '';
     btn.disabled = true; btn.textContent = '登入中…';
     const fd = new FormData(e.target);
     try {
@@ -613,93 +904,160 @@
         body: JSON.stringify({ username: fd.get('username'), password: fd.get('password') }),
       });
       const data = await res.json();
-      if (!res.ok) { msg.textContent = data.error || '登入失敗'; return; }
+      if (!res.ok) { $('login-msg').textContent = data.error || '登入失敗'; return; }
       localStorage.setItem(TOKEN_KEY, data.token);
       localStorage.setItem(USER_KEY, JSON.stringify(data.user));
       showApp();
     } catch {
-      msg.textContent = '網路發生錯誤，請稍後再試。';
+      $('login-msg').textContent = '網路發生錯誤，請稍後再試。';
     } finally {
       btn.disabled = false; btn.textContent = '登入';
     }
   });
 
-  document.getElementById('logout-btn').addEventListener('click', () => {
+  $('logout-btn').addEventListener('click', () => {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     showLogin('');
   });
 
-  function bar(label, n, max) {
-    const pct = max > 0 ? Math.round((n / max) * 100) : 0;
-    return `<div class="bar-row"><span class="bar-label">${label}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-value">${n}</span></div>`;
+  function bars(el, rows, labelKey = 'label', max) {
+    const target = typeof el === 'string' ? $(el) : el;
+    if (!rows.length) { target.innerHTML = '<div class="bar-row"><span class="bar-label">尚無資料</span></div>'; return; }
+    const m = max || Math.max(1, ...rows.map((r) => r.n));
+    target.innerHTML = rows.map((r) => {
+      const label = typeof labelKey === 'function' ? labelKey(r) : r[labelKey];
+      return `<div class="bar-row"><span class="bar-label" title="${esc(label)}">${esc(label)}</span><div class="bar-track"><div class="bar-fill" style="width:${Math.round((r.n / m) * 100)}%"></div></div><span class="bar-value">${r.n}</span></div>`;
+    }).join('');
   }
 
+  function pager(el, total, page, pageSize, onPage) {
+    const pages = Math.max(1, Math.ceil(total / pageSize));
+    const box = $(el);
+    box.innerHTML = `<span>共 ${total} 筆</span>` + (pages > 1
+      ? `<button class="btn" ${page <= 1 ? 'disabled' : ''} data-p="${page - 1}">上一頁</button><span>${page} / ${pages}</span><button class="btn" ${page >= pages ? 'disabled' : ''} data-p="${page + 1}">下一頁</button>`
+      : '');
+    box.onclick = (e) => { const b = e.target.closest('[data-p]'); if (b) onPage(Number(b.dataset.p)); };
+  }
+
+  // ---------- 共用下拉選單 ----------
+  let allBatches = [];
+  let allInstructors = [];
+  let villagesByDistrict = {};
+
+  function fillBatchSelects() {
+    document.querySelectorAll('select.batch-select').forEach((sel) => {
+      const current = sel.value;
+      const all = sel.dataset.all;
+      sel.innerHTML = (all ? `<option value="">${esc(all)}</option>` : '') +
+        allBatches.map((b) => `<option value="${b.id}">${esc(b.name)}（${esc(b.start_date)}）</option>`).join('');
+      if (allBatches.some((b) => String(b.id) === current) || (all && current === '')) sel.value = current;
+      else if (!all) {
+        const open = allBatches.find((b) => b.status === 'open') || allBatches[0];
+        sel.value = open ? String(open.id) : '';
+      }
+    });
+  }
+
+  function fillInstructorSelects() {
+    document.querySelectorAll('select.instructor-select').forEach((sel) => {
+      const current = sel.value;
+      const first = sel.options[0] ? sel.options[0].outerHTML : '';
+      sel.innerHTML = first + allInstructors.map((i) => `<option value="${i.id}">${esc(i.name)}</option>`).join('');
+      sel.value = current;
+    });
+  }
+
+  async function loadVillages() {
+    try {
+      const res = await fetch('/api/public/villages');
+      villagesByDistrict = (await res.json()).districts || {};
+      document.querySelectorAll('select.district-select').forEach((sel) => {
+        sel.innerHTML = sel.options[0].outerHTML + Object.keys(villagesByDistrict).map((d) => `<option>${esc(d)}</option>`).join('');
+      });
+    } catch { /* 行政區清單載入失敗時仍可使用其他功能 */ }
+  }
+
+  // ---------- 儀表板 ----------
   async function loadDashboard() {
     try {
       const data = await apiFetch('/api/admin/dashboard/stats');
       const t = data.totals;
-      document.getElementById('stat-total').textContent = t.total;
-      document.getElementById('stat-total-sub').textContent = `${t.pending} 筆審核中`;
-      document.getElementById('stat-pending').textContent = t.pending;
-      document.getElementById('stat-approved').textContent = t.approved;
+      $('stat-total').textContent = t.total;
+      $('stat-total-sub').textContent = `${t.pending} 筆審核中`;
+      $('stat-pending').textContent = t.pending;
+      $('stat-approved').textContent = t.approved;
       const decided = t.approved + t.rejected;
-      document.getElementById('stat-approve-rate').textContent = decided ? `核准率 ${Math.round((t.approved / decided) * 100)}%` : '尚無審核紀錄';
-      document.getElementById('stat-waitlist').textContent = t.waitlist;
-      document.getElementById('stat-needsinfo').textContent = t.needs_more_info;
-      document.getElementById('stat-rejected').textContent = t.rejected;
-      document.getElementById('pending-count').textContent = `🔔 ${t.pending} 則待審核`;
-
-      const dMax = Math.max(1, ...data.by_district.map((r) => r.n));
-      document.getElementById('chart-district').innerHTML = data.by_district.length
-        ? data.by_district.map((r) => bar(r.district, r.n, dMax)).join('')
-        : '<div class="bar-row"><span class="bar-label">尚無資料</span></div>';
-
-      const sMax = Math.max(1, ...data.by_sex.map((r) => r.n));
-      document.getElementById('chart-sex').innerHTML = data.by_sex.length
-        ? data.by_sex.map((r) => bar(r.sex, r.n, sMax)).join('')
-        : '<div class="bar-row"><span class="bar-label">尚無資料</span></div>';
-
-      const order = ['20-29', '30-39', '40-49', '50-59', '60+'];
-      const ageMap = Object.fromEntries(data.by_age.map((r) => [r.bucket, r.n]));
-      const aMax = Math.max(1, ...order.map((k) => ageMap[k] || 0));
-      document.getElementById('chart-age').innerHTML = order.map((k) => bar(k + ' 歲', ageMap[k] || 0, aMax)).join('');
-
-      const oMax = Math.max(1, ...data.by_occupation.map((r) => r.n));
-      document.getElementById('chart-occupation').innerHTML = data.by_occupation.length
-        ? data.by_occupation.map((r) => bar(r.occupation, r.n, oMax)).join('')
-        : '<div class="bar-row"><span class="bar-label">尚無資料</span></div>';
-    } catch (err) {
-      if (err.message !== 'unauthorized') console.error(err);
-    }
+      $('stat-approve-rate').textContent = decided ? `核准率 ${Math.round((t.approved / decided) * 100)}%` : '尚無審核紀錄';
+      $('stat-waitlist').textContent = t.waitlist;
+      $('stat-needsinfo').textContent = t.needs_more_info;
+      $('stat-rejected').textContent = t.rejected;
+      $('pending-count').textContent = `🔔 ${t.pending} 則待審核`;
+      bars('chart-batch', data.by_batch, 'name');
+      bars('chart-district', data.by_district, 'district');
+    } catch (err) { if (!quiet(err)) console.error(err); }
   }
 
-  let allBatches = [];
-  async function loadBatchesEverywhere() {
-    const data = await apiFetch('/api/batches');
+  // ---------- 梯次 ----------
+  async function loadBatches() {
+    const data = await apiFetch('/api/batches/admin');
     allBatches = data.batches || [];
-    const filterSel = document.getElementById('stu-batch');
-    filterSel.innerHTML = '<option value="">全部梯次</option>' + allBatches.map((b) => `<option value="${b.id}">${b.name}</option>`).join('');
-
-    const statusLabel = { upcoming: '尚未開放', open: '開放報名中', full: '已額滿', closed: '已結束' };
-    document.getElementById('batches-admin-body').innerHTML = allBatches.length
-      ? allBatches.map((b) => `<tr><td>${b.name}</td><td>${b.registered_count} / ${b.capacity}</td><td>${statusLabel[b.status] || b.status}</td></tr>`).join('')
-      : '<tr class="empty-row"><td colspan="3">尚無梯次</td></tr>';
+    fillBatchSelects();
+    const statusOpts = (s) => Object.entries(batchStatusLabel).map(([k, v]) => `<option value="${k}" ${k === s ? 'selected' : ''}>${v}</option>`).join('');
+    $('batches-admin-body').innerHTML = allBatches.length
+      ? allBatches.map((b) => `<tr>
+          <td>${esc(b.name)}</td>
+          <td>${esc(b.start_date)} ～ ${esc(b.end_date)}</td>
+          <td>${b.registered_count} / ${b.capacity}</td>
+          <td><input type="number" min="1" value="${b.capacity}" style="width:80px;" data-batch-field="capacity" data-id="${b.id}"></td>
+          <td><select data-batch-field="status" data-id="${b.id}">${statusOpts(b.status)}</select></td>
+          <td><input type="checkbox" data-batch-field="auto_close" data-id="${b.id}" ${b.auto_close ? 'checked' : ''} aria-label="額滿自動關閉"></td>
+        </tr>`).join('')
+      : '<tr class="empty-row"><td colspan="6">尚無梯次</td></tr>';
   }
 
-  function fmtDate(s) { return new Date(s).toLocaleString('zh-TW'); }
+  $('batches-admin-body').addEventListener('change', async (e) => {
+    const el = e.target.closest('[data-batch-field]');
+    if (!el) return;
+    const field = el.dataset.batchField;
+    const value = el.type === 'checkbox' ? el.checked : (field === 'capacity' ? Number(el.value) : el.value);
+    try {
+      await apiFetch(`/api/batches/${el.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ [field]: value }) });
+      await loadBatches();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
+  });
 
-  async function loadStudents() {
+  $('batch-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    setMsg('batch-form-msg', '');
+    const payload = Object.fromEntries(new FormData(e.target).entries());
+    payload.auto_close = e.target.elements.auto_close.checked;
+    try {
+      await apiFetch('/api/batches', { method: 'POST', body: JSON.stringify(payload) });
+      e.target.reset();
+      setMsg('batch-form-msg', '梯次已建立', true);
+      loadBatches();
+    } catch (err) { if (!quiet(err)) setMsg('batch-form-msg', err.message); }
+  });
+
+  // ---------- 報名審核與名單 ----------
+  let stuPage = 1;
+  function stuParams() {
     const params = new URLSearchParams();
-    const q = document.getElementById('stu-q').value.trim();
-    const batch = document.getElementById('stu-batch').value;
-    const status = document.getElementById('stu-status').value;
+    const q = $('stu-q').value.trim();
     if (q) params.set('q', q);
-    if (batch) params.set('batch_id', batch);
-    if (status) params.set('status', status);
+    if ($('stu-batch').value) params.set('batch_id', $('stu-batch').value);
+    if ($('stu-district').value) params.set('district', $('stu-district').value);
+    if ($('stu-status').value) params.set('status', $('stu-status').value);
+    return params;
+  }
 
-    const tbody = document.getElementById('students-body');
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入中…</td></tr>';
+  async function loadStudents(page = 1) {
+    stuPage = page;
+    const params = stuParams();
+    params.set('page', page);
+    const tbody = $('students-body');
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">載入中…</td></tr>';
     try {
       const data = await apiFetch('/api/registrations?' + params.toString());
       const rows = data.registrations || [];
@@ -707,343 +1065,839 @@
         ? rows.map((r) => {
             const [label, cls] = statusMeta[r.status] || [r.status, 'badge-info'];
             return `<tr>
-              <td class="mono">${r.reg_no || '—'}</td>
-              <td>${r.name}</td>
-              <td>${r.batch_name}</td>
+              <td class="mono">${esc(r.reg_no || '—')}</td>
+              <td>${esc(r.name)}</td>
+              <td>${esc(r.batch_name)}</td>
+              <td>${esc(r.district)}${esc(r.village || '')}</td>
               <td><span class="badge ${cls}">${label}</span></td>
+              <td>${r.notified_at ? fmtDay(r.notified_at) : '—'}</td>
               <td>${fmtDate(r.created_at)}</td>
               <td><button class="btn" data-detail="${r.id}">檢視</button></td>
             </tr>`;
           }).join('')
-        : '<tr class="empty-row"><td colspan="6">查無報名資料</td></tr>';
+        : '<tr class="empty-row"><td colspan="8">查無報名資料</td></tr>';
+      pager('stu-pager', data.total, data.page, data.page_size, loadStudents);
     } catch (err) {
-      if (err.message !== 'unauthorized') tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入失敗</td></tr>';
+      if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="8">載入失敗</td></tr>';
     }
   }
 
-  document.getElementById('stu-search').addEventListener('click', loadStudents);
-  document.getElementById('stu-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadStudents(); });
+  $('stu-search').addEventListener('click', () => loadStudents(1));
+  $('stu-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadStudents(1); });
+  $('stu-export').addEventListener('click', async () => {
+    if (!$('stu-batch').value) { alert('請先選擇梯次'); return; }
+    try { await download(`/api/admin/reports/registrations.xlsx?scope=all&batch_id=${$('stu-batch').value}`); }
+    catch (err) { if (!quiet(err)) alert(err.message); }
+  });
 
   async function openDetail(id) {
-    const card = document.getElementById('stu-detail-card');
-    const body = document.getElementById('stu-detail-body');
+    const card = $('stu-detail-card');
+    const body = $('stu-detail-body');
     card.hidden = false;
     body.innerHTML = '載入中…';
     card.scrollIntoView({ behavior: 'smooth', block: 'center' });
     try {
-      const data = await apiFetch(`/api/registrations/${id}`);
-      const r = data.registration;
+      const { registration: r } = await apiFetch(`/api/registrations/${id}`);
       const [label, cls] = statusMeta[r.status] || [r.status, 'badge-info'];
+      const row = (k, v) => `<p><b>${k}：</b>${v}</p>`;
       body.innerHTML = `
         <div class="grid-2">
           <div>
-            <p><b>報名序號：</b>${r.reg_no}</p>
-            <p><b>姓名：</b>${r.name}（${r.sex}）</p>
-            <p><b>身分證字號：</b>${r.id_number}</p>
-            <p><b>出生年月日：</b>${r.birth_date}</p>
-            <p><b>行動電話：</b>${r.phone}　<b>Email：</b>${r.email}</p>
-            <p><b>戶籍行政區：</b>${r.district}　<b>職業別：</b>${r.occupation || '—'}</p>
-            <p><b>通訊地址：</b>${r.address}</p>
-            <p><b>梯次：</b>${r.batch_name}</p>
-            <p><b>午餐：</b>${r.meal_pref}　<b>災時支援意願：</b>${r.support_pref}</p>
-            <p><b>其他需求：</b>${r.other_needs || '—'}</p>
-            <p><b>既有證照：</b>${(r.existing_certs || []).join('、') || '無'}${r.cert_number ? '（' + r.cert_number + '）' : ''}</p>
-            <p><b>目前狀態：</b><span class="badge ${cls}">${label}</span>${r.review_note ? '　備註：' + r.review_note : ''}</p>
+            ${row('報名序號', esc(r.reg_no))}
+            ${row('姓名', `${esc(r.name)}（${esc(r.sex)}）`)}
+            ${row('身分證字號', esc(r.id_number))}
+            ${row('出生年月日', esc(r.birth_date))}
+            ${row('行動電話', `${esc(r.phone)}　<b>市內電話：</b>${esc(r.home_phone || '—')}`)}
+            ${row('Email', esc(r.email))}
+            ${row('戶籍行政區／里', `${esc(r.district)} ${esc(r.village || '—')}`)}
+            ${row('通訊地址', esc(r.address))}
+            ${row('職業別', `${esc(r.occupation || '—')}　<b>最高學歷：</b>${esc(r.education || '—')}`)}
+            ${row('服務單位／職稱', `${esc(r.unit_village || '—')}　${esc(r.job_title || '')}`)}
+            ${row('緊急聯絡人', r.emergency_name ? `${esc(r.emergency_name)}（${esc(r.emergency_relation || '')}）${esc(r.emergency_phone || '')}` : '—')}
+            ${row('專長', esc((r.specialty || []).join('、') || '—'))}
+            ${row('災時支援', esc(r.support_pref))}
+            ${row('梯次', esc(r.batch_name))}
+            ${row('午餐', `${esc(r.meal_pref)}　<b>其他需求：</b>${esc(r.other_needs || '—')}`)}
+            ${row('既有證照', esc((r.existing_certs || []).join('、') || '無') + (r.cert_number ? '（' + esc(r.cert_number) + '）' : ''))}
+            ${row('目前狀態', `<span class="badge ${cls}">${label}</span>${r.review_note ? '　備註：' + esc(r.review_note) : ''}${r.reviewed_by ? `（${esc(r.reviewed_by)}，${fmtDate(r.reviewed_at)}）` : ''}`)}
           </div>
           <div>
             <p><b>證件照：</b></p>
-            <img src="/api/registrations/${r.id}/photo" alt="證件照" style="max-width:160px; border-radius:8px; border:1px solid var(--border);" onerror="this.replaceWith('（無法載入照片）')">
+            <img id="stu-photo" alt="證件照" style="max-width:160px; border-radius:8px; border:1px solid var(--border);">
           </div>
         </div>
         <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
-          <button class="btn btn-primary" data-act="approved" data-id="${r.id}">核准</button>
-          <button class="btn" data-act="waitlist" data-id="${r.id}">候補</button>
+          <button class="btn btn-primary" data-act="approved" data-id="${r.id}">正取</button>
+          <button class="btn" data-act="waitlist" data-id="${r.id}">備取</button>
           <button class="btn" data-act="needs_more_info" data-id="${r.id}">要求補件</button>
           <button class="btn" data-act="rejected" data-id="${r.id}">退件</button>
-        </div>
-      `;
+          <button class="btn" data-act="pending" data-id="${r.id}">改回審核中</button>
+        </div>`;
+      // 證件照需帶 token 取得
+      apiFetch(`/api/registrations/${r.id}/photo`, { raw: true })
+        .then((res) => res.blob())
+        .then((b) => { const img = $('stu-photo'); if (img) img.src = URL.createObjectURL(b); })
+        .catch(() => { const img = $('stu-photo'); if (img) img.replaceWith('（無法載入照片）'); });
     } catch (err) {
-      if (err.message !== 'unauthorized') body.innerHTML = '載入失敗';
+      if (!quiet(err)) body.innerHTML = '載入失敗';
     }
   }
 
-  document.getElementById('students-body').addEventListener('click', (e) => {
+  $('students-body').addEventListener('click', (e) => {
     const btn = e.target.closest('[data-detail]');
     if (btn) openDetail(btn.dataset.detail);
   });
-
-  document.getElementById('stu-detail-close').addEventListener('click', () => {
-    document.getElementById('stu-detail-card').hidden = true;
-  });
-
-  document.getElementById('stu-detail-body').addEventListener('click', async (e) => {
+  $('stu-detail-close').addEventListener('click', () => { $('stu-detail-card').hidden = true; });
+  $('stu-detail-body').addEventListener('click', async (e) => {
     const btn = e.target.closest('[data-act]');
     if (!btn) return;
-    const note = ['rejected', 'needs_more_info'].includes(btn.dataset.act)
-      ? (prompt('請輸入備註／補件說明（選填）') || '')
-      : '';
+    const note = ['rejected', 'needs_more_info'].includes(btn.dataset.act) ? (prompt('請輸入備註／補件說明（選填）') || '') : '';
     try {
-      await apiFetch(`/api/registrations/${btn.dataset.id}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ status: btn.dataset.act, review_note: note || null }),
-      });
+      await apiFetch(`/api/registrations/${btn.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ status: btn.dataset.act, review_note: note || null }) });
       await openDetail(btn.dataset.id);
-      loadStudents();
+      loadStudents(stuPage);
       loadDashboard();
-    } catch (err) {
-      if (err.message !== 'unauthorized') alert(err.message);
-    }
+      loadBatches();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
   });
 
-  document.getElementById('batch-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const msg = document.getElementById('batch-form-msg');
-    msg.textContent = '';
-    const fd = new FormData(e.target);
-    const payload = Object.fromEntries(fd.entries());
+  // ---------- 報到與測驗登錄 ----------
+  async function loadTraining() {
+    const batchId = $('train-batch').value;
+    const tbody = $('train-body');
+    if (!batchId) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">請先建立梯次</td></tr>'; return; }
+    const batch = allBatches.find((b) => String(b.id) === batchId) || {};
+    $('train-quiz-open').checked = !!batch.quiz_open;
+    $('train-survey-open').checked = !!batch.survey_open;
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入中…</td></tr>';
     try {
-      await apiFetch('/api/batches', { method: 'POST', body: JSON.stringify(payload) });
-      e.target.reset();
-      loadBatchesEverywhere();
+      const data = await apiFetch(`/api/registrations?status=approved&page_size=500&batch_id=${batchId}`);
+      const rows = (data.registrations || []).slice().sort((a, b) => a.id - b.id);
+      const passLabel = (v) => v === 1 ? '<span class="badge badge-ok">合格</span>' : v === 0 ? '<span class="badge badge-danger">不合格</span>' : '—';
+      tbody.innerHTML = rows.length
+        ? rows.map((r) => `<tr>
+            <td class="mono">${esc(r.reg_no)}</td>
+            <td>${esc(r.name)}</td>
+            <td><input type="checkbox" data-train="checked_in" data-id="${r.id}" ${r.checked_in ? 'checked' : ''} aria-label="報到"></td>
+            <td><input type="number" min="0" max="100" style="width:80px;" value="${r.written_score ?? ''}" data-train="written_score" data-id="${r.id}" aria-label="學科成績"></td>
+            <td>${passLabel(r.written_passed)}</td>
+            <td><select data-train="practical_passed" data-id="${r.id}" aria-label="術科結果">
+              <option value="" ${r.practical_passed == null ? 'selected' : ''}>未測驗</option>
+              <option value="1" ${r.practical_passed === 1 ? 'selected' : ''}>合格</option>
+              <option value="0" ${r.practical_passed === 0 ? 'selected' : ''}>不合格</option>
+            </select></td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="6">本梯次尚無正取學員</td></tr>';
+      const checked = rows.filter((r) => r.checked_in).length;
+      $('train-summary').textContent = `正取 ${rows.length} 人・報到 ${checked} 人・學科合格 ${rows.filter((r) => r.written_passed === 1).length} 人・術科合格 ${rows.filter((r) => r.practical_passed === 1).length} 人`;
     } catch (err) {
-      if (err.message !== 'unauthorized') msg.textContent = err.message;
-    }
-  });
-
-  async function loadUsers() {
-    try {
-      const data = await apiFetch('/api/admin/users');
-      document.getElementById('users-body').innerHTML = data.users.map((u) => {
-        const [label, cls] = roleMeta[u.role] || [u.role, 'badge-info'];
-        return `<tr><td>${u.display_name}（${u.username}）</td><td><span class="badge ${cls}">${label}</span></td><td>${new Date(u.created_at).toLocaleDateString('zh-TW')}</td></tr>`;
-      }).join('') || '<tr class="empty-row"><td colspan="3">尚無使用者</td></tr>';
-    } catch (err) {
-      if (err.message !== 'unauthorized') document.getElementById('users-body').innerHTML = '<tr class="empty-row"><td colspan="3">載入失敗（需管理員權限）</td></tr>';
+      if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入失敗</td></tr>';
     }
   }
 
-  document.getElementById('user-add-toggle').addEventListener('click', () => {
-    const form = document.getElementById('user-add-form');
-    form.hidden = !form.hidden;
-  });
-
-  document.getElementById('user-add-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const payload = Object.fromEntries(fd.entries());
+  let passScore = 60;
+  $('train-batch').addEventListener('change', loadTraining);
+  $('train-body').addEventListener('change', async (e) => {
+    const el = e.target.closest('[data-train]');
+    if (!el) return;
+    const field = el.dataset.train;
+    const payload = {};
+    if (field === 'checked_in') payload.checked_in = el.checked;
+    else if (field === 'written_score') {
+      payload.written_score = el.value === '' ? null : Number(el.value);
+      payload.written_passed = el.value === '' ? null : Number(el.value) >= passScore;
+    } else payload.practical_passed = el.value === '' ? null : el.value === '1';
     try {
-      await apiFetch('/api/admin/users', { method: 'POST', body: JSON.stringify(payload) });
-      e.target.reset();
-      e.target.hidden = true;
-      loadUsers();
-    } catch (err) {
-      if (err.message !== 'unauthorized') alert(err.message);
-    }
+      await apiFetch(`/api/registrations/${el.dataset.id}/training`, { method: 'PATCH', body: JSON.stringify(payload) });
+      setMsg('train-msg', '已儲存', true);
+      loadTraining();
+    } catch (err) { if (!quiet(err)) setMsg('train-msg', err.message); }
+  });
+  ['quiz_open', 'survey_open'].forEach((field) => {
+    $('train-' + field.replace('_', '-')).addEventListener('change', async (e) => {
+      try {
+        await apiFetch(`/api/batches/${$('train-batch').value}`, { method: 'PATCH', body: JSON.stringify({ [field]: e.target.checked }) });
+        await loadBatches();
+        setMsg('train-msg', e.target.checked ? '已開放，學員可於「我的防災士」作答' : '已關閉', true);
+      } catch (err) { if (!quiet(err)) setMsg('train-msg', err.message); }
+    });
   });
 
-  const pickupMeta = {
-    not_collected: ['未領取', 'badge-danger'],
-    shipping: ['寄送中', 'badge-warn'],
-    collected: ['已領取', 'badge-ok'],
-  };
+  // ---------- 防災士名冊與統計 ----------
+  async function loadMemberStats() {
+    try {
+      const s = await apiFetch('/api/admin/members/stats');
+      $('mem-total').textContent = s.total;
+      $('mem-total-sub').textContent = `本系統結訓 ${s.from_training}・歷年匯入 ${s.from_import}`;
+      $('mem-support').textContent = s.support_willing;
+      $('mem-empty-villages').textContent = s.villages_without_members;
+      bars('mem-chart-district', s.by_district);
+      bars('mem-chart-village', s.by_village.slice(0, 15), (r) => r.district + r.village);
+      bars('mem-chart-sex', s.by_sex);
+      const order = ['20-29', '30-39', '40-49', '50-59', '60+', '未填寫'];
+      bars('mem-chart-age', s.by_age.slice().sort((a, b) => order.indexOf(a.label) - order.indexOf(b.label)), (r) => r.label === '未填寫' ? r.label : r.label + ' 歲');
+      bars('mem-chart-occupation', s.by_occupation);
+      bars('mem-chart-specialty', s.by_specialty);
+      bars('mem-chart-unit', s.by_unit);
+    } catch (err) { if (!quiet(err)) console.error(err); }
+  }
+
+  $('mem-district').addEventListener('change', () => {
+    const list = villagesByDistrict[$('mem-district').value] || [];
+    $('mem-village').innerHTML = '<option value="">全部里</option>' + list.map((v) => `<option>${esc(v)}</option>`).join('');
+  });
+
+  async function loadMembers(page = 1) {
+    const params = new URLSearchParams({ page });
+    const q = $('mem-q').value.trim();
+    if (q) params.set('q', q);
+    [['district', 'mem-district'], ['village', 'mem-village'], ['source', 'mem-source'], ['year', 'mem-year']].forEach(([k, id]) => {
+      if ($(id).value.trim()) params.set(k, $(id).value.trim());
+    });
+    if ($('mem-support-only').checked) params.set('support', '1');
+    const tbody = $('mem-body');
+    try {
+      const data = await apiFetch('/api/admin/members?' + params.toString());
+      tbody.innerHTML = data.members.length
+        ? data.members.map((m) => `<tr>
+            <td>${esc(m.name)}</td>
+            <td>${esc(m.district || '—')}${esc(m.village || '')}</td>
+            <td>${esc(m.sex || '—')}</td>
+            <td>${esc(m.phone || '—')}</td>
+            <td class="mono">${esc(m.cert_no || '—')}</td>
+            <td>${esc(m.training_name || '—')}</td>
+            <td>${esc(m.trained_on || '—')}</td>
+            <td>${esc((m.specialty || []).join('、') || '—')}</td>
+            <td>${m.support_willing ? '<span class="badge badge-ok">願意</span>' : '—'}</td>
+            <td>${m.source === 'training' ? '本系統' : '匯入'}</td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="10">查無資料</td></tr>';
+      pager('mem-pager', data.total, data.page, data.page_size, loadMembers);
+    } catch (err) { if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="10">載入失敗</td></tr>'; }
+  }
+  $('mem-search').addEventListener('click', () => loadMembers(1));
+  $('mem-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadMembers(1); });
+
+  $('mem-import-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    setMsg('mem-import-msg', '匯入中…', true);
+    try {
+      const r = await apiFetch('/api/admin/members/import', { method: 'POST', body: new FormData(e.target) });
+      setMsg('mem-import-msg', `共 ${r.total} 筆：新增 ${r.inserted}、更新 ${r.updated}${r.errors.length ? '；錯誤：' + r.errors.join('；') : ''}`, !r.errors.length);
+      e.target.reset();
+      loadMemberStats();
+      loadMembers(1);
+    } catch (err) { if (!quiet(err)) setMsg('mem-import-msg', err.message); }
+  });
+
+  // ---------- 證照管理 ----------
+  const applyMeta = { applying: ['申請中', 'badge-warn'], submitted: ['已送出', 'badge-info'], issued: ['已核發', 'badge-ok'] };
+  const pickupMeta = { not_collected: ['未領取', 'badge-danger'], shipping: ['已寄出', 'badge-warn'], collected: ['已領取', 'badge-ok'] };
   const deliveryLabel = { pickup: '親領', mail: '郵寄' };
 
   async function loadCerts() {
-    const tbody = document.getElementById('certs-body');
-    const q = document.getElementById('cert-q').value.trim();
+    const tbody = $('certs-body');
     const params = new URLSearchParams();
+    const q = $('cert-q').value.trim();
     if (q) params.set('q', q);
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入中…</td></tr>';
+    if ($('cert-batch').value) params.set('batch_id', $('cert-batch').value);
+    if ($('cert-apply').value) params.set('apply_status', $('cert-apply').value);
+    if ($('cert-pickup').value) params.set('pickup_status', $('cert-pickup').value);
     try {
       const data = await apiFetch('/api/admin/certs?' + params.toString());
       const rows = data.certificates || [];
       tbody.innerHTML = rows.length
         ? rows.map((c) => {
-            const [label, cls] = pickupMeta[c.pickup_status] || [c.pickup_status, 'badge-info'];
+            const [pl, pc] = pickupMeta[c.pickup_status] || [c.pickup_status, 'badge-info'];
+            const applyOpts = Object.entries(applyMeta).map(([k, [v]]) => `<option value="${k}" ${k === c.apply_status ? 'selected' : ''}>${v}</option>`).join('');
             const actions = [];
-            if (c.pickup_status !== 'collected') actions.push(`<button class="btn" data-cert-act="collected" data-cert-id="${c.id}">標記已領取</button>`);
-            if (c.delivery_method === 'mail' && c.pickup_status === 'not_collected') actions.push(`<button class="btn" data-cert-act="shipping" data-cert-id="${c.id}">標記寄送中</button>`);
+            if (c.apply_status === 'issued' && c.pickup_status !== 'collected') {
+              if (c.delivery_method === 'mail' && c.pickup_status === 'not_collected') actions.push(`<button class="btn" data-cert-set='{"pickup_status":"shipping"}' data-cert-id="${c.id}">登記已寄出</button>`);
+              if (c.delivery_method === 'pickup') actions.push(`<button class="btn" data-cert-set='{"pickup_status":"collected"}' data-cert-id="${c.id}">登記已親領</button>`);
+              if (c.delivery_method === 'mail' && c.pickup_status === 'shipping') actions.push(`<button class="btn" data-cert-set='{"pickup_status":"collected"}' data-cert-id="${c.id}">登記已送達</button>`);
+            }
+            actions.push(`<button class="btn" data-cert-edit="${c.id}" data-no="${esc(c.cert_no)}">改編號</button>`);
+            const log = [c.mailed_at && `寄出 ${fmtDay(c.mailed_at)}`, c.collected_at && `領取 ${fmtDay(c.collected_at)}`].filter(Boolean).join('<br>') || '—';
             return `<tr>
-              <td class="mono">${c.cert_no}</td>
-              <td>${c.name}</td>
-              <td>${c.batch_name}</td>
-              <td>${deliveryLabel[c.delivery_method] || c.delivery_method}</td>
-              <td><span class="badge ${cls}">${label}</span></td>
+              <td class="mono">${esc(c.cert_no)}</td>
+              <td>${esc(c.name)}</td>
+              <td>${esc(c.batch_name)}</td>
+              <td><select data-cert-apply="${c.id}" aria-label="申請狀態">${applyOpts}</select></td>
+              <td><select data-cert-delivery="${c.id}" aria-label="領取方式"><option value="pickup" ${c.delivery_method === 'pickup' ? 'selected' : ''}>親領</option><option value="mail" ${c.delivery_method === 'mail' ? 'selected' : ''}>郵寄</option></select></td>
+              <td>${c.apply_status === 'issued' ? `<span class="badge ${pc}">${pl}</span>` : '—'}</td>
+              <td style="font-size:0.78rem;">${log}</td>
               <td>${actions.join(' ')}</td>
             </tr>`;
           }).join('')
-        : '<tr class="empty-row"><td colspan="6">尚無證照資料</td></tr>';
-    } catch (err) {
-      if (err.message !== 'unauthorized') tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入失敗</td></tr>';
-    }
+        : '<tr class="empty-row"><td colspan="8">尚無證照資料</td></tr>';
+    } catch (err) { if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="8">載入失敗</td></tr>'; }
+
+    try {
+      const u = await apiFetch('/api/admin/certs/unclaimed');
+      $('cert-unclaimed-count').textContent = u.certificates.length;
+      $('cert-unclaimed-list').innerHTML = u.certificates.slice(0, 30).map((c) => `${esc(c.name)}（${esc(c.phone)}，核發 ${fmtDay(c.issued_at)}）`).join('、') || '目前沒有未領取的證照';
+    } catch (err) { if (!quiet(err)) console.error(err); }
   }
 
-  document.getElementById('cert-search').addEventListener('click', loadCerts);
-  document.getElementById('cert-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadCerts(); });
+  async function patchCert(id, payload) {
+    try {
+      await apiFetch(`/api/admin/certs/${id}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      loadCerts();
+      loadMemberStats();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
+  }
 
-  document.getElementById('cert-issue-form').addEventListener('submit', async (e) => {
+  $('cert-search').addEventListener('click', loadCerts);
+  $('cert-q').addEventListener('keydown', (e) => { if (e.key === 'Enter') loadCerts(); });
+  $('certs-body').addEventListener('change', (e) => {
+    const a = e.target.closest('[data-cert-apply]');
+    if (a) patchCert(a.dataset.certApply, { apply_status: a.value });
+    const d = e.target.closest('[data-cert-delivery]');
+    if (d) patchCert(d.dataset.certDelivery, { delivery_method: d.value });
+  });
+  $('certs-body').addEventListener('click', (e) => {
+    const s = e.target.closest('[data-cert-set]');
+    if (s) patchCert(s.dataset.certId, JSON.parse(s.dataset.certSet));
+    const ed = e.target.closest('[data-cert-edit]');
+    if (ed) {
+      const no = prompt('請輸入中央核發之證書編號', ed.dataset.no);
+      if (no && no.trim()) patchCert(ed.dataset.certEdit, { cert_no: no.trim() });
+    }
+  });
+  $('cert-issue-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const msg = document.getElementById('cert-issue-msg');
-    msg.textContent = '';
-    const fd = new FormData(e.target);
-    const payload = Object.fromEntries(fd.entries());
+    setMsg('cert-issue-msg', '');
     try {
-      await apiFetch('/api/admin/certs', { method: 'POST', body: JSON.stringify(payload) });
+      await apiFetch('/api/admin/certs', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target).entries())) });
       e.target.reset();
+      setMsg('cert-issue-msg', '已建立證照申請', true);
       loadCerts();
-    } catch (err) {
-      if (err.message !== 'unauthorized') msg.textContent = err.message;
-    }
+    } catch (err) { if (!quiet(err)) setMsg('cert-issue-msg', err.message); }
+  });
+  $('cert-remind-btn').addEventListener('click', () => {
+    $('notify-kind').value = 'cert_pickup_reminder';
+    $('notify-batch').value = '';
+    applyTemplate();
+    loadNotifyRecipients();
+    $('notify').scrollIntoView({ behavior: 'smooth' });
   });
 
-  document.getElementById('certs-body').addEventListener('click', async (e) => {
-    const btn = e.target.closest('[data-cert-act]');
-    if (!btn) return;
+  // 學員線上申請
+  const appKind = { reissue: '證照遺失補發', attendance_proof: '參訓證明' };
+  const appStatus = { pending: ['待處理', 'badge-warn'], processing: ['處理中', 'badge-info'], done: ['已完成', 'badge-ok'], rejected: ['不受理', 'badge-danger'] };
+  async function loadApplications() {
+    const tbody = $('apps-body');
+    const st = $('app-status').value;
     try {
-      await apiFetch(`/api/admin/certs/${btn.dataset.certId}`, {
-        method: 'PATCH',
-        body: JSON.stringify({ pickup_status: btn.dataset.certAct }),
-      });
-      loadCerts();
-    } catch (err) {
-      if (err.message !== 'unauthorized') alert(err.message);
-    }
+      const data = await apiFetch('/api/admin/applications' + (st ? '?status=' + st : ''));
+      tbody.innerHTML = data.applications.length
+        ? data.applications.map((a) => {
+            const [label, cls] = appStatus[a.status];
+            const acts = a.status === 'done' || a.status === 'rejected' ? '' :
+              `${a.status === 'pending' ? `<button class="btn" data-app="${a.id}" data-st="processing">處理中</button>` : ''}
+               <button class="btn btn-primary" data-app="${a.id}" data-st="done">完成</button>
+               <button class="btn" data-app="${a.id}" data-st="rejected">不受理</button>`;
+            return `<tr>
+              <td>${fmtDate(a.created_at)}</td>
+              <td>${appKind[a.kind]}</td>
+              <td>${esc(a.name)}<br><span class="note-flag">${esc(a.phone)}</span></td>
+              <td>${esc(a.batch_name)}${a.kind === 'attendance_proof' ? (a.checked_in ? '<br><span class="note-flag">已報到</span>' : '<br><span class="note-flag" style="color:var(--danger)">未登錄報到</span>') : ''}</td>
+              <td>${esc(a.reason || '—')}</td>
+              <td><span class="badge ${cls}">${label}</span>${a.admin_note ? '<br><span class="note-flag">' + esc(a.admin_note) + '</span>' : ''}</td>
+              <td>${acts}</td>
+            </tr>`;
+          }).join('')
+        : '<tr class="empty-row"><td colspan="7">沒有申請案件</td></tr>';
+    } catch (err) { if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="7">載入失敗</td></tr>'; }
+  }
+  $('app-status').addEventListener('change', loadApplications);
+  $('apps-body').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-app]');
+    if (!b) return;
+    const note = b.dataset.st === 'rejected' || b.dataset.st === 'done' ? prompt('處理說明（選填，學員可見）') : null;
+    if (note === null && (b.dataset.st === 'rejected' || b.dataset.st === 'done') && !confirm('不填說明直接送出？')) return;
+    try {
+      await apiFetch(`/api/admin/applications/${b.dataset.app}`, { method: 'PATCH', body: JSON.stringify({ status: b.dataset.st, admin_note: note || null }) });
+      loadApplications();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
   });
 
-  let allInstructors = [];
+  // ---------- 講師管理 ----------
   async function loadInstructors() {
-    const grid = document.getElementById('instructors-grid');
+    const tbody = $('instructors-body');
     try {
       const data = await apiFetch('/api/admin/instructors');
       allInstructors = data.instructors || [];
-      grid.innerHTML = allInstructors.length
-        ? allInstructors.map((i) => `
-          <div class="card instructor-card">
-            <div class="instructor-avatar">${(i.name || '?').slice(0, 1)}</div>
-            <h4>${i.name}</h4>
-            <div class="role">${i.title || '—'}</div>
-            <div class="instructor-stats"><div><b>${i.total_hours}</b>授課時數</div><div><b>${i.session_count}</b>授課場次</div></div>
-          </div>
-        `).join('')
-        : '<p class="empty-row" style="padding:16px;">尚無講師資料</p>';
-
-      const sel = document.querySelector('#course-add-form select[name="instructor_id"]');
-      sel.innerHTML = '<option value="">未指定講師</option>' + allInstructors.map((i) => `<option value="${i.id}">${i.name}</option>`).join('');
-    } catch (err) {
-      if (err.message !== 'unauthorized') grid.innerHTML = '<p class="empty-row" style="padding:16px;">載入失敗</p>';
-    }
+      fillInstructorSelects();
+      tbody.innerHTML = allInstructors.length
+        ? allInstructors.map((i) => `<tr>
+            <td>${esc(i.name)}</td>
+            <td>${esc(i.title || '—')}</td>
+            <td>${esc(i.phone || '')}${i.email ? '<br>' + esc(i.email) : ''}</td>
+            <td>${i.session_count}</td>
+            <td>${i.total_hours}</td>
+            <td>${i.first_date ? esc(i.first_date) + ' ～ ' + esc(i.last_date) : '—'}</td>
+            <td>${i.has_signature ? '<span class="badge badge-ok">已上傳</span>' : '—'}
+              <label class="btn" style="display:inline-block; cursor:pointer;">上傳<input type="file" accept="image/jpeg,image/png" data-sign="${i.id}" hidden></label></td>
+            <td><button class="btn" data-ins-detail="${i.id}">授課紀錄</button></td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="8">尚無講師資料</td></tr>';
+    } catch (err) { if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="8">載入失敗</td></tr>'; }
   }
 
-  document.getElementById('instructor-add-toggle').addEventListener('click', () => {
-    const form = document.getElementById('instructor-add-form');
-    form.hidden = !form.hidden;
-  });
+  let insDetailId = null;
+  async function loadInstructorSessions() {
+    const params = new URLSearchParams();
+    if ($('ins-from').value) params.set('from', $('ins-from').value);
+    if ($('ins-to').value) params.set('to', $('ins-to').value);
+    const data = await apiFetch(`/api/admin/instructors/${insDetailId}/sessions?` + params.toString());
+    $('ins-total').textContent = `共 ${data.sessions.length} 場、${data.total_hours} 小時`;
+    $('ins-sessions-body').innerHTML = data.sessions.length
+      ? data.sessions.map((s) => `<tr><td>${esc(s.session_date)}</td><td>${esc(s.start_time || '—')}</td><td>${esc(s.topic)}</td><td>${esc(s.batch_name)}</td><td>${esc(s.location)}</td><td>${s.hours}</td></tr>`).join('')
+      : '<tr class="empty-row"><td colspan="6">查無授課紀錄</td></tr>';
+  }
 
-  document.getElementById('instructor-add-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const fd = new FormData(e.target);
-    const payload = Object.fromEntries(fd.entries());
+  $('instructors-body').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-ins-detail]');
+    if (!b) return;
+    insDetailId = b.dataset.insDetail;
+    const ins = allInstructors.find((i) => String(i.id) === insDetailId);
+    $('ins-detail-title').textContent = `授課紀錄：${ins ? ins.name : ''}`;
+    $('ins-detail-card').hidden = false;
+    try { await loadInstructorSessions(); } catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+  $('instructors-body').addEventListener('change', async (e) => {
+    const input = e.target.closest('[data-sign]');
+    if (!input || !input.files[0]) return;
+    const fd = new FormData();
+    fd.append('signature', input.files[0]);
     try {
-      await apiFetch('/api/admin/instructors', { method: 'POST', body: JSON.stringify(payload) });
+      await apiFetch(`/api/admin/instructors/${input.dataset.sign}/signature`, { method: 'POST', body: fd });
+      loadInstructors();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+  $('ins-filter').addEventListener('click', () => loadInstructorSessions().catch((err) => { if (!quiet(err)) alert(err.message); }));
+  $('ins-detail-close').addEventListener('click', () => { $('ins-detail-card').hidden = true; });
+  $('instructor-add-toggle').addEventListener('click', () => { $('instructor-add-form').hidden = !$('instructor-add-form').hidden; });
+  $('instructor-add-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await apiFetch('/api/admin/instructors', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target).entries())) });
       e.target.reset();
       e.target.hidden = true;
       loadInstructors();
-    } catch (err) {
-      if (err.message !== 'unauthorized') alert(err.message);
-    }
+    } catch (err) { if (!quiet(err)) alert(err.message); }
   });
 
-  async function loadCourseBatchOptions() {
-    const sel = document.getElementById('course-batch');
-    const current = sel.value;
-    sel.innerHTML = allBatches.map((b) => `<option value="${b.id}">${b.name}</option>`).join('');
-    sel.value = allBatches.some((b) => String(b.id) === current) ? current : (allBatches[0] ? String(allBatches[0].id) : '');
-  }
-
+  // ---------- 課程管理 ----------
   async function loadCourses() {
-    const batchId = document.getElementById('course-batch').value;
-    const tbody = document.getElementById('courses-body');
-    if (!batchId) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">請先建立梯次</td></tr>'; return; }
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入中…</td></tr>';
+    const batchId = $('course-batch').value;
+    const tbody = $('courses-body');
+    if (!batchId) { tbody.innerHTML = '<tr class="empty-row"><td colspan="5">請先建立梯次</td></tr>'; return; }
     try {
       const data = await apiFetch('/api/admin/courses?batch_id=' + batchId);
-      const rows = data.sessions || [];
-      tbody.innerHTML = rows.length
-        ? rows.map((s) => `
-          <tr>
-            <td>${s.session_date}${s.start_time ? ' ' + s.start_time : ''}</td>
-            <td>${s.topic}</td>
-            <td>${s.instructor_name || '—'}</td>
+      tbody.innerHTML = data.sessions.length
+        ? data.sessions.map((s) => `<tr>
+            <td>${esc(s.session_date)}${s.start_time ? ' ' + esc(s.start_time) : ''}</td>
+            <td>${esc(s.topic)}</td>
+            <td>${esc(s.instructor_name || '—')}</td>
             <td>${s.hours}</td>
-            <td>${s.material_url ? `<a href="${s.material_url}" target="_blank" rel="noopener">連結</a>` : '—'}</td>
             <td><button class="btn" data-course-del="${s.id}">刪除</button></td>
-          </tr>
-        `).join('')
-        : '<tr class="empty-row"><td colspan="6">尚無排課</td></tr>';
-    } catch (err) {
-      if (err.message !== 'unauthorized') tbody.innerHTML = '<tr class="empty-row"><td colspan="6">載入失敗</td></tr>';
-    }
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="5">尚無排課</td></tr>';
+    } catch (err) { if (!quiet(err)) tbody.innerHTML = '<tr class="empty-row"><td colspan="5">載入失敗</td></tr>'; }
   }
-
-  document.getElementById('course-batch').addEventListener('change', loadCourses);
-
-  document.getElementById('course-add-form').addEventListener('submit', async (e) => {
+  $('course-batch').addEventListener('change', loadCourses);
+  $('course-add-form').addEventListener('submit', async (e) => {
     e.preventDefault();
-    const batchId = document.getElementById('course-batch').value;
-    if (!batchId) { alert('請先建立梯次'); return; }
-    const fd = new FormData(e.target);
-    const payload = Object.fromEntries(fd.entries());
-    payload.batch_id = batchId;
+    const payload = Object.fromEntries(new FormData(e.target).entries());
+    payload.batch_id = $('course-batch').value;
+    if (!payload.batch_id) { alert('請先建立梯次'); return; }
     try {
       await apiFetch('/api/admin/courses', { method: 'POST', body: JSON.stringify(payload) });
       e.target.reset();
       loadCourses();
       loadInstructors();
-    } catch (err) {
-      if (err.message !== 'unauthorized') alert(err.message);
-    }
+    } catch (err) { if (!quiet(err)) alert(err.message); }
   });
-
-  document.getElementById('courses-body').addEventListener('click', async (e) => {
+  $('courses-body').addEventListener('click', async (e) => {
     const btn = e.target.closest('[data-course-del]');
-    if (!btn) return;
-    if (!confirm('確定要刪除此課程排程？')) return;
+    if (!btn || !confirm('確定要刪除此課程排程？')) return;
     try {
       await apiFetch(`/api/admin/courses/${btn.dataset.courseDel}`, { method: 'DELETE' });
       loadCourses();
       loadInstructors();
-    } catch (err) {
-      if (err.message !== 'unauthorized') alert(err.message);
+    } catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+
+  async function loadMaterials() {
+    try {
+      const data = await apiFetch('/api/admin/courses/materials');
+      $('materials-body').innerHTML = data.materials.length
+        ? data.materials.map((m) => `<tr>
+            <td><a href="#" data-mat-dl="${m.id}" data-name="${esc(m.original_name || m.title)}">${esc(m.title)}</a></td>
+            <td>${esc(m.batch_name || '不限')}</td>
+            <td>${esc(m.instructor_name || '—')}</td>
+            <td>${m.visibility === 'public' ? '<span class="badge badge-info">公開</span>' : '<span class="badge badge-warn">梯次學員</span>'}</td>
+            <td><button class="btn" data-mat-del="${m.id}">刪除</button></td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="5">尚無教材</td></tr>';
+    } catch (err) { if (!quiet(err)) console.error(err); }
+    // 梯次學員教材下載連結（學員於「我的防災士」看到同一個 QR Code）
+    const b = allBatches.find((x) => String(x.id) === $('course-batch').value);
+    $('material-qr').innerHTML = b ? `「${esc(b.name)}」學員教材下載連結（可製成 QR Code 發給正取學員）：<br><code>${esc(location.origin)}/courses.html?batch=${b.id}&amp;key=${esc(b.material_key)}#materials</code>` : '';
+  }
+  $('course-batch').addEventListener('change', loadMaterials);
+  $('material-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    if (fd.get('visibility') === 'enrolled' && !fd.get('batch_id')) { setMsg('material-msg', '僅限梯次學員的教材請選擇梯次'); return; }
+    setMsg('material-msg', '上傳中…', true);
+    try {
+      await apiFetch('/api/admin/courses/materials', { method: 'POST', body: fd });
+      e.target.reset();
+      fillBatchSelects();
+      setMsg('material-msg', '已上傳', true);
+      loadMaterials();
+    } catch (err) { if (!quiet(err)) setMsg('material-msg', err.message); }
+  });
+  $('materials-body').addEventListener('click', async (e) => {
+    const dl = e.target.closest('[data-mat-dl]');
+    if (dl) {
+      e.preventDefault();
+      download(`/api/admin/courses/materials/${dl.dataset.matDl}/download`, dl.dataset.name).catch((err) => { if (!quiet(err)) alert(err.message); });
     }
+    const del = e.target.closest('[data-mat-del]');
+    if (del && confirm('確定刪除此教材？')) {
+      try { await apiFetch(`/api/admin/courses/materials/${del.dataset.matDel}`, { method: 'DELETE' }); loadMaterials(); }
+      catch (err) { if (!quiet(err)) alert(err.message); }
+    }
+  });
+
+  async function loadPhotos() {
+    try {
+      const data = await apiFetch('/api/admin/courses/photos');
+      $('photos-grid').innerHTML = data.photos.length
+        ? data.photos.map((p) => `<figure>
+            <img src="/api/public/photos/${p.id}" alt="${esc(p.caption || p.batch_name)}" loading="lazy">
+            <figcaption>${esc(p.batch_name)}${p.caption ? '・' + esc(p.caption) : ''}</figcaption>
+            <button class="btn" data-photo-del="${p.id}">刪除</button>
+          </figure>`).join('')
+        : '<p class="note-flag">尚無課程照片</p>';
+    } catch (err) { if (!quiet(err)) console.error(err); }
+  }
+  $('photo-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    setMsg('photo-msg', '上傳中…', true);
+    try {
+      const r = await apiFetch('/api/admin/courses/photos', { method: 'POST', body: new FormData(e.target) });
+      e.target.reset();
+      fillBatchSelects();
+      setMsg('photo-msg', `已上傳 ${r.saved} 張`, true);
+      loadPhotos();
+    } catch (err) { if (!quiet(err)) setMsg('photo-msg', err.message); }
+  });
+  $('photos-grid').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-photo-del]');
+    if (!b || !confirm('確定刪除此照片？')) return;
+    try { await apiFetch(`/api/admin/courses/photos/${b.dataset.photoDel}`, { method: 'DELETE' }); loadPhotos(); }
+    catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+
+  // ---------- 學科測驗題庫 ----------
+  function syncQuizForm() {
+    const choice = $('quiz-qtype').value === 'choice';
+    $('quiz-options').hidden = !choice;
+    $('quiz-answer').innerHTML = (choice ? ['A', 'B', 'C', 'D'] : ['O', 'X'])
+      .map((a) => `<option value="${a}">答案：${a === 'O' ? '○（對）' : a === 'X' ? '✕（錯）' : a}</option>`).join('');
+  }
+  $('quiz-qtype').addEventListener('change', syncQuizForm);
+  syncQuizForm();
+
+  async function loadQuiz() {
+    try {
+      const [{ questions }, { settings }] = await Promise.all([apiFetch('/api/admin/quiz/questions'), apiFetch('/api/admin/quiz/settings')]);
+      passScore = Number(settings.quiz_pass_score || 60);
+      $('quiz-settings-form').elements.quiz_pass_score.value = passScore;
+      const active = questions.filter((q) => q.active);
+      $('quiz-summary').textContent = `啟用中 ${active.length} 題（是非 ${active.filter((q) => q.qtype === 'tf').length}、選擇 ${active.filter((q) => q.qtype === 'choice').length}），總分 ${active.reduce((s, q) => s + q.points, 0)} 分，換算百分制後 ${passScore} 分及格`;
+      $('quiz-body').innerHTML = questions.length
+        ? questions.map((q, i) => `<tr>
+            <td>${i + 1}</td>
+            <td>${q.qtype === 'tf' ? '是非' : '選擇'}</td>
+            <td>${esc(q.question)}${q.options.length ? '<br><span class="note-flag">' + q.options.map((o, j) => `(${'ABCD'[j]}) ${esc(o)}`).join('　') + '</span>' : ''}</td>
+            <td>${esc(q.answer)}</td>
+            <td>${q.points}</td>
+            <td><input type="checkbox" data-q-active="${q.id}" ${q.active ? 'checked' : ''} aria-label="啟用"></td>
+            <td><button class="btn" data-q-del="${q.id}">刪除</button></td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="7">題庫尚無題目，請新增或匯入</td></tr>';
+    } catch (err) { if (!quiet(err)) console.error(err); }
+  }
+  $('quiz-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target.elements;
+    const payload = { qtype: f.qtype.value, question: f.question.value, answer: f.answer.value, points: f.points.value };
+    if (payload.qtype === 'choice') payload.options = [f.opt_a.value, f.opt_b.value, f.opt_c.value, f.opt_d.value];
+    try {
+      await apiFetch('/api/admin/quiz/questions', { method: 'POST', body: JSON.stringify(payload) });
+      f.question.value = '';
+      ['opt_a', 'opt_b', 'opt_c', 'opt_d'].forEach((k) => { f[k].value = ''; });
+      setMsg('quiz-msg', '已新增', true);
+      loadQuiz();
+    } catch (err) { if (!quiet(err)) setMsg('quiz-msg', err.message); }
+  });
+  $('quiz-import-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const r = await apiFetch('/api/admin/quiz/questions/import', { method: 'POST', body: new FormData(e.target) });
+      setMsg('quiz-import-msg', `已匯入 ${r.inserted} 題${r.errors.length ? '；' + r.errors.join('；') : ''}`, !r.errors.length);
+      e.target.reset();
+      loadQuiz();
+    } catch (err) { if (!quiet(err)) setMsg('quiz-import-msg', err.message); }
+  });
+  $('quiz-settings-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await apiFetch('/api/admin/quiz/settings', { method: 'PATCH', body: JSON.stringify({ quiz_pass_score: e.target.elements.quiz_pass_score.value }) });
+      loadQuiz();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+  $('quiz-body').addEventListener('change', async (e) => {
+    const c = e.target.closest('[data-q-active]');
+    if (!c) return;
+    try { await apiFetch(`/api/admin/quiz/questions/${c.dataset.qActive}`, { method: 'PATCH', body: JSON.stringify({ active: c.checked }) }); loadQuiz(); }
+    catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+  $('quiz-body').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-q-del]');
+    if (!b || !confirm('確定刪除此題？')) return;
+    try { await apiFetch(`/api/admin/quiz/questions/${b.dataset.qDel}`, { method: 'DELETE' }); loadQuiz(); }
+    catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+
+  // ---------- 公告管理 ----------
+  let announcements = [];
+  async function loadAnnouncements() {
+    try {
+      announcements = (await apiFetch('/api/admin/announcements')).announcements;
+      const today = new Date().toISOString().slice(0, 10);
+      $('ann-body').innerHTML = announcements.length
+        ? announcements.map((a) => `<tr>
+            <td>${esc(a.published_at)}${a.published_at > today ? ' <span class="badge badge-warn">預約</span>' : ''}</td>
+            <td>${annCategory[a.category] || esc(a.category)}</td>
+            <td>${a.pinned ? '📌 ' : ''}${esc(a.title)}</td>
+            <td><button class="btn" data-ann-edit="${a.id}">編輯</button> <button class="btn" data-ann-del="${a.id}">刪除</button></td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="4">尚無公告</td></tr>';
+    } catch (err) { if (!quiet(err)) console.error(err); }
+  }
+  function resetAnnForm() {
+    $('ann-form').reset();
+    $('ann-form').elements.id.value = '';
+    $('ann-submit').textContent = '發布公告';
+    $('ann-cancel').hidden = true;
+  }
+  $('ann-cancel').addEventListener('click', resetAnnForm);
+  $('ann-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.target.elements;
+    const payload = { title: f.title.value, category: f.category.value, content: f.content.value, pinned: f.pinned.checked };
+    if (f.published_at.value) payload.published_at = f.published_at.value;
+    try {
+      if (f.id.value) await apiFetch(`/api/admin/announcements/${f.id.value}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      else await apiFetch('/api/admin/announcements', { method: 'POST', body: JSON.stringify(payload) });
+      setMsg('ann-msg', '已儲存', true);
+      resetAnnForm();
+      loadAnnouncements();
+    } catch (err) { if (!quiet(err)) setMsg('ann-msg', err.message); }
+  });
+  $('ann-body').addEventListener('click', async (e) => {
+    const ed = e.target.closest('[data-ann-edit]');
+    if (ed) {
+      const a = announcements.find((x) => String(x.id) === ed.dataset.annEdit);
+      const f = $('ann-form').elements;
+      f.id.value = a.id; f.title.value = a.title; f.category.value = a.category;
+      f.published_at.value = a.published_at; f.pinned.checked = !!a.pinned; f.content.value = a.content || '';
+      $('ann-submit').textContent = '儲存修改';
+      $('ann-cancel').hidden = false;
+      $('ann-form').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    const del = e.target.closest('[data-ann-del]');
+    if (del && confirm('確定刪除此公告？')) {
+      try { await apiFetch(`/api/admin/announcements/${del.dataset.annDel}`, { method: 'DELETE' }); loadAnnouncements(); }
+      catch (err) { if (!quiet(err)) alert(err.message); }
+    }
+  });
+
+  // ---------- 通知與提醒 ----------
+  let notifyTemplates = {};
+  let notifyRecipients = [];
+  async function loadNotifyConfig() {
+    try {
+      const c = await apiFetch('/api/admin/notify/config');
+      notifyTemplates = c.templates;
+      $('notify-kind').innerHTML = Object.entries(c.templates).map(([k, t]) => `<option value="${k}">${esc(t.label)}</option>`).join('');
+      $('notify-smtp').textContent = c.smtp
+        ? '✅ Email 寄信伺服器已設定，Email 將直接寄出。'
+        : '⚠️ 尚未設定 SMTP 寄信伺服器（SMTP_HOST），Email 通知將列入「待發送」，可匯出名單以公務信箱寄送。';
+      $('notify-upcoming').innerHTML = c.upcoming_batches.length
+        ? '📅 三日內開課：' + c.upcoming_batches.map((b) => `${esc(b.name)}（${esc(b.start_date)}）`).join('、') + '，請記得發送「開課前三日提醒」。'
+        : '';
+      applyTemplate();
+    } catch (err) { if (!quiet(err)) console.error(err); }
+  }
+  function applyTemplate() {
+    const t = notifyTemplates[$('notify-kind').value];
+    if (!t) return;
+    $('notify-form').elements.subject.value = t.subject;
+    $('notify-form').elements.body.value = t.body;
+    $('notify-status').hidden = $('notify-kind').value !== 'custom';
+  }
+  $('notify-kind').addEventListener('change', () => { applyTemplate(); $('notify-body').innerHTML = '<tr class="empty-row"><td colspan="6">請載入名單</td></tr>'; notifyRecipients = []; updateNotifyCount(); });
+
+  function updateNotifyCount() {
+    $('notify-count').textContent = document.querySelectorAll('#notify-body input[data-rid]:checked').length;
+  }
+  async function loadNotifyRecipients() {
+    const params = new URLSearchParams({ kind: $('notify-kind').value });
+    if ($('notify-batch').value) params.set('batch_id', $('notify-batch').value);
+    if ($('notify-kind').value === 'custom' && $('notify-status').value) params.set('status', $('notify-status').value);
+    try {
+      notifyRecipients = (await apiFetch('/api/admin/notify/recipients?' + params.toString())).recipients;
+      $('notify-body').innerHTML = notifyRecipients.length
+        ? notifyRecipients.map((r) => `<tr>
+            <td><input type="checkbox" data-rid="${r.registration_id}" checked aria-label="選取 ${esc(r.name)}"></td>
+            <td>${esc(r.name)}</td><td>${esc(r.batch_name)}</td><td>${esc(r.email)}</td><td>${esc(r.phone)}</td>
+            <td>${r.notified_at ? fmtDay(r.notified_at) : '—'}</td>
+          </tr>`).join('')
+        : '<tr class="empty-row"><td colspan="6">沒有符合條件的對象</td></tr>';
+      $('notify-all').checked = true;
+      updateNotifyCount();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
+  }
+  $('notify-load').addEventListener('click', loadNotifyRecipients);
+  $('notify-all').addEventListener('change', (e) => {
+    document.querySelectorAll('#notify-body input[data-rid]').forEach((c) => { c.checked = e.target.checked; });
+    updateNotifyCount();
+  });
+  $('notify-body').addEventListener('change', updateNotifyCount);
+  $('notify-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const ids = Array.from(document.querySelectorAll('#notify-body input[data-rid]:checked')).map((c) => Number(c.dataset.rid));
+    if (!ids.length) { setMsg('notify-msg', '請先載入並勾選收件人'); return; }
+    const f = e.target.elements;
+    const label = f.channel.value === 'email' ? 'Email' : '簡訊';
+    if (!confirm(`確定以 ${label} 通知 ${ids.length} 人？`)) return;
+    setMsg('notify-msg', '發送中…', true);
+    try {
+      const r = await apiFetch('/api/admin/notify/send', { method: 'POST', body: JSON.stringify({
+        channel: f.channel.value, category: $('notify-kind').value, subject: f.subject.value, body: f.body.value, registration_ids: ids,
+      }) });
+      setMsg('notify-msg', `已寄出 ${r.sent}、待發送 ${r.queued}、失敗 ${r.failed}`, !r.failed);
+      loadNotifyLog();
+      loadNotifyRecipients();
+    } catch (err) { if (!quiet(err)) setMsg('notify-msg', err.message); }
+  });
+
+  const notifyStatus = { queued: ['待發送', 'badge-warn'], sent: ['已發送', 'badge-ok'], failed: ['失敗', 'badge-danger'] };
+  async function loadNotifyLog() {
+    try {
+      const data = await apiFetch('/api/admin/notify/log');
+      $('notify-log-body').innerHTML = data.notifications.length
+        ? data.notifications.map((n) => {
+            const [label, cls] = notifyStatus[n.status];
+            return `<tr>
+              <td>${fmtDate(n.created_at)}</td>
+              <td>${esc((notifyTemplates[n.category] || {}).label || n.category)}</td>
+              <td>${n.channel === 'email' ? 'Email' : '簡訊'}</td>
+              <td>${esc(n.recipient_name)}（${esc(n.recipient)}）</td>
+              <td><span class="badge ${cls}" title="${esc(n.error || '')}">${label}</span></td>
+              <td>${esc(n.created_by)}</td>
+            </tr>`;
+          }).join('')
+        : '<tr class="empty-row"><td colspan="6">尚無發送紀錄</td></tr>';
+    } catch (err) { if (!quiet(err)) console.error(err); }
+  }
+  $('notify-export-sms').addEventListener('click', () => download('/api/admin/notify/export.csv?channel=sms').catch((err) => { if (!quiet(err)) alert(err.message); }));
+  $('notify-export-email').addEventListener('click', () => download('/api/admin/notify/export.csv?channel=email').catch((err) => { if (!quiet(err)) alert(err.message); }));
+  $('notify-mark-sms').addEventListener('click', async () => {
+    if (!confirm('確認所有待發送簡訊已人工發送完成？')) return;
+    try { const r = await apiFetch('/api/admin/notify/mark-sent', { method: 'POST', body: JSON.stringify({ channel: 'sms' }) }); alert(`已標記 ${r.updated} 筆`); loadNotifyLog(); }
+    catch (err) { if (!quiet(err)) alert(err.message); }
+  });
+
+  // ---------- 成果報告 ----------
+  document.querySelector('#reports .report-grid').addEventListener('click', async (e) => {
+    const b = e.target.closest('[data-report]');
+    if (!b) return;
+    const batchId = $('report-batch').value;
+    if (!batchId) { setMsg('report-msg', '請先選擇梯次'); return; }
+    let url = `/api/admin/reports/${b.dataset.report}?batch_id=${batchId}`;
+    if (b.dataset.report === 'practical.html' && $('report-instructor').value) url += `&instructor_id=${$('report-instructor').value}`;
+    setMsg('report-msg', '產出中…', true);
+    try { await download(url); setMsg('report-msg', ''); }
+    catch (err) { if (!quiet(err)) setMsg('report-msg', err.message); }
+  });
+
+  // ---------- 使用者與紀錄 ----------
+  async function loadUsers() {
+    try {
+      const data = await apiFetch('/api/admin/users');
+      $('users-body').innerHTML = data.users.map((u) => {
+        const [label, cls] = roleMeta[u.role] || [u.role, 'badge-info'];
+        return `<tr><td>${esc(u.display_name)}（${esc(u.username)}）</td><td><span class="badge ${cls}">${label}</span></td><td>${fmtDay(u.created_at)}</td></tr>`;
+      }).join('') || '<tr class="empty-row"><td colspan="3">尚無使用者</td></tr>';
+    } catch (err) {
+      if (!quiet(err)) $('users-body').innerHTML = '<tr class="empty-row"><td colspan="3">載入失敗（需管理員權限）</td></tr>';
+    }
+  }
+  $('user-add-toggle').addEventListener('click', () => { $('user-add-form').hidden = !$('user-add-form').hidden; });
+  $('user-add-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      await apiFetch('/api/admin/users', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(e.target).entries())) });
+      e.target.reset();
+      e.target.hidden = true;
+      loadUsers();
+    } catch (err) { if (!quiet(err)) alert(err.message); }
   });
 
   async function loadLogs() {
     try {
       const data = await apiFetch('/api/admin/logs');
-      document.getElementById('logs-body').innerHTML = data.logs.length
-        ? data.logs.map((l) => `<tr><td>${fmtDate(l.created_at)}</td><td>${l.actor}</td><td>${l.action}${l.detail ? ' — ' + l.detail : ''}</td></tr>`).join('')
+      $('logs-body').innerHTML = data.logs.length
+        ? data.logs.map((l) => `<tr><td>${fmtDate(l.created_at)}</td><td>${esc(l.actor)}</td><td>${esc(l.action)}${l.detail ? ' — ' + esc(l.detail) : ''}</td></tr>`).join('')
         : '<tr class="empty-row"><td colspan="3">尚無紀錄</td></tr>';
     } catch (err) {
-      if (err.message !== 'unauthorized') document.getElementById('logs-body').innerHTML = '<tr class="empty-row"><td colspan="3">載入失敗（需管理員權限）</td></tr>';
+      if (!quiet(err)) $('logs-body').innerHTML = '<tr class="empty-row"><td colspan="3">載入失敗（需管理員權限）</td></tr>';
     }
   }
 
-  function loadAll() {
+  async function loadAll() {
     loadDashboard();
-    loadBatchesEverywhere().then(() => {
-      loadStudents();
-      loadCourseBatchOptions().then(loadCourses);
-    });
     loadUsers();
     loadLogs();
-    loadInstructors();
+    loadMemberStats();
+    loadApplications();
+    loadAnnouncements();
+    loadPhotos();
+    loadNotifyLog();
+    await loadVillages();
+    loadMembers(1);
+    await loadInstructors();
+    try { await loadBatches(); } catch (err) { if (!quiet(err)) console.error(err); }
+    loadStudents(1);
+    loadCourses();
+    loadMaterials();
     loadCerts();
+    await loadQuiz();
+    loadTraining();
+    loadNotifyConfig();
   }
 
   (async function init() {
-    const token = getToken();
-    const user = getUser();
-    if (!token || !user) { showLogin(''); return; }
+    if (!getToken() || !getUser()) { showLogin(''); return; }
     try {
       await apiFetch('/api/auth/me');
       showApp();

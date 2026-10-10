@@ -22,6 +22,12 @@ services:
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       DATABASE_PATH: /app/data/drv.sqlite3
       UPLOAD_DIR: /app/uploads
+      # Email 通知（選填；未設定時通知會列為「待發送」，可匯出名單人工寄送）
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-}
     volumes:
       - apidata:/app/data
       - uploads:/app/uploads
