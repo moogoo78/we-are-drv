@@ -8,6 +8,7 @@ COPY status.html /usr/share/nginx/html/status.html
 COPY my.html /usr/share/nginx/html/my.html
 COPY news.html /usr/share/nginx/html/news.html
 COPY courses.html /usr/share/nginx/html/courses.html
+COPY samples/members-import-example.xlsx /usr/share/nginx/html/samples/members-import-example.xlsx
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 HEALTHCHECK --interval=30s --timeout=3s CMD wget -q --spider http://localhost/ || exit 1
