@@ -26,6 +26,7 @@
     --sidebar-active: #2d3446;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
+  [hidden] { display: none !important; }
   body {
     font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
     background: var(--bg);
@@ -71,6 +72,7 @@
   }
 
   /* Main */
+  #app { display: flex; flex: 1; min-width: 0; }
   .main { flex: 1; min-width: 0; }
   .topbar {
     background: var(--panel); border-bottom: 1px solid var(--border);
@@ -245,7 +247,7 @@
   .bar-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 120px; }
   .grid-2 > .card { min-width: 0; }
   @media (max-width: 760px) {
-    body { display: block; }
+    body, #app { display: block; }
     .sidebar { position: static; width: 100%; height: auto; }
     .content { padding: 16px; }
   }
@@ -266,7 +268,7 @@
 <div id="app" hidden>
 
 <aside class="sidebar">
-  <a href="index.html" class="sidebar-logo"><span class="badge">災</span>管理後台</a>
+  <a href="/" class="sidebar-logo"><span class="badge">災</span>管理後台</a>
   <nav>
     <div class="sidebar-group-label">總覽</div>
     <a href="#dashboard" class="nav-link active"><span class="nav-icon">📊</span>報名統計儀表板</a>
@@ -293,7 +295,7 @@
   <div class="sidebar-footer">
     登入身分：<span id="whoami-role">—</span><br>
     <button type="button" class="logout-link" id="logout-btn" style="color:#b8bdc9; margin-top:8px;">登出</button><br>
-    <a href="index.html" style="color:#b8bdc9; text-decoration:underline; display:inline-block; margin-top:8px;">← 回到公開報名網站</a>
+    <a href="/" style="color:#b8bdc9; text-decoration:underline; display:inline-block; margin-top:8px;">← 回到公開報名網站</a>
   </div>
 </aside>
 
@@ -1545,7 +1547,7 @@
     } catch (err) { if (!quiet(err)) console.error(err); }
     // 梯次學員教材下載連結（學員於「我的防災士」看到同一個 QR Code）
     const b = allBatches.find((x) => String(x.id) === $('course-batch').value);
-    $('material-qr').innerHTML = b ? `「${esc(b.name)}」學員教材下載連結（可製成 QR Code 發給正取學員）：<br><code>${esc(location.origin)}/courses.html?batch=${b.id}&amp;key=${esc(b.material_key)}#materials</code>` : '';
+    $('material-qr').innerHTML = b ? `「${esc(b.name)}」學員教材下載連結（可製成 QR Code 發給正取學員）：<br><code>${esc(location.origin)}/courses?batch=${b.id}&amp;key=${esc(b.material_key)}#materials</code>` : '';
   }
   $('course-batch').addEventListener('change', loadMaterials);
   $('material-form').addEventListener('submit', async (e) => {

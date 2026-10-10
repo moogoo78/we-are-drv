@@ -114,38 +114,38 @@
 
 <div class="util-bar">
   <div class="wrap">
-    <a href="index.html">回首頁</a>
-    <a href="admin.html">承辦人員登入</a>
+    <a href="/">回首頁</a>
+    <a href="/admin">承辦人員登入</a>
   </div>
 </div>
 
 <header class="site">
   <div class="wrap header-row">
-    <a class="brand" href="index.html">
+    <a class="brand" href="/">
       <span class="org">基隆市政府消防局</span>
       <span class="site-name">基隆市防災士培訓報名系統</span>
     </a>
     <div class="header-actions">
-      <a href="status.html" class="btn btn-outlined">查詢報名進度</a>
-      <a href="my.html" class="btn btn-outlined">我的防災士</a>
-      <a href="register.html" class="btn btn-solid">我要報名</a>
+      <a href="/status" class="btn btn-outlined">查詢報名進度</a>
+      <a href="/my" class="btn btn-outlined">我的防災士</a>
+      <a href="/register" class="btn btn-solid">我要報名</a>
     </div>
   </div>
   <nav class="main" aria-label="主選單">
     <div class="wrap">
-      <a href="news.html" aria-current="page">活動公告</a>
-      <a href="index.html#sessions">梯次資訊</a>
-      <a href="register.html">線上報名</a>
-      <a href="courses.html">培訓課程</a>
-      <a href="my.html">我的防災士</a>
-      <a href="index.html#faq">常見問題</a>
-      <a href="index.html#contact">聯絡我們</a>
+      <a href="/news" aria-current="page">活動公告</a>
+      <a href="/#sessions">梯次資訊</a>
+      <a href="/register">線上報名</a>
+      <a href="/courses">培訓課程</a>
+      <a href="/my">我的防災士</a>
+      <a href="/#faq">常見問題</a>
+      <a href="/#contact">聯絡我們</a>
     </div>
   </nav>
 </header>
 
 <main class="subpage">
-  <nav class="crumb" aria-label="麵包屑"><a href="index.html">首頁</a>　/　<span id="crumb-tail">最新消息</span></nav>
+  <nav class="crumb" aria-label="麵包屑"><a href="/">首頁</a>　/　<span id="crumb-tail">最新消息</span></nav>
 
   <div id="list-view" hidden>
     <h1 class="page-title" style="margin-bottom:24px;">最新消息</h1>
@@ -204,7 +204,7 @@
         return `<li>
           <span class="date">${esc(datePart(a.published_at))}</span>
           <span class="tag ${cls}">${label}</span>
-          <span>${a.pinned ? '<span class="pinned-mark">置頂</span>' : ''}<a class="title-link" href="news.html?id=${encodeURIComponent(a.id)}">${esc(a.title)}</a></span>
+          <span>${a.pinned ? '<span class="pinned-mark">置頂</span>' : ''}<a class="title-link" href="/news?id=${encodeURIComponent(a.id)}">${esc(a.title)}</a></span>
         </li>`;
       }).join('');
     };
@@ -234,7 +234,7 @@
     const view = document.getElementById('detail-view');
     view.hidden = false;
     const crumb = document.getElementById('crumb-tail');
-    crumb.innerHTML = '<a href="news.html">最新消息</a>';
+    crumb.innerHTML = '<a href="/news">最新消息</a>';
     view.innerHTML = '<p class="empty-hint">公告載入中…</p>';
     try {
       const r = await fetch(`/api/public/announcements/${encodeURIComponent(id)}`);
@@ -243,7 +243,7 @@
       const a = data.announcement;
       const [cls, label] = catOf(a.category);
       document.title = `${a.title} | 最新消息 | 基隆市防災士培訓報名系統`;
-      crumb.innerHTML = `<a href="news.html">最新消息</a>　/　公告內容`;
+      crumb.innerHTML = `<a href="/news">最新消息</a>　/　公告內容`;
       view.innerHTML = `
         <article class="ann">
           <h1 class="page-title">${a.pinned ? '<span class="pinned-mark" style="font-size:14px;">置頂</span>' : ''}${esc(a.title)}</h1>
@@ -252,11 +252,11 @@
             <span class="date">發布日期：<time datetime="${esc(datePart(a.published_at))}">${esc(datePart(a.published_at))}</time></span>
           </div>
           <div class="ann-content">${esc(a.content)}</div>
-          <a href="news.html" class="btn btn-outlined back-link">← 回最新消息列表</a>
+          <a href="/news" class="btn btn-outlined back-link">← 回最新消息列表</a>
         </article>`;
     } catch (err) {
       view.innerHTML = `<div class="form-msg error" role="alert">${esc(err.message || '公告載入失敗')}</div>
-        <p><a href="news.html" class="btn btn-outlined back-link" style="margin-top:16px;">← 回最新消息列表</a></p>`;
+        <p><a href="/news" class="btn btn-outlined back-link" style="margin-top:16px;">← 回最新消息列表</a></p>`;
     }
   }
 </script>

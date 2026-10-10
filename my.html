@@ -210,9 +210,9 @@
 
 <div class="util-bar">
   <div class="wrap">
-    <a href="index.html">回首頁</a>
-    <a href="courses.html">培訓課程</a>
-    <a href="admin.html">承辦人員登入</a>
+    <a href="/">回首頁</a>
+    <a href="/courses">培訓課程</a>
+    <a href="/admin">承辦人員登入</a>
   </div>
 </div>
 
@@ -230,7 +230,7 @@
 </header>
 
 <main class="subpage wrap">
-  <nav class="crumb" aria-label="頁面位置"><a href="index.html">首頁</a>　/　我的防災士</nav>
+  <nav class="crumb" aria-label="頁面位置"><a href="/">首頁</a>　/　我的防災士</nav>
   <h1 class="page-title">我的防災士</h1>
 
   <!-- 登入 -->
@@ -1151,7 +1151,7 @@
         </div>
       </article>`).join('');
     regs.forEach((r) => {
-      const url = `${location.origin}/courses.html?batch=${encodeURIComponent(r.batch_id)}&key=${encodeURIComponent(r.material_key)}#materials`;
+      const url = `${location.origin}/courses?batch=${encodeURIComponent(r.batch_id)}&key=${encodeURIComponent(r.material_key)}#materials`;
       const qrEl = document.querySelector(`[data-mat-qr="${CSS.escape(String(r.id))}"]`);
       if (window.QRCode) {
         try { new QRCode(qrEl, { text: url, width: 160, height: 160 }); } catch (e) { qrEl.textContent = 'QR Code 產生失敗'; }
