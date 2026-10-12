@@ -2,7 +2,6 @@ FROM nginx:alpine
 
 COPY index.html /usr/share/nginx/html/index.html
 COPY admin.html /usr/share/nginx/html/admin.html
-COPY demo.html /usr/share/nginx/html/demo.html
 COPY register.html /usr/share/nginx/html/register.html
 COPY status.html /usr/share/nginx/html/status.html
 COPY my.html /usr/share/nginx/html/my.html
