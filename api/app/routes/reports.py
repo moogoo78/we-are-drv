@@ -15,17 +15,18 @@ from ..auth import require_auth
 from ..db import get_db
 from ..files import UPLOAD_DIR, upload_path
 from .. import survey_def
+from ..site import SITE
 
 reports_bp = Blueprint("reports", __name__)
 
-TRAINING_UNIT = "基隆市政府消防局"
+TRAINING_UNIT = SITE["agency"]
 ROSTER_COURSES = [
     "基礎急救訓練", "急救措施實作(含急救術科測驗)", "防災士職責與任務、我國災防體系與運作",
     "我國近年災害經驗及災害特性", "資訊掌握、運用與社區防災計畫", "個人與居家防護措施",
     "個人與居家防護措施（情境練習）", "社區防災工作推動與運作", "社區避難收容場所開設與運作", "防災計畫實作與驗證",
 ]
 CONSENT_TEXT = (
-    "基隆市政府消防局為辦理防災士培訓、證照核發、災時人力盤點及成果統計，依個人資料保護法第 8 條規定告知："
+    f"{SITE['agency']}為辦理防災士培訓、證照核發、災時人力盤點及成果統計，依個人資料保護法第 8 條規定告知："
     "本表所蒐集之個人資料，僅於前述特定目的及法令規定範圍內使用，保存期限依檔案管理規定辦理。"
     "您得依法請求查詢、閱覽、複製、補充、更正、停止蒐集處理利用或刪除；未提供必要欄位者，將無法完成報名。"
 )
@@ -98,7 +99,7 @@ def _html_page(title, body):
 @reports_bp.route("/registrations.xlsx", methods=["GET"])
 @require_auth
 def registrations_xlsx():
-    """報名名冊（基隆市防災士培訓報名表範本格式）。"""
+    """報名名冊（防災士培訓報名表範本格式）。"""
     conn = get_db()
     batch = _batch(conn)
     if not batch:
@@ -109,7 +110,7 @@ def registrations_xlsx():
     wb = Workbook()
     ws = wb.active
     ws.title = "報名名冊"
-    ws.append([f"基隆市防災士培訓 {batch['name']} 報名表"])
+    ws.append([f"{SITE['program']} {batch['name']} 報名表"])
     ws.merge_cells("A1:V1")
     ws["A1"].font = Font(bold=True, size=14)
     ws.append(["編號", "姓名", "身分證字號", "出生西元年", "出生民國年", "出生月份", "出生日期", "性別", "戶籍行政區／里",
@@ -158,7 +159,7 @@ def roster_xlsx():
             "不合格" if 0 in (r["written_passed"], r["practical_passed"]) else "")
         mark = "●" if r["checked_in"] else "○"
         ws.append([i, r["cert_no"] or "", r["name"], batch["name"], ey, em, ed, TRAINING_UNIT, r["id_number"],
-                   by, bm, bd, r["sex"], r["home_phone"] or "", r["phone"], r["email"], "基隆市", r["address"],
+                   by, bm, bd, r["sex"], r["home_phone"] or "", r["phone"], r["email"], SITE["city"], r["address"],
                    r["education"] or "", r["unit_village"] or "", r["job_title"] or "",
                    "有" if r["support_pref"] in ("願意", "可支援") else "無",
                    r["written_score"] if r["written_score"] is not None else "", practical, certified,
@@ -385,7 +386,7 @@ def registrations_html():
         for i, r in enumerate(rows, start=1)
     )
     body = f"""<style>@page {{ size: A4 landscape; }} table {{ font-size: 12px; }}</style>
-<h1>基隆市防災士培訓 {escape(batch["name"])} 報名名冊</h1>
+<h1>{escape(SITE["program"])} {escape(batch["name"])} 報名名冊</h1>
 <div class="sub">{escape(batch["start_date"])}～{escape(batch["end_date"])}　{escape(batch["location"])}　共 {len(rows)} 人</div>
 <table><thead><tr><th>編號</th><th>姓名</th><th>身分證字號</th><th>出生日期</th><th>性別</th><th>行政區／里</th><th>行動電話</th>
 <th>Email</th><th>服務單位</th><th>職稱</th><th>緊急聯絡人</th><th>飲食</th><th>審核狀態</th></tr></thead>
@@ -457,7 +458,7 @@ def summary_html():
         f"<td>{escape(s['instructor_name'] or '—')}</td><td>{s['hours']}</td></tr>"
         for s in sessions
     ) or "<tr><td colspan='4'>尚無課程資料</td></tr>"
-    body = f"""<h1>基隆市防災士培訓 成果報告</h1>
+    body = f"""<h1>{escape(SITE["program"])} 成果報告</h1>
 <div class="sub">{escape(batch["name"])}　{escape(batch["start_date"])}～{escape(batch["end_date"])}　{escape(batch["location"])}</div>
 <h2>一、辦理成果</h2><table>{stat_rows}</table>
 <h2>二、課程內容</h2><table><thead><tr><th>時間</th><th>課程</th><th>講師</th><th>時數</th></tr></thead><tbody>{session_rows}</tbody></table>

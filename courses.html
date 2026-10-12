@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>培訓課程 | 基隆市防災士培訓報名系統</title>
+<script src="/api/public/site-config.js"></script>
+<script src="/site.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
   :root {
@@ -175,8 +177,8 @@
 <header class="site">
   <div class="wrap header-row">
     <a class="brand" href="/">
-      <span class="org">基隆市政府消防局</span>
-      <span class="site-name">基隆市防災士培訓報名系統</span>
+      <span class="org" data-site="agency">基隆市政府消防局</span>
+      <span class="site-name" data-site="site_name">基隆市防災士培訓報名系統</span>
     </a>
     <div class="header-actions">
       <a href="/status" class="btn btn-outlined">查詢報名進度</a>
@@ -253,8 +255,8 @@
 
 <footer class="site">
   <div class="wrap">
-    <span class="org-name">基隆市政府消防局</span>
-    <p>20144 基隆市信義區信一路 190 號　電話：(02) 2431-0119　傳真：(02) 2422-1119</p>
+    <span class="org-name" data-site="agency">基隆市政府消防局</span>
+    <p><span data-site="address">20144 基隆市信義區信一路 190 號</span>　電話：<span data-site="phone">(02) 2431-0119</span>　傳真：<span data-site="fax">(02) 2422-1119</span></p>
   </div>
 </footer>
 

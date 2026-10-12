@@ -9,35 +9,37 @@ from ..auth import require_auth, require_role
 from ..db import get_db
 from ..log import log_action
 from ..mailer import send_email, smtp_configured
+from ..site import SITE
 
 notify_bp = Blueprint("notify", __name__)
 
-SIGNATURE = "\n\n基隆市政府消防局 災害管理科\n(02) 2431-0119 分機 302"
+SIGNATURE = f"\n\n{SITE['contact']}\n{SITE['phone_ext']}"
+PREFIX = f"【{SITE['program']}】"
 
 TEMPLATES = {
-    "registered": ("報名成功通知", "【基隆市防災士培訓】{batch} 報名成功通知",
+    "registered": ("報名成功通知", PREFIX + "{batch} 報名成功通知",
                    "{name} 您好：\n您已完成「{batch}」防災士培訓報名，報名序號 {reg_no}。承辦人員審核後將再通知錄取結果。"),
-    "approved": ("正取通知", "【基隆市防災士培訓】{batch} 正取通知",
+    "approved": ("正取通知", PREFIX + "{batch} 正取通知",
                  "{name} 您好：\n恭喜您正取「{batch}」防災士培訓，上課日期 {start_date}～{end_date}，地點：{location}。請準時出席。"),
-    "waitlist": ("備取通知", "【基隆市防災士培訓】{batch} 備取通知",
+    "waitlist": ("備取通知", PREFIX + "{batch} 備取通知",
                  "{name} 您好：\n您目前為「{batch}」備取學員，如有名額釋出將另行通知遞補。"),
-    "course_reminder": ("開課提醒", "【基隆市防災士培訓】{batch} 開課提醒",
+    "course_reminder": ("開課提醒", PREFIX + "{batch} 開課提醒",
                         "{name} 您好：\n「{batch}」將於 {start_date} 開課，地點：{location}。請攜帶身分證件準時報到。"),
-    "course_reminder_3d": ("開課前三日提醒", "【基隆市防災士培訓】{batch} 開課前三日提醒",
+    "course_reminder_3d": ("開課前三日提醒", PREFIX + "{batch} 開課前三日提醒",
                            "{name} 您好：\n提醒您「{batch}」將於 {start_date} 開課（{start_date}～{end_date}），"
                            "地點：{location}。請攜帶身分證件準時報到，如無法出席請儘早告知承辦人員。"),
-    "needs_more_info": ("補件通知", "【基隆市防災士培訓】報名資料補件通知",
+    "needs_more_info": ("補件通知", PREFIX + "報名資料補件通知",
                         "{name} 您好：\n您報名「{batch}」的資料尚需補件：{note}\n請儘速與承辦人員聯繫。"),
-    "needs_more_info_reminder": ("補件提醒", "【基隆市防災士培訓】報名資料補件提醒",
+    "needs_more_info_reminder": ("補件提醒", PREFIX + "報名資料補件提醒",
                                  "{name} 您好：\n提醒您，報名「{batch}」的資料仍待補件：{note}\n"
                                  "逾期未補件可能影響錄取資格，請儘速與承辦人員聯繫。"),
-    "cert_pickup": ("證照領取通知", "【基隆市防災士培訓】防災士證照領取通知",
+    "cert_pickup": ("證照領取通知", PREFIX + "防災士證照領取通知",
                     "{name} 您好：\n您的防災士證書（{cert_no}）已核發，請於上班時間攜帶身分證件至本局領取。"),
-    "cert_pickup_reminder": ("證照領取提醒", "【基隆市防災士培訓】防災士證照領取提醒",
+    "cert_pickup_reminder": ("證照領取提醒", PREFIX + "防災士證照領取提醒",
                              "{name} 您好：\n提醒您，您的防災士證書（{cert_no}）尚未領取，請於上班時間攜帶身分證件至本局領取。"),
-    "cert_mailed": ("證照寄送通知", "【基隆市防災士培訓】防災士證照寄送通知",
+    "cert_mailed": ("證照寄送通知", PREFIX + "防災士證照寄送通知",
                     "{name} 您好：\n您的防災士證書（{cert_no}）已核發並以郵寄方式寄出，請留意收件。"),
-    "custom": ("自訂通知", "【基隆市防災士培訓】", "{name} 您好：\n"),
+    "custom": ("自訂通知", PREFIX, "{name} 您好：\n"),
 }
 
 RECIPIENT_SELECT = """SELECT r.id AS registration_id, r.name, r.email, r.phone, r.reg_no, r.review_note, r.notified_at,

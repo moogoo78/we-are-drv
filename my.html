@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>我的防災士 | 基隆市防災士培訓報名系統</title>
+<script src="/api/public/site-config.js"></script>
+<script src="/site.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
   :root {
@@ -219,8 +221,8 @@
 <header class="site">
   <div class="wrap header-row">
     <div class="brand">
-      <span class="org">基隆市政府消防局</span>
-      <span class="site-name">基隆市防災士培訓報名系統</span>
+      <span class="org" data-site="agency">基隆市政府消防局</span>
+      <span class="site-name" data-site="site_name">基隆市防災士培訓報名系統</span>
     </div>
     <div class="header-actions" id="header-actions" hidden>
       <span class="who"><strong id="who-name"></strong> 您好</span>
@@ -625,7 +627,7 @@
             <span class="k">性別</span><span class="v">${esc(p.sex)}</span>
             <span class="k">戶籍行政區</span><span class="v">${esc(p.district)}</span>
           </div>
-          <p class="hint-text" style="margin:8px 0 0;">以上資料如需更正，請洽承辦人員：災害管理科 (02) 2431-0119 分機 302。</p>
+          <p class="hint-text" style="margin:8px 0 0;">以上資料如需更正，請洽承辦人員：<span data-site="unit">災害管理科</span> <span data-site="phone_ext">(02) 2431-0119 分機 302</span>。</p>
         </div>
         <form id="profile-form" novalidate style="display:flex; flex-direction:column; gap:24px;">
           <div id="profile-msg"></div>
@@ -1118,10 +1120,10 @@
   <div class="toolbar"><button type="button" onclick="window.print()">列印</button></div>
   <div class="sheet">
     <h1>防災士培訓參訓證明</h1>
-    <p class="body">茲證明 ${esc(name)}（身分證字號 ${esc(maskId(p.id_number))}）參加基隆市政府消防局辦理之「${esc(a.batch_name)}」防災士培訓，上課期間 ${esc(a.start_date)} 至 ${esc(a.end_date)}，地點 ${esc(a.location)}，課程時數共 ${esc(hours)} 小時。</p>
+    <p class="body">茲證明 ${esc(name)}（身分證字號 ${esc(maskId(p.id_number))}）參加${esc(site('agency', '基隆市政府消防局'))}辦理之「${esc(a.batch_name)}」防災士培訓，上課期間 ${esc(a.start_date)} 至 ${esc(a.end_date)}，地點 ${esc(a.location)}，課程時數共 ${esc(hours)} 小時。</p>
     <p class="body">特此證明。</p>
     <div class="footer">
-      <div class="org">基隆市政府消防局</div>
+      <div class="org">${esc(site('agency', '基隆市政府消防局'))}</div>
       <div>核發日期：${esc(issued)}</div>
     </div>
   </div>

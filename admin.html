@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>防災士培訓管理後台</title>
+<script src="/api/public/site-config.js"></script>
+<script src="/site.js"></script>
 <style>
   :root {
     --primary: #d9480f;
@@ -756,7 +758,7 @@
             <div class="rule-row"><div class="rule-title">梯次名稱</div><input type="text" name="name" placeholder="例：115年度第5梯次" required></div>
             <div class="rule-row"><div class="rule-title">上課日期</div><div><input type="date" name="start_date" required aria-label="開始"> ～ <input type="date" name="end_date" required aria-label="結束"></div></div>
             <div class="rule-row"><div class="rule-title">報名期間</div><div><input type="date" name="register_start" aria-label="報名開始"> ～ <input type="date" name="register_end" aria-label="報名截止"></div></div>
-            <div class="rule-row"><div class="rule-title">上課地點</div><input type="text" name="location" placeholder="例：基隆市消防局訓練中心" required></div>
+            <div class="rule-row"><div class="rule-title">上課地點</div><input type="text" name="location" placeholder="例：基隆市消防局訓練中心" data-site-attr="placeholder:training_location_example" required></div>
             <div class="rule-row"><div class="rule-title">名額上限</div><input type="number" name="capacity" min="1" placeholder="例：60" required></div>
             <div class="rule-row"><div class="rule-title">狀態</div>
               <select name="status">

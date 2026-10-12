@@ -1,16 +1,31 @@
-"""前台免登入 API：公告、課程時程、講師、講義、課程照片、行政區里別。"""
-from flask import Blueprint, jsonify, request, send_from_directory
+"""前台免登入 API：縣市設定、公告、課程時程、講師、講義、課程照片、行政區里別。"""
+import json
+
+from flask import Blueprint, Response, jsonify, request, send_from_directory
 
 from ..db import get_db
 from ..files import upload_path
-from ..geo import KEELUNG_VILLAGES
+from ..geo import VILLAGES
+from ..site import public_config
 
 public_bp = Blueprint("public", __name__)
 
 
+@public_bp.route("/site", methods=["GET"])
+def site():
+    return jsonify(public_config())
+
+
+@public_bp.route("/site-config.js", methods=["GET"])
+def site_config_js():
+    """供前台頁面以 <script> 同步載入，讓 site.js 在畫面顯示前換上縣市文字。"""
+    body = "window.SITE = " + json.dumps(public_config(), ensure_ascii=False) + ";\n"
+    return Response(body, mimetype="application/javascript", headers={"Cache-Control": "no-cache"})
+
+
 @public_bp.route("/villages", methods=["GET"])
 def villages():
-    return jsonify({"districts": KEELUNG_VILLAGES})
+    return jsonify({"districts": VILLAGES, "order": list(VILLAGES)})  # JSON 鍵會被排序，另附原始順序
 
 
 @public_bp.route("/announcements", methods=["GET"])

@@ -6,6 +6,7 @@ from werkzeug.security import generate_password_hash
 
 from .db import get_db
 from .members import upsert_member_from_registration
+from .site import SITE
 
 # 既有資料庫升級時補上的欄位（新安裝時已包含在 init.sql）
 ADDED_COLUMNS = {
@@ -59,10 +60,10 @@ def add_missing_columns(conn):
     conn.commit()
 
 SEED_BATCHES = [
-    ("第 1 梯次", "2026-06-20", "2026-06-21", "基隆市消防局訓練中心", 60, "closed"),
-    ("第 2 梯次", "2026-07-12", "2026-07-13", "七堵區公所禮堂", 60, "closed"),
-    ("第 3 梯次", "2026-08-01", "2026-08-02", "中正區行政中心 3 樓", 60, "full"),
-    ("第 4 梯次", "2026-09-20", "2026-09-21", "基隆市消防局訓練中心", 60, "open"),
+    ("第 1 梯次", "2026-06-20", "2026-06-21", SITE["training_location"], 60, "closed"),
+    ("第 2 梯次", "2026-07-12", "2026-07-13", SITE["training_location"], 60, "closed"),
+    ("第 3 梯次", "2026-08-01", "2026-08-02", SITE["training_location"], 60, "full"),
+    ("第 4 梯次", "2026-09-20", "2026-09-21", SITE["training_location"], 60, "open"),
 ]
 
 SEED_INSTRUCTORS = [
@@ -90,7 +91,7 @@ def init_db():
         try:
             conn.execute(
                 "INSERT INTO admin_users (username, password_hash, display_name, role) VALUES (?, ?, ?, 'admin')",
-                (username, generate_password_hash(password), "基隆市消防局"),
+                (username, generate_password_hash(password), SITE["agency"]),
             )
             conn.commit()
             print(f'[migrate] seeded initial admin user "{username}"', flush=True)

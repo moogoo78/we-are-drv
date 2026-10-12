@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>基隆市防災士培訓報名系統</title>
+<script src="/api/public/site-config.js"></script>
+<script src="/site.js"></script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&family=Noto+Sans:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap">
 <style>
   :root {
@@ -278,8 +280,8 @@
 <header class="site">
   <div class="wrap header-row">
     <div class="brand">
-      <span class="org">基隆市政府消防局</span>
-      <span class="site-name">基隆市防災士培訓報名系統</span>
+      <span class="org" data-site="agency">基隆市政府消防局</span>
+      <span class="site-name" data-site="site_name">基隆市防災士培訓報名系統</span>
     </div>
     <div class="header-actions">
       <a href="/status" class="btn btn-outlined">查詢報名進度</a>
@@ -332,7 +334,7 @@
         </div>
         <div class="side-card muted">
           <span class="card-title">洽詢窗口</span>
-          <p>基隆市政府消防局 災害管理科<br>(02) 2431-0119 分機 302<br>服務時間：週一至週五 08:30－17:30</p>
+          <p><span data-site="contact">基隆市政府消防局 災害管理科</span><br><span data-site="phone_ext">(02) 2431-0119 分機 302</span><br>服務時間：<span data-site="hours">週一至週五 08:30－17:30</span></p>
         </div>
       </aside>
     </div>
@@ -368,7 +370,7 @@
       <div class="faq-list">
         <details>
           <summary>報名資格有年齡限制嗎？</summary>
-          <div class="answer"><p>報名者須年滿 18 歲，並設籍於基隆市。報名表的戶籍限填基隆市行政區與里別，承辦單位將於審核時核對身分證戶籍資料。</p></div>
+          <div class="answer"><p>報名者須年滿 18 歲，並設籍於<span data-site="city">基隆市</span>。報名表的戶籍限填<span data-site="city">基隆市</span>行政區與里別，承辦單位將於審核時核對身分證戶籍資料。</p></div>
         </details>
         <details>
           <summary>已持有 EMT1 證照可以折抵課程嗎？</summary>
@@ -410,11 +412,11 @@
     </div>
     <div class="contact-card">
       <dl class="contact-grid">
-        <dt>承辦單位</dt><dd>基隆市政府消防局 災害管理科</dd>
-        <dt>電話</dt><dd><a href="tel:+886224310119,302">(02) 2431-0119 分機 302</a></dd>
-        <dt>傳真</dt><dd>(02) 2422-1119</dd>
-        <dt>地址</dt><dd>20144 基隆市信義區信一路 190 號</dd>
-        <dt>服務時間</dt><dd>週一至週五 08:30－17:30</dd>
+        <dt>承辦單位</dt><dd data-site="contact">基隆市政府消防局 災害管理科</dd>
+        <dt>電話</dt><dd><a href="tel:+886224310119,302" data-site-tel data-site="phone_ext">(02) 2431-0119 分機 302</a></dd>
+        <dt>傳真</dt><dd data-site="fax">(02) 2422-1119</dd>
+        <dt>地址</dt><dd data-site="address">20144 基隆市信義區信一路 190 號</dd>
+        <dt>服務時間</dt><dd data-site="hours">週一至週五 08:30－17:30</dd>
       </dl>
     </div>
   </section>
@@ -423,8 +425,8 @@
 
 <footer class="site" id="footer-contact">
   <div class="wrap">
-    <span class="org-name">基隆市政府消防局</span>
-    <p class="addr">20144 基隆市信義區信一路 190 號　電話：(02) 2431-0119　傳真：(02) 2422-1119</p>
+    <span class="org-name" data-site="agency">基隆市政府消防局</span>
+    <p class="addr"><span data-site="address">20144 基隆市信義區信一路 190 號</span>　電話：<span data-site="phone">(02) 2431-0119</span>　傳真：<span data-site="fax">(02) 2422-1119</span></p>
     <div class="links">
       <a href="#">隱私權政策</a>
       <a href="#">個人資料保護</a>

@@ -10,8 +10,9 @@ from flask import Blueprint, g, jsonify, request, send_from_directory
 
 from ..auth import require_auth, require_role
 from ..db import get_db
-from ..geo import KEELUNG_VILLAGES, is_valid_village
+from ..geo import VILLAGES, is_valid_village
 from ..log import log_action
+from ..site import SITE
 from ..members import json_list
 
 registrations_bp = Blueprint("registrations", __name__)
@@ -70,8 +71,8 @@ def create_registration():
         return jsonify({"error": f"缺少必填欄位：{', '.join(missing)}"}), 400
     if b.get("agree_consent") != "true":
         return jsonify({"error": "請同意個人資料蒐集告知事項"}), 400
-    if b["district"] not in KEELUNG_VILLAGES:
-        return jsonify({"error": "本培訓限設籍基隆市者報名，請選擇基隆市行政區"}), 400
+    if b["district"] not in VILLAGES:
+        return jsonify({"error": f"本培訓限設籍{SITE['city']}者報名，請選擇{SITE['city']}行政區"}), 400
     village = b.get("village") or None
     if village and not is_valid_village(b["district"], village):
         return jsonify({"error": "里別與行政區不符"}), 400

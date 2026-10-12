@@ -10,7 +10,7 @@ from openpyxl import load_workbook
 
 from ..auth import require_auth, require_role
 from ..db import get_db
-from ..geo import KEELUNG_VILLAGES, parse_district_village
+from ..geo import VILLAGES, parse_district_village
 from ..log import log_action
 from ..members import json_list
 from .dashboard import age_bucket
@@ -206,7 +206,7 @@ def stats():
             ({"district": d, "village": v, "n": n} for (d, v), n in by_village.items()), key=lambda x: -x["n"]
         ),
         "villages_without_members": sum(
-            1 for d, vs in KEELUNG_VILLAGES.items() for v in vs if (d, v) not in by_village
+            1 for d, vs in VILLAGES.items() for v in vs if (d, v) not in by_village
         ),
         "by_sex": count(r["sex"] or "未填寫" for r in rows),
         "by_age": count(ages),
