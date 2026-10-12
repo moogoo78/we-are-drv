@@ -158,6 +158,8 @@
   /* survey */
   .q-block { display: flex; flex-direction: column; gap: 4px; padding-block: 12px; border-bottom: 1px solid var(--border-divider); }
   .q-block.missing legend, .q-block.missing .q-label { color: var(--error); }
+  .q-block .q-sub { padding: 8px 0 8px 16px; border-bottom: 0; }
+  .q-sub legend { font-weight: 400; }
   .q-label { font-weight: 500; }
   .matrix-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table.matrix { border-collapse: collapse; width: 100%; min-width: 520px; font-size: 15px; }
@@ -471,6 +473,14 @@
   let state = { profile: null, registrations: [], certificates: [], applications: [] };
   let villagesCache = null;
   let surveyDefCache = null;
+  const surveyTitles = {}; // 題目 id → 畫面上顯示的題號與題目，用於未填答提示
+
+  function zhNum(n) {
+    const d = '零一二三四五六七八九';
+    if (n < 10) return d[n];
+    const tens = Math.floor(n / 10), ones = n % 10;
+    return `${tens === 1 ? '' : d[tens]}十${ones ? d[ones] : ''}`;
+  }
   let currentPanel = 'profile';
 
   // ---------- login / logout ----------
@@ -872,6 +882,9 @@
     btn.parentElement.hidden = true;
     const qs = surveyDefCache;
     const fid = `sv${regId}`;
+    // 題目文字帶有公版題號（從「五、」開始且有重複），畫面上去掉後依順序重新編號
+    let no = 0;
+    const numbered = (text) => `${zhNum(++no)}、${String(text).replace(/^[一二三四五六七八九十]+、/, '')}`;
     let html = '';
     let i = 0;
     while (i < qs.length) {
@@ -880,9 +893,11 @@
         const group = q.group || q.label;
         const rows = [];
         while (i < qs.length && qs[i].type === 'rating' && (qs[i].group || qs[i].label) === group) { rows.push(qs[i]); i++; }
+        const title = numbered(group);
+        rows.forEach((rq) => { surveyTitles[rq.id] = `${title} ${rq.aspect || ''}`.trim(); });
         html += `
           <div class="matrix-wrap"><table class="matrix">
-            <caption>${esc(group)}　<span class="req" style="font-size:14px;">必填</span></caption>
+            <caption>${esc(title)}　<span class="req" style="font-size:14px;">必填</span></caption>
             <thead><tr><th scope="col">評分項目</th>${[5, 4, 3, 2, 1].map((n) => `<th scope="col">${n}<br>${esc(RATING_LABELS[n])}</th>`).join('')}</tr></thead>
             <tbody>${rows.map((rq) => `
               <tr data-q="${esc(rq.id)}"><th scope="row" id="${fid}-${esc(rq.id)}-l">${esc(rq.aspect || rq.label)}</th>
@@ -892,11 +907,32 @@
         continue;
       }
       const reqTag = q.optional ? '<span class="opt">選填</span>' : '<span class="req">必填</span>';
+      if (q.type === 'single' && q.group) {
+        // 同一題的多個子題（例：志工召募各項工作）合併成一題顯示
+        const subs = [];
+        while (i < qs.length && qs[i].type === 'single' && qs[i].group === q.group) { subs.push(qs[i]); i++; }
+        const title = numbered(q.group);
+        subs.forEach((sq) => { surveyTitles[sq.id] = `${title} ${sq.aspect || ''}`.trim(); });
+        html += `
+          <div class="q-block">
+            <p class="q-label" style="margin:0;">${esc(title)} ${reqTag}</p>
+            ${subs.map((sq) => `
+            <fieldset class="q-block q-sub" data-q="${esc(sq.id)}">
+              <legend>${esc(sq.aspect || sq.label)}</legend>
+              <div class="choice-group">
+                ${(sq.options || []).map((o, k) => `<label class="choice-item" for="${fid}-${esc(sq.id)}-${k}"><input type="radio" id="${fid}-${esc(sq.id)}-${k}" name="${esc(sq.id)}" value="${esc(o)}">${esc(o)}</label>`).join('')}
+              </div>
+            </fieldset>`).join('')}
+          </div>`;
+        continue;
+      }
+      const title = numbered(q.label);
+      surveyTitles[q.id] = title;
       if (q.type === 'single' || q.type === 'multi') {
         const t = q.type === 'single' ? 'radio' : 'checkbox';
         html += `
           <fieldset class="q-block" data-q="${esc(q.id)}">
-            <legend>${esc(q.label)} ${reqTag}</legend>
+            <legend>${esc(title)} ${reqTag}</legend>
             <div class="choice-group stack">
               ${(q.options || []).map((o, k) => `<label class="choice-item" for="${fid}-${esc(q.id)}-${k}"><input type="${t}" id="${fid}-${esc(q.id)}-${k}" name="${esc(q.id)}" value="${esc(o)}">${esc(o)}</label>`).join('')}
             </div>
@@ -904,7 +940,7 @@
       } else if (q.type === 'text') {
         html += `
           <div class="q-block field" data-q="${esc(q.id)}">
-            <label class="q-label" for="${fid}-${esc(q.id)}">${esc(q.label)} ${reqTag}</label>
+            <label class="q-label" for="${fid}-${esc(q.id)}">${esc(title)} ${reqTag}</label>
             <textarea class="textarea" id="${fid}-${esc(q.id)}" name="${esc(q.id)}"></textarea>
           </div>`;
       }
@@ -939,7 +975,7 @@
     });
     if (missing.length) {
       missing.forEach((q) => { const el = form.querySelector(`[data-q="${CSS.escape(q.id)}"]`); if (el) el.classList.add('missing'); });
-      msg.innerHTML = msgHtml(`尚有 ${missing.length} 題未填答（已以紅色標示），第一題：${missing[0].label}`, 'error');
+      msg.innerHTML = msgHtml(`尚有 ${missing.length} 題未填答（已以紅色標示），第一題：${surveyTitles[missing[0].id] || missing[0].label}`, 'error');
       const first = form.querySelector('.missing');
       if (first) { first.scrollIntoView({ block: 'center' }); const inp = first.querySelector('input, textarea'); if (inp) inp.focus({ preventScroll: true }); }
       return;

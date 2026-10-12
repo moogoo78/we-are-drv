@@ -1,4 +1,8 @@
-"""課後問卷題目，依「防災士課後問卷調查」公版格式（題號五～二十五）。"""
+"""課後問卷題目，依「防災士課後問卷調查」公版格式（題號五～二十五）。
+
+題號保留公版編號供報表對照；學員端顯示時會去掉題號，改依畫面順序重新編號（一、二、三…）。
+"""
+from .geo import VILLAGES
 
 COURSES = [
     "我國近年災害經驗及災害特性",
@@ -14,7 +18,8 @@ COURSES = [
 
 RATING_ASPECTS = ["課程實用性", "課程難易度", "講師表達能力", "講師互動能力", "講師專業度"]
 
-DISTRICTS = ["仁愛區", "信義區", "中正區", "中山區", "安樂區", "暖暖區", "七堵區", "皆可"]
+# 願意支援的行政區：依縣市設定，另加「皆可」
+DISTRICTS = [*VILLAGES, "皆可"]
 
 WILLING = ["願意", "不願意"]
 
@@ -27,10 +32,14 @@ QUESTIONS = [
      "type": "single", "options": WILLING},
     {"id": "data_consent", "label": "八、您是否同意公務機關或委託機關因防救災業務需求，蒐集、使用或運用您的個人資料？",
      "type": "single", "options": ["同意", "不同意"]},
-    {"id": "recruit_guide", "label": "九、災害發生時，是否願意收到志工召募通知，協助【協助引導與疏散】？", "type": "single", "options": WILLING},
-    {"id": "recruit_supply", "label": "九、災害發生時，是否願意收到志工召募通知，協助【物資發放】？", "type": "single", "options": WILLING},
-    {"id": "recruit_shelter", "label": "九、災害發生時，是否願意收到志工召募通知，協助【收容場所開設】？", "type": "single", "options": WILLING},
-    {"id": "recruit_all", "label": "九、災害發生時，是否願意收到志工召募通知，協助【皆可】？", "type": "single", "options": WILLING},
+    {"id": "recruit_guide", "label": "九、災害發生時，是否願意收到志工召募通知，協助【協助引導與疏散】？", "type": "single", "options": WILLING,
+     "group": "九、災害發生時，是否願意收到志工召募通知，協助下列工作？", "aspect": "協助引導與疏散"},
+    {"id": "recruit_supply", "label": "九、災害發生時，是否願意收到志工召募通知，協助【物資發放】？", "type": "single", "options": WILLING,
+     "group": "九、災害發生時，是否願意收到志工召募通知，協助下列工作？", "aspect": "物資發放"},
+    {"id": "recruit_shelter", "label": "九、災害發生時，是否願意收到志工召募通知，協助【收容場所開設】？", "type": "single", "options": WILLING,
+     "group": "九、災害發生時，是否願意收到志工召募通知，協助下列工作？", "aspect": "收容場所開設"},
+    {"id": "recruit_all", "label": "九、災害發生時，是否願意收到志工召募通知，協助【皆可】？", "type": "single", "options": WILLING,
+     "group": "九、災害發生時，是否願意收到志工召募通知，協助下列工作？", "aspect": "皆可"},
     {"id": "center", "label": "十、災害發生時，您是否願意加入「防災協作中心」協助支援？", "type": "single",
      "options": ["願意", "視情況協助", "不願意"]},
     {"id": "teams", "label": "十一、您願意參與「防災協作中心」之任務編組？（可複選）", "type": "multi",
