@@ -60,6 +60,18 @@ def test_registration_rejects_wrong_village(client):
     assert res.status_code == 400
 
 
+def test_registration_requires_keelung_and_register_window(client, admin):
+    res = register(client, "C123456789", district="臺北市")
+    assert res.status_code == 400 and "設籍基隆市" in res.get_json()["error"]
+
+    batch_id = open_batch_id(client)
+    batch = next(b for b in client.get("/api/batches").get_json()["batches"] if b["id"] == batch_id)
+    client.patch(f"/api/batches/{batch_id}", json={"register_end": "2020-01-01"}, headers=admin)
+    res = register(client, "C123456789")
+    assert res.status_code == 400 and "非報名時間" in res.get_json()["error"]
+    client.patch(f"/api/batches/{batch_id}", json={"register_end": batch["register_end"]}, headers=admin)
+
+
 def test_full_training_flow(client, admin):
     res = register(client, "A123456789")
     assert res.status_code == 201, res.get_json()

@@ -149,7 +149,7 @@
 <main class="subpage wrap">
   <nav class="crumb"><a href="/">首頁</a>　/　線上報名</nav>
 
-  <div id="form-view">
+  <div id="form-view" hidden>
     <div style="display:flex; flex-direction:column; gap:8px; margin-bottom: 24px;">
       <h1 class="page-title" id="page-title">防災士培訓報名</h1>
       <p class="page-intro" id="batch-intro">載入梯次資訊中…</p>
@@ -194,6 +194,11 @@
           <div class="form-cols-2">
             <div class="field"><span>行動電話 <span class="req">必填</span></span><span class="hint-text">用於錄取與開課提醒簡訊</span><input class="input" name="phone" required placeholder="09xx-xxx-xxx"></div>
             <div class="field"><span>電子郵件 <span class="req">必填</span></span><span class="hint-text">用於發送報名結果通知</span><input class="input" type="email" name="email" required placeholder="name@example.com"></div>
+          </div>
+          <div class="field">
+            <span>戶籍縣市</span>
+            <span class="hint-text">本培訓限設籍基隆市者報名，審核時將核對身分證戶籍資料</span>
+            <input class="input" value="基隆市" readonly aria-readonly="true" tabindex="-1">
           </div>
           <div class="form-cols-2">
             <div class="field">
@@ -335,6 +340,15 @@
     </div>
   </div>
 
+  <div id="closed-view" hidden>
+    <div class="result-box">
+      <h1 class="page-title">非報名時間</h1>
+      <p id="closed-msg">目前非防災士培訓報名期間，線上報名表暫不開放。</p>
+      <p>報名開放時間將公告於首頁「活動公告」，如有疑問請洽災害管理科 (02) 2431-0119 分機 302。</p>
+      <a href="/" class="btn btn-solid">回首頁</a>
+    </div>
+  </div>
+
   <div id="success-view" hidden>
     <div class="result-box">
       <h1 class="page-title">報名已送出</h1>
@@ -355,23 +369,35 @@
 
   let openBatch = null;
 
+  // 報名期間：梯次狀態為 open，且今天落在 register_start～register_end（有設定時）之間
+  function inRegisterWindow(b) {
+    const today = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Taipei' });
+    const rs = String(b.register_start || '').slice(0, 10);
+    const re = String(b.register_end || '').slice(0, 10);
+    return (!rs || today >= rs) && (!re || today <= re);
+  }
+
+  function showClosed(msg) {
+    document.getElementById('form-view').hidden = true;
+    document.getElementById('closed-view').hidden = false;
+    if (msg) document.getElementById('closed-msg').textContent = msg;
+    document.title = '非報名時間 | 基隆市防災士培訓報名系統';
+  }
+
   async function loadBatch() {
     try {
       const res = await fetch('/api/batches');
       const data = await res.json();
-      openBatch = (data.batches || []).find((b) => b.status === 'open') || null;
-      const intro = document.getElementById('batch-intro');
-      const title = document.getElementById('page-title');
-      if (openBatch) {
-        title.textContent = `${openBatch.name} 防災士培訓報名`;
-        intro.textContent = `上課日期 ${openBatch.start_date} ～ ${openBatch.end_date}，地點：${openBatch.location}。標示 必填 的欄位皆須填寫，送出後由承辦人員人工審核，審核結果以 Email 與簡訊通知。`;
-      } else {
-        intro.textContent = '目前沒有開放中的報名梯次，請稍後再回來查看，或洽災害管理科 (02) 2431-0119 分機 302。';
-        submitBtn.disabled = true;
+      openBatch = (data.batches || []).find((b) => b.status === 'open' && inRegisterWindow(b)) || null;
+      if (!openBatch) {
+        showClosed();
+        return;
       }
+      document.getElementById('form-view').hidden = false;
+      document.getElementById('page-title').textContent = `${openBatch.name} 防災士培訓報名`;
+      document.getElementById('batch-intro').textContent = `上課日期 ${openBatch.start_date} ～ ${openBatch.end_date}，地點：${openBatch.location}。本培訓限設籍基隆市者報名。標示 必填 的欄位皆須填寫，送出後由承辦人員人工審核，審核結果以 Email 與簡訊通知。`;
     } catch {
-      document.getElementById('batch-intro').textContent = '梯次資訊載入失敗，請重新整理頁面。';
-      submitBtn.disabled = true;
+      showClosed('梯次資訊載入失敗，請重新整理頁面。');
     }
   }
   loadBatch();

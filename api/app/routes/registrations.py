@@ -3,6 +3,8 @@ import os
 import secrets
 import sqlite3
 import time
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from flask import Blueprint, g, jsonify, request, send_from_directory
 
@@ -53,6 +55,13 @@ def close_batch_if_full(conn, batch_id):
         conn.execute("UPDATE batches SET status = 'full' WHERE id = ?", (batch_id,))
 
 
+def _in_register_window(batch):
+    today = datetime.now(ZoneInfo("Asia/Taipei")).date().isoformat()
+    start = (batch["register_start"] or "")[:10]
+    end = (batch["register_end"] or "")[:10]
+    return (not start or today >= start) and (not end or today <= end)
+
+
 @registrations_bp.route("", methods=["POST"])
 def create_registration():
     b = request.form
@@ -62,7 +71,7 @@ def create_registration():
     if b.get("agree_consent") != "true":
         return jsonify({"error": "請同意個人資料蒐集告知事項"}), 400
     if b["district"] not in KEELUNG_VILLAGES:
-        return jsonify({"error": "請選擇正確的行政區"}), 400
+        return jsonify({"error": "本培訓限設籍基隆市者報名，請選擇基隆市行政區"}), 400
     village = b.get("village") or None
     if village and not is_valid_village(b["district"], village):
         return jsonify({"error": "里別與行政區不符"}), 400
@@ -83,8 +92,8 @@ def create_registration():
         batch = conn.execute("SELECT * FROM batches WHERE id = ?", (b["batch_id"],)).fetchone()
         if not batch:
             return jsonify({"error": "找不到指定梯次"}), 400
-        if batch["status"] != "open":
-            return jsonify({"error": "此梯次目前未開放報名"}), 400
+        if batch["status"] != "open" or not _in_register_window(batch):
+            return jsonify({"error": "非報名時間，此梯次目前未開放報名"}), 400
 
         dupe = conn.execute(
             "SELECT id FROM registrations WHERE batch_id = ? AND id_number = ?",

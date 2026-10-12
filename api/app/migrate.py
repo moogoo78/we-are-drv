@@ -103,8 +103,9 @@ def init_db():
             for name, start, end, location, capacity, status in SEED_BATCHES:
                 conn.execute(
                     """INSERT INTO batches (name, start_date, end_date, location, capacity, status, register_start, register_end)
-                       VALUES (?, ?, ?, ?, ?, ?, datetime('now', '-1 day'), ?)""",
-                    (name, start, end, location, capacity, status, end),
+                       VALUES (?, ?, ?, ?, ?, ?, date('now', '-1 day'),
+                               CASE WHEN ? = 'open' THEN date('now', '+30 day') ELSE ? END)""",
+                    (name, start, end, location, capacity, status, status, end),
                 )
             conn.commit()
             print("[migrate] seeded 4 initial batches", flush=True)

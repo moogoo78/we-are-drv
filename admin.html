@@ -775,8 +775,8 @@
         <div class="card-header"><h3>梯次與名額設定</h3></div>
         <div class="table-wrap">
           <table>
-            <thead><tr><th>梯次</th><th>上課日期</th><th>報名／名額</th><th>名額</th><th>狀態</th><th>額滿自動關閉</th></tr></thead>
-            <tbody id="batches-admin-body"><tr class="empty-row"><td colspan="6">載入中…</td></tr></tbody>
+            <thead><tr><th>梯次</th><th>上課日期</th><th>報名期間</th><th>報名／名額</th><th>名額</th><th>狀態</th><th>額滿自動關閉</th></tr></thead>
+            <tbody id="batches-admin-body"><tr class="empty-row"><td colspan="7">載入中…</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -1011,19 +1011,20 @@
       ? allBatches.map((b) => `<tr>
           <td>${esc(b.name)}</td>
           <td>${esc(b.start_date)} ～ ${esc(b.end_date)}</td>
+          <td style="white-space:nowrap;"><input type="date" value="${esc(String(b.register_start || '').slice(0, 10))}" data-batch-field="register_start" data-id="${b.id}" aria-label="${esc(b.name)} 報名開始"> ～ <input type="date" value="${esc(String(b.register_end || '').slice(0, 10))}" data-batch-field="register_end" data-id="${b.id}" aria-label="${esc(b.name)} 報名截止"></td>
           <td>${b.registered_count} / ${b.capacity}</td>
           <td><input type="number" min="1" value="${b.capacity}" style="width:80px;" data-batch-field="capacity" data-id="${b.id}"></td>
           <td><select data-batch-field="status" data-id="${b.id}">${statusOpts(b.status)}</select></td>
           <td><input type="checkbox" data-batch-field="auto_close" data-id="${b.id}" ${b.auto_close ? 'checked' : ''} aria-label="額滿自動關閉"></td>
         </tr>`).join('')
-      : '<tr class="empty-row"><td colspan="6">尚無梯次</td></tr>';
+      : '<tr class="empty-row"><td colspan="7">尚無梯次</td></tr>';
   }
 
   $('batches-admin-body').addEventListener('change', async (e) => {
     const el = e.target.closest('[data-batch-field]');
     if (!el) return;
     const field = el.dataset.batchField;
-    const value = el.type === 'checkbox' ? el.checked : (field === 'capacity' ? Number(el.value) : el.value);
+    const value = el.type === 'checkbox' ? el.checked : (field === 'capacity' ? Number(el.value) : (el.value || null));
     try {
       await apiFetch(`/api/batches/${el.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ [field]: value }) });
       await loadBatches();
