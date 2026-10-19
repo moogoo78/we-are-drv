@@ -10,6 +10,7 @@ import pytest
 
 _tmp = tempfile.mkdtemp()
 os.environ.setdefault("JWT_SECRET", "test-secret")
+os.environ["ADMIN_PASSWORD"] = "changeme123"
 os.environ["DATABASE_PATH"] = os.path.join(_tmp, "test.sqlite3")
 os.environ["UPLOAD_DIR"] = os.path.join(_tmp, "uploads")
 os.environ.pop("SMTP_HOST", None)

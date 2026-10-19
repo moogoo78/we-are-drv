@@ -15,7 +15,7 @@ services:
       - "traefik.http.routers.drv.rule=Host(`${DRV_HOST}`)"
       - "traefik.http.routers.drv.entrypoints=websecure"
       - "traefik.http.routers.drv.tls.certresolver=myresolver"
-      - "traefik.http.services.drv.loadbalancer.server.port=80"
+      - "traefik.http.services.drv.loadbalancer.server.port=8080"
 
 networks:
   traefik:

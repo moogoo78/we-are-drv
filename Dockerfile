@@ -1,4 +1,4 @@
-FROM nginx:alpine
+FROM nginxinc/nginx-unprivileged:alpine
 
 COPY index.html /usr/share/nginx/html/index.html
 COPY admin.html /usr/share/nginx/html/admin.html
@@ -11,4 +11,4 @@ COPY site.js /usr/share/nginx/html/site.js
 COPY samples/members-import-example.xlsx /usr/share/nginx/html/samples/members-import-example.xlsx
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-HEALTHCHECK --interval=30s --timeout=3s CMD wget -q --spider http://localhost/ || exit 1
+HEALTHCHECK --interval=30s --timeout=3s CMD wget -q --spider http://localhost:8080/ || exit 1

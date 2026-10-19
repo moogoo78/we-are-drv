@@ -87,7 +87,9 @@ def init_db():
     user_count = conn.execute("SELECT COUNT(*) AS n FROM admin_users").fetchone()["n"]
     if user_count == 0:
         username = os.environ.get("ADMIN_USERNAME", "admin")
-        password = os.environ.get("ADMIN_PASSWORD", "changeme123")
+        password = os.environ.get("ADMIN_PASSWORD")
+        if not password:
+            raise RuntimeError("尚未設定 ADMIN_PASSWORD，無法建立初始管理員帳號")
         try:
             conn.execute(
                 "INSERT INTO admin_users (username, password_hash, display_name, role) VALUES (?, ?, ?, 'admin')",

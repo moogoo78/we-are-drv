@@ -14,7 +14,7 @@ REQUIRED_KEYS = ("city", "agency", "unit", "phone", "address", "districts")
 def _load():
     path = os.environ.get("SITE_CONFIG") or DEFAULT_CONFIG
     if os.sep not in path and not path.endswith(".json"):
-        path = os.path.join(SITES_DIR, f"{path}.json")
+        path = os.path.join(SITES_DIR, f"{os.path.basename(path)}.json")
     with open(path, encoding="utf-8") as f:
         cfg = json.load(f)
     missing = [k for k in REQUIRED_KEYS if not cfg.get(k)]
